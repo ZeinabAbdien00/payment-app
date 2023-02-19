@@ -15,7 +15,7 @@
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/notificationFragment"
+        android:id="@+id/notificationsFragment"
         android:name="com.example.paymentapp.peresentation.notification.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
