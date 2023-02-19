@@ -1,4 +1,4 @@
-package com.example.paymentapp.peresentation
+package com.example.paymentapp.peresentation.splash
 
 import android.os.Bundle
 import android.view.LayoutInflater

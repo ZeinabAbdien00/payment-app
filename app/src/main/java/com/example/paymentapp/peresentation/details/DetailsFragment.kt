@@ -1,4 +1,4 @@
-package com.example.paymentapp.peresentation
+package com.example.paymentapp.peresentation.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.paymentapp.R
 
-class HomeFragment : Fragment() {
+class DetailsFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -15,7 +15,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
