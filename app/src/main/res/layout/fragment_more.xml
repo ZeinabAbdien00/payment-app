@@ -1,14 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".peresentation.more.MoreFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/password_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/setting_corners"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:thumb="@drawable/swich_thumb"
+            android:track="@drawable/swich_track"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/password_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cairo_regular"
+            android:text="@string/password"
+            android:textColor="@color/dark_green"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/password_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:tint="@color/dark_green"
+            app:srcCompat="@drawable/ic_password_lock" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/reset_password_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/setting_corners"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintEnd_toEndOf="@id/password_linear"
+        app:layout_constraintStart_toStartOf="@id/password_linear"
+        app:layout_constraintTop_toBottomOf="@id/password_linear">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/ic_arabic_arrow_next"
+            android:tint="@color/dark_green" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/resat_password_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cairo_regular"
+            android:text="@string/reset_password"
+            android:textColor="@color/dark_green"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/resat_password_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:tint="@color/dark_green"
+            app:srcCompat="@drawable/ic_password_reset" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notification_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/setting_corners"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintEnd_toEndOf="@id/password_linear"
+        app:layout_constraintStart_toStartOf="@id/password_linear"
+        app:layout_constraintTop_toBottomOf="@id/reset_password_linear">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:thumb="@drawable/swich_thumb"
+            android:track="@drawable/swich_track"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/notification_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cairo_regular"
+            android:text="@string/stop_notification"
+            android:textColor="@color/dark_green"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/notification_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:tint="@color/dark_green"
+            app:srcCompat="@drawable/ic_notifications_off" />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
