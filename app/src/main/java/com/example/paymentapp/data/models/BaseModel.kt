@@ -1,5 +1,9 @@
 package com.example.paymentapp.data.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class BaseModel (
     var name : String,
     var phoneNumber : String,
@@ -9,6 +13,7 @@ data class BaseModel (
     var monthlyDayOfPaying : String,
     var startDate : String,
         ){
+    @PrimaryKey(autoGenerate = true) val id :Int =0
     // add to this list when person starts to pay the first month
     var historyList : String = ""
     // let user add it later if he wants
