@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".peresentation.home.HomeFragment">
 
@@ -14,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:orientation="horizontal"
-        android:background="@drawable/searsh_corners"
+        android:background="@drawable/search_corners"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:gravity="right"
@@ -26,6 +25,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:hint="البحث"
+            android:autoLink="none"
             android:textColorHint="@color/black"
             app:layout_constraintTop_toTopOf="@id/linear"
             app:layout_constraintEnd_toEndOf="@id/linear"
