@@ -6,6 +6,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var binding: ActivityMainBinding
+    private val viewModel : MainActivityViewModel by viewModels()
 
     private val pushPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -56,6 +58,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpVisibilityOfBottomBar() {
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
+
+            if (destination.id == R.id.splashFragment){
+                if (true==viewModel.isFirstTimeSplash.value){
+                    viewModel.isFirstTimeSplash.value=false
+                }else {
+                    onBackPressed()
+                }
+
+            }
+
             when (destination.id) {
                 R.id.homeFragment, R.id.notificationsFragment, R.id.moreFragment ->
                     bottomNavigationView.visibility = View.VISIBLE
