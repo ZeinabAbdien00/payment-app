@@ -1,38 +1,33 @@
 package com.example.paymentapp.peresentation.splash
 
+import android.animation.Animator
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.paymentapp.R
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.paymentapp.databinding.FragmentSplashBinding
 
 
-class SplashFragment : Fragment() {
 
+class SplashFragment : Fragment(R.layout.fragment_splash) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_splash, container, false)
-    }
+    private lateinit var binding: FragmentSplashBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //bassam -> remove this and right your logic
-        lifecycleScope.launch {
-            delay(1000)
-            findNavController().apply {
-                navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
-            }
 
-        }
+        binding = FragmentSplashBinding.bind(view)
+
+        binding.animationView.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(p0: Animator) {}
+            override fun onAnimationCancel(p0: Animator) {}
+            override fun onAnimationRepeat(p0: Animator) {}
+            override fun onAnimationEnd(p0: Animator) {
+                findNavController().apply { navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment()) } }
+        })
     }
 
 }
+
+
