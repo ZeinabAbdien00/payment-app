@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <!-- Customize your theme here. -->
+        <item name="fontFamily">@font/arapey</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:navigationBarColor">@color/white</item>
@@ -20,4 +21,17 @@
         <item name="textAllCaps">false</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
+
+<!--    <style name="AppTheme" parent="AppBaseTheme">-->
+<!--        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>-->
+<!--        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>-->
+<!--    </style>-->
+
+<!--    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">-->
+<!--        <item name="android:fontFamily">sans-serif-light</item>-->
+<!--    </style>-->
+
+<!--    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">-->
+<!--        <item name="android:fontFamily">sans-serif-light</item>-->
+<!--    </style>-->
 </resources>
