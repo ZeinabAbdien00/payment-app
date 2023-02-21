@@ -1,5 +1,7 @@
 package com.example.paymentapp.peresentation.addClient
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +20,25 @@ class AddClientDialog : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_client_dialog, container, false)
-    }
+
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        requireActivity().setFinishOnTouchOutside(false)
+        binding= FragmentAddClientDialogBinding.inflate(layoutInflater)
+        return binding.root
+
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val metrics = resources.displayMetrics
+        val width = metrics.widthPixels
+        val height = metrics.heightPixels
+
+
+        //this.dialog!!.window!!.setLayout((width) , (4 * height) / 6)
+        this.dialog!!.window!!.setLayout(((9*width)/10) , (9*height)/10 )
+
     }
 
 
