@@ -18,6 +18,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentSplashBinding.bind(view)
+
         binding.animationView.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator) {}
             override fun onAnimationCancel(p0: Animator) {}
