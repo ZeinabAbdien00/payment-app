@@ -23,6 +23,16 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="AlertDialogCustom" parent="Theme.MaterialComponents.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/main_green</item>
+        <item name="colorPrimary">@color/main_green</item>
+        <item name="colorSecondary">@color/main_green</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:background">#2d2d2d</item>
+        <item name="android:textColor">@color/main_green</item>
+    </style>
+
 <!--    <style name="AppTheme" parent="AppBaseTheme">-->
 <!--        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>-->
 <!--        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>-->

@@ -34,4 +34,5 @@ data class BaseModel (
     var numberOfComingInstallments : Int =0
     // depending on how many moths is he going to pay in
     var endDate : String=""
+
 }

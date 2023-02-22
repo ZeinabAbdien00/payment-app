@@ -27,6 +27,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Switch
+            android:id="@+id/usePasswordSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -135,6 +136,7 @@
         app:layout_constraintTop_toBottomOf="@id/reset_password_linear">
 
         <Switch
+            android:id="@+id/notificationsSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
