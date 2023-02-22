@@ -32,10 +32,18 @@
         <action
             android:id="@+id/action_homeFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addClientDialog"
+            app:destination="@id/addClientDialog" />
     </fragment>
     <fragment
         android:id="@+id/moreFragment"
         android:name="com.example.paymentapp.peresentation.more.MoreFragment"
         android:label="fragment_more"
         tools:layout="@layout/fragment_more" />
+    <dialog
+        android:id="@+id/addClientDialog"
+        android:name="com.example.paymentapp.peresentation.addClient.AddClientDialog"
+        android:label="fragment_add_client_dialog"
+        tools:layout="@layout/fragment_add_client_dialog" />
 </navigation>

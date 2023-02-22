@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowLightStatusBar">true</item>
         <item name="fontFamily">@font/arapey</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:windowBackground">@color/white</item>

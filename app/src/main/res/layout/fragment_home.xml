@@ -25,11 +25,15 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:hint="@string/search"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/edit_text_shape"
             android:autoLink="none"
+            android:layout_gravity="center"
             android:textColorHint="@color/gray"
             app:layout_constraintTop_toTopOf="@id/linear"
             app:layout_constraintEnd_toEndOf="@id/linear"
-            app:layout_constraintBottom_toBottomOf="@id/linear"/>
+            app:layout_constraintBottom_toBottomOf="@id/linear"
+            android:autofillHints="" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="wrap_content"
@@ -61,6 +65,19 @@
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="@id/linear"
         app:layout_constraintTop_toBottomOf="@id/linear"/>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:tintMode="@color/dark_green"
+        android:background="@color/white"
+        android:backgroundTint="@color/dark_green"
+        android:src="@drawable/ic_add_client"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_recycler_view"
