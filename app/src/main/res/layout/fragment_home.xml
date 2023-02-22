@@ -74,7 +74,7 @@
         android:layout_margin="25dp"
         android:tintMode="@color/dark_green"
         android:background="@color/white"
-        android:backgroundTint="@color/light_green_500"
+        android:backgroundTint="@color/dark_green"
         android:src="@drawable/ic_add_client"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
