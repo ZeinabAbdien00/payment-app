@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import com.example.paymentapp.R
 import com.example.paymentapp.databinding.FragmentAddClientDialogBinding
 
@@ -38,6 +39,15 @@ class AddClientDialog : DialogFragment() {
 
         //this.dialog!!.window!!.setLayout((width) , (4 * height) / 6)
         this.dialog!!.window!!.setLayout(((9*width)/10) , (9*height)/10 )
+
+        setOnClickListeners()
+
+    }
+    private fun setOnClickListeners(){
+        binding.cancelBtn.setOnClickListener{
+            findNavController().navigateUp()
+        }
+
 
     }
 
