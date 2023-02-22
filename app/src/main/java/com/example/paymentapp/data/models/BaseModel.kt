@@ -13,7 +13,7 @@ data class BaseModel (
     var monthlyDayOfPaying : String,
     var startDate : String,
         ){
-    @PrimaryKey(autoGenerate = true) val id :Int =0
+    @PrimaryKey(autoGenerate = true) var id :Int =0
     // add to this list when person starts to pay the first month
     var historyList : String = ""
     // let user add it later if he wants
@@ -34,4 +34,5 @@ data class BaseModel (
     var numberOfComingInstallments : Int =0
     // depending on how many moths is he going to pay in
     var endDate : String=""
+
 }
