@@ -1,4 +1,4 @@
-package com.example.paymentapp.peresentation.splash
+package com.example.paymentapp.peresentation.password
 
 import androidx.lifecycle.ViewModel
 import com.example.paymentapp.data.dataStore.DataStoreImpl
@@ -6,10 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(): ViewModel() {
+class PasswordViewModel @Inject constructor(): ViewModel() {
     @Inject
     lateinit var dataStore: DataStoreImpl
 
-    suspend fun isUsePassword():Boolean = dataStore.getUsePassword()
+
+    suspend fun getPassword():String = dataStore.getPassword()
+
 
 }

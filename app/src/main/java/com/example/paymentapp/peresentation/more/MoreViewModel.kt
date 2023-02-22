@@ -2,9 +2,12 @@ package com.example.paymentapp.peresentation.more
 
 import androidx.lifecycle.ViewModel
 import com.example.paymentapp.data.dataStore.DataStoreImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-class MoreViewModel : ViewModel() {
+@HiltViewModel
+class MoreViewModel @Inject constructor(): ViewModel() {
+
     @Inject
     lateinit var dataStore: DataStoreImpl
 
