@@ -33,6 +33,7 @@
             android:layout_marginStart="5dp"
             android:thumb="@drawable/swich_thumb"
             android:track="@drawable/swich_track"
+            android:clickable="false"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <View
