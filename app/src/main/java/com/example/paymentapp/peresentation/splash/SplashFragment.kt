@@ -4,15 +4,18 @@ import android.animation.Animator
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.paymentapp.R
 import com.example.paymentapp.databinding.FragmentSplashBinding
-
+import kotlinx.coroutines.launch
 
 
 class SplashFragment : Fragment(R.layout.fragment_splash) {
 
     private lateinit var binding: FragmentSplashBinding
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -24,7 +27,14 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
             override fun onAnimationCancel(p0: Animator) {}
             override fun onAnimationRepeat(p0: Animator) {}
             override fun onAnimationEnd(p0: Animator) {
-                findNavController().apply { navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment()) } }
+                lifecycleScope.launch {
+                    if (!viewModel.isUsePassword()) {
+                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+                    } else {
+                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToPasswordFragment())
+                    }
+                }
+            }
         })
     }
 
