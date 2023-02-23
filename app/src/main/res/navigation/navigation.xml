@@ -11,6 +11,8 @@
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/navigation"
             android:id="@+id/action_splashFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
@@ -59,6 +61,8 @@
         android:label="fragment_password"
         tools:layout="@layout/fragment_password" >
         <action
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/navigation"
             android:id="@+id/action_passwordFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
