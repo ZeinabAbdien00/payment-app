@@ -60,14 +60,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpVisibilityOfBottomBar() {
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
-
-            if (destination.id == R.id.splashFragment){
-                if (true==viewModel.isFirstTimeSplash.value){
-                    viewModel.isFirstTimeSplash.value=false
-                }else {
-                    onBackPressed()
-                }
-
+            if (destination.id == R.id.passwordFragment){
+                navHostFragment.navController.graph.setStartDestination(R.id.homeFragment)
             }
 
             when (destination.id) {

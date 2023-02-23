@@ -10,5 +10,9 @@
     <string name="home">الرئيسية</string>
     <string name="notifications">الاشعارات</string>
     <string name="more">المزيد</string>
+    <string name="Enter_old_password">ادخل كلمة المرور القديمة</string>
+    <string name="Enter_new_paswword">ادخل كلمة المرور الجديدة</string>
+    <string name="new_password">ادخل كلمة المرور الجديدة</string>
+    <string name="save">حفظ</string>
 
 </resources>

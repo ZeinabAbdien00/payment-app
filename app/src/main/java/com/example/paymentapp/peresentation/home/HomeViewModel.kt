@@ -1,4 +1,8 @@
 package com.example.paymentapp.peresentation.home
 
-class HomeViewModel {
+import androidx.lifecycle.ViewModel
+
+
+class HomeViewModel  : ViewModel() {
+
 }
