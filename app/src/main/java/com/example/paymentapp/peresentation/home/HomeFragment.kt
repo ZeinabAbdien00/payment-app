@@ -16,9 +16,9 @@ import com.example.paymentapp.peresentation.RecyclerView.HomeAdapter
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var adapter: HomeAdapter
-    private lateinit var list:ArrayList<BaseModel>
+    private lateinit var list: ArrayList<BaseModel>
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel:HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -32,15 +32,35 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
+        setupOnclicks()
+    }
 
+    private fun setupOnclicks() {
+        binding.addClient.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
+        }
+    }
+
+    private fun setupRecyclerView() {
         list = ArrayList()
+        list.add(createFakeData())
+        list.add(createFakeData())
+        list.add(createFakeData())
         adapter = HomeAdapter(list)
         binding.homeRecyclerView.adapter = adapter
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+    }
 
-
-        binding.addClient.setOnClickListener{
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
-        }
+    fun createFakeData():BaseModel{
+        return BaseModel(
+            "asdfa",
+            "sdsgsdg",
+            "sdgsdg",
+            0.0f,
+            0,
+            "daf",
+            "adfa"
+        )
     }
 }
