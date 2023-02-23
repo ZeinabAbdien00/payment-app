@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.paymentapp.R
+import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.FragmentHomeBinding
+import com.example.paymentapp.peresentation.RecyclerView.HomeAdapter
 
-class HomeFragment : Fragment() {
-
+class HomeFragment : Fragment(R.layout.fragment_home) {
+    private lateinit var adapter: HomeAdapter
+    private lateinit var list:ArrayList<BaseModel>
     private lateinit var binding: FragmentHomeBinding
 
 
@@ -25,6 +29,14 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        list = ArrayList()
+        adapter = HomeAdapter(list)
+        binding.homeRecyclerView.adapter = adapter
+        binding.homeRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+
+
         binding.addClient.setOnClickListener{
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
         }
