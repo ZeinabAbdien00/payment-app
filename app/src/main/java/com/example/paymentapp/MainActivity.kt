@@ -67,7 +67,14 @@ class MainActivity : AppCompatActivity() {
                 }else {
                     onBackPressed()
                 }
+            }
 
+            if (destination.id == R.id.resetPasswordDialog){
+                if (true==viewModel.isFirstTimePassword.value){
+                    viewModel.isFirstTimePassword.value=false
+                }else {
+                    onBackPressed()
+                }
             }
 
             when (destination.id) {
