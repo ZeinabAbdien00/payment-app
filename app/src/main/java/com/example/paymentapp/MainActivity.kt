@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            if (destination.id == R.id.resetPasswordDialog){
+            if (destination.id == R.id.passwordFragment){
                 if (true==viewModel.isFirstTimePassword.value){
                     viewModel.isFirstTimePassword.value=false
                 }else {

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.paymentapp.data.dataStore.DataStoreImpl
 import com.example.paymentapp.databinding.FragmentResetPasswordDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,13 +24,13 @@ class ResetPasswordDialog : DialogFragment() {
 
     private lateinit var binding: FragmentResetPasswordDialogBinding
     private val args: ResetPasswordDialogArgs by navArgs()
-    lateinit var oldPassword: String
+    private lateinit var oldPassword: String
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentResetPasswordDialogBinding.inflate(layoutInflater)
         oldPassword = args.oldPassword
         return binding.root
@@ -43,16 +44,21 @@ class ResetPasswordDialog : DialogFragment() {
 
     private fun setOnClicks() {
         binding.addBtn.setOnClickListener {
-            if (binding.oldPassword.getText().toString() == oldPassword) {
-                lifecycleScope.launch {
+            if (binding.oldPassword.getText().toString() == oldPassword && binding.newPassword.getText().toString()!="") {
+                lifecycleScope.launch(Dispatchers.Main) {
                     dataStoreImpl.setPassword(binding.newPassword.getText().toString())
-                    Toast.makeText(requireContext(), "تم تغيير كلمة المرور بنجاح", Toast.LENGTH_SHORT)
-                        .toString()
+                    Toast.makeText(requireActivity(), "تم تغيير كلمة المرور بنجاح", Toast.LENGTH_SHORT)
+                        .show()
                     findNavController().navigateUp()
                 }
             } else {
+                if (binding.oldPassword.getText().toString() != oldPassword )
                 Toast.makeText(requireContext(), "كلمة المرور القديمة خاطئة", Toast.LENGTH_SHORT)
-                    .toString()
+                    .show()
+                else
+                    Toast.makeText(requireContext(), "ادخل كلمة مرور جديدة", Toast.LENGTH_SHORT)
+                        .show()
+
             }
         }
 
