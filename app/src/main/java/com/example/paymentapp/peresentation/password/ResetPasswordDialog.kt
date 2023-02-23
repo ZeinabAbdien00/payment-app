@@ -4,12 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.paymentapp.data.dataStore.DataStoreImpl
 import com.example.paymentapp.databinding.FragmentResetPasswordDialogBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ResetPasswordDialog : DialogFragment() {
 
+    @Inject
+    lateinit var dataStoreImpl: DataStoreImpl
+
     private lateinit var binding: FragmentResetPasswordDialogBinding
+    private val args: ResetPasswordDialogArgs by navArgs()
+    lateinit var oldPassword: String
 
 
     override fun onCreateView(
@@ -17,19 +31,41 @@ class ResetPasswordDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentResetPasswordDialogBinding.inflate(layoutInflater)
+        oldPassword = args.oldPassword
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setDimentions()
+        setOnClicks()
+    }
+
+    private fun setOnClicks() {
+        binding.addBtn.setOnClickListener {
+            if (binding.oldPassword.getText().toString() == oldPassword) {
+                lifecycleScope.launch {
+                    dataStoreImpl.setPassword(binding.newPassword.getText().toString())
+                    Toast.makeText(requireContext(), "تم تغيير كلمة المرور بنجاح", Toast.LENGTH_SHORT)
+                        .toString()
+                    findNavController().navigateUp()
+                }
+            } else {
+                Toast.makeText(requireContext(), "كلمة المرور القديمة خاطئة", Toast.LENGTH_SHORT)
+                    .toString()
+            }
+        }
+
+        binding.cancelBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun setDimentions() {
         val metrics = resources.displayMetrics
         val width = metrics.widthPixels
         val height = metrics.heightPixels
-        this.dialog!!.window!!.setLayout(((9*width)/10) , (7*height)/10 )
+        this.dialog!!.window!!.setLayout(((9 * width) / 10), (7 * height) / 10)
     }
 
 }

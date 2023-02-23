@@ -43,7 +43,11 @@
         android:id="@+id/moreFragment"
         android:name="com.example.paymentapp.peresentation.more.MoreFragment"
         android:label="fragment_more"
-        tools:layout="@layout/fragment_more" />
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_moreFragment_to_resetPasswordDialog"
+            app:destination="@id/resetPasswordDialog" />
+    </fragment>
     <dialog
         android:id="@+id/addClientDialog"
         android:name="com.example.paymentapp.peresentation.addClient.AddClientDialog"
@@ -58,4 +62,13 @@
             android:id="@+id/action_passwordFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/resetPasswordDialog"
+        android:name="com.example.paymentapp.peresentation.password.ResetPasswordDialog"
+        android:label="fragment_reset_password_dialog"
+        tools:layout="@layout/fragment_reset_password_dialog" >
+        <argument
+            android:name="oldPassword"
+            app:argType="string" />
+    </dialog>
 </navigation>
