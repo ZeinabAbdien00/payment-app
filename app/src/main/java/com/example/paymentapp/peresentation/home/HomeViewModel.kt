@@ -47,7 +47,7 @@ class HomeViewModel : ViewModel() {
         repository.delete(model)
     }
 
-    suspend fun getAllFromRoom(): ArrayList<BaseModel> = withContext(Dispatchers.IO) {
+    private suspend fun getAllFromRoom(): ArrayList<BaseModel> = withContext(Dispatchers.IO) {
         repository.getAll() as ArrayList<BaseModel>
     }
 

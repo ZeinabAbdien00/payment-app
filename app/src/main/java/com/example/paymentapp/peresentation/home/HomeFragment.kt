@@ -9,6 +9,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.paymentapp.R
 import com.example.paymentapp.data.models.BaseModel
@@ -74,12 +75,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupOnClick() {
         binding.addClient.setOnClickListener {
-            // findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
+             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
             //todo: add this logic to add Fragment
-            lifecycleScope.launch {
-                viewModel.insertToRoom(viewModel.createFakeData("mohamed "))
-                adapter.notifyItemInserted(viewModel.dataList.value!!.size - 1)
-            }
+//            lifecycleScope.launch {
+//                viewModel.insertToRoom(viewModel.createFakeData("mohamed "))
+//            }
         }
 
         //search feature

@@ -1,403 +1,408 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
     android:background="@drawable/setting_corners"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".peresentation.addClient.AddClientDialog">
 
     <LinearLayout
-        android:id="@+id/installment_id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/setting_corners"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="20dp">
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_margin="10dp"
-            android:text="3500"
-            android:layout_gravity="center" android:textColor="@color/dark_green"
-            android:textSize="18sp"/>
-
-        <TextView
-            android:layout_width="85dp"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textSize="20sp"
-            android:textColor="@color/dark_green"
-            android:layout_margin="10dp"
-            android:text="السعر بعد الفايدة"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-
-        <TextView
-            android:id="@+id/installment_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="500"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:layout_margin="10dp"
-            android:textColor="@color/dark_green"
-            android:textSize="18sp"/>
-
-
-
-        <TextView
-            android:id="@+id/installment"
-            android:layout_width="65dp"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_margin="10dp"
-            android:text="القسط الشهري "
-            android:textSize="20sp"
-            android:textColor="@color/dark_green" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/name_linear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        app:layout_constraintStart_toStartOf="@id/installment_id"
-        app:layout_constraintEnd_toEndOf="@id/installment_id"
-        app:layout_constraintTop_toBottomOf="@id/installment_id">
-
-        <EditText
-            android:id="@+id/name_edit_text"
-            android:background="@drawable/edit_text_shape"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="ادخل الاسم"
-            android:textColorHint="@color/light_gray"
-            android:layout_margin="10dp"
-            />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textSize="20sp"
-            android:textColor="@color/dark_green"
-            android:layout_margin="10dp"
-            android:text="الاسم"/>
-    </LinearLayout>
-
-    <View
-        app:layout_constraintStart_toStartOf="@id/name_linear"
-        app:layout_constraintEnd_toEndOf="@id/name_linear"
-        app:layout_constraintTop_toBottomOf="@id/name_linear"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:background="@color/dark_green"
-        android:layout_weight="5" />
-
-
-
-    <LinearLayout
-        android:id="@+id/number_linear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        app:layout_constraintStart_toStartOf="@id/name_linear"
-        app:layout_constraintEnd_toEndOf="@id/name_linear"
-        app:layout_constraintTop_toBottomOf="@id/name_linear">
-
-        <EditText
-            android:id="@+id/number_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="ادخل الرقم"
-            android:textColorHint="@color/light_gray"
-            android:background="@drawable/edit_text_shape"
-            android:layout_margin="10dp"
-            />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textSize="20sp"
-            android:textColor="@color/dark_green"
-            android:layout_margin="10dp"
-            android:text="الرقم"/>
-    </LinearLayout>
-
-    <View
-        app:layout_constraintStart_toStartOf="@id/name_linear"
-        app:layout_constraintEnd_toEndOf="@id/name_linear"
-        app:layout_constraintTop_toBottomOf="@id/number_linear"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:background="@color/dark_green"
-        android:layout_weight="1" />
-
-    <LinearLayout
-        android:id="@+id/price_linear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        app:layout_constraintStart_toStartOf="@id/number_linear"
-        app:layout_constraintEnd_toEndOf="@id/number_linear"
-        app:layout_constraintTop_toBottomOf="@id/number_linear">
-
-        <EditText
-            android:id="@+id/price_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="ادخل السعر"
-            android:textColorHint="@color/light_gray"
-            android:background="@drawable/edit_text_shape"
-            android:layout_margin="10dp"
-            />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textSize="20sp"
-            android:textColor="@color/dark_green"
-            android:layout_margin="10dp"
-            android:text="السعر"/>
-    </LinearLayout>
-
-    <View
-        app:layout_constraintStart_toStartOf="@id/name_linear"
-        app:layout_constraintEnd_toEndOf="@id/name_linear"
-        app:layout_constraintTop_toBottomOf="@id/price_linear"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:background="@color/dark_green"
-        android:layout_weight="1" />
-
-    <LinearLayout
-        android:id="@+id/Benefit_linear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        app:layout_constraintStart_toStartOf="@id/price_linear"
-        app:layout_constraintEnd_toEndOf="@id/price_linear"
-        app:layout_constraintTop_toBottomOf="@id/price_linear">
-
-        <EditText
-            android:id="@+id/Benefit_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="ادخل قيمة الفائدة"
-            android:textColorHint="@color/light_gray"
-            android:background="@drawable/edit_text_shape"
-            android:layout_margin="10dp"
-            />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textSize="20sp"
-            android:textColor="@color/dark_green"
-            android:layout_margin="10dp"
-            android:text="قيمة الفائدة"/>
-    </LinearLayout>
-
-    <View
-        app:layout_constraintStart_toStartOf="@id/name_linear"
-        app:layout_constraintEnd_toEndOf="@id/name_linear"
-        app:layout_constraintTop_toBottomOf="@id/Benefit_linear"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:background="@color/dark_green"
-        android:layout_weight="1" />
-
-    <LinearLayout
-        android:id="@+id/month_linear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        app:layout_constraintStart_toStartOf="@id/Benefit_linear"
-        app:layout_constraintEnd_toEndOf="@id/Benefit_linear"
-        app:layout_constraintTop_toBottomOf="@id/Benefit_linear">
-
-        <EditText
-            android:hint="ادخل عدد الشهور"
-            android:textColorHint="@color/light_gray"
-            android:id="@+id/month_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/edit_text_shape"
-            android:layout_margin="10dp"
-            />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textSize="20sp"
-            android:textColor="@color/dark_green"
-            android:layout_margin="10dp"
-            android:text="عدد الشهور"/>
-    </LinearLayout>
-
-    <View
-        app:layout_constraintStart_toStartOf="@id/name_linear"
-        app:layout_constraintEnd_toEndOf="@id/name_linear"
-        app:layout_constraintTop_toBottomOf="@id/month_linear"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:background="@color/dark_green"
-        android:layout_weight="1" />
-
-    <LinearLayout
-        android:id="@+id/start_linear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        app:layout_constraintStart_toStartOf="@id/month_linear"
-        app:layout_constraintEnd_toEndOf="@id/month_linear"
-        app:layout_constraintTop_toBottomOf="@id/month_linear">
-
-        <EditText
-            android:id="@+id/start_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="ادخل تاريخ البداية"
-            android:textColorHint="@color/light_gray"
-            android:background="@drawable/edit_text_shape"
-            android:layout_margin="10dp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textSize="20sp"
-            android:textColor="@color/dark_green"
-            android:layout_margin="10dp"
-            android:text="تاريخ البداية"/>
-    </LinearLayout>
-
-    <View
-        app:layout_constraintStart_toStartOf="@id/name_linear"
-        app:layout_constraintEnd_toEndOf="@id/name_linear"
-        app:layout_constraintTop_toBottomOf="@id/start_linear"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:background="@color/dark_green"
-        android:layout_weight="1" />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="20dp"
-        >
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cancel_btn"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/installment_id"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="تجاهل"
-            android:background="@drawable/edit_text_shape"
-            android:backgroundTint="@color/gray"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_weight="1"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/add_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="20dp"
-            android:gravity="center"
-            android:padding="12dp"
-            android:background="@drawable/edit_text_shape"
-            android:backgroundTint="@color/dark_green"
-            android:text="اضافة"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:background="@drawable/setting_corners"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:textColor="@color/dark_green"
+                android:textSize="16sp"
+                tools:text="3500"
+                android:text="3500"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:text="السعر بعد الفايدة"
+                android:textColor="@color/dark_green"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+
+            <TextView
+                android:id="@+id/installment_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@color/dark_green"
+                android:textSize="16sp"
+                tools:text="500"
+                android:text="500"
+                />
+
+
+            <TextView
+                android:id="@+id/installment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:text="القسط الشهري "
+                android:textColor="@color/dark_green"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/name_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/installment_id"
+            app:layout_constraintStart_toStartOf="@id/installment_id"
+            app:layout_constraintTop_toBottomOf="@id/installment_id">
+
+            <EditText
+                android:id="@+id/name_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_shape"
+                android:hint="ادخل الاسم"
+                android:textColorHint="@color/light_gray"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="5dp"
+                android:text="الاسم"
+                android:textColor="@color/dark_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="5"
+            android:background="@color/dark_green"
+            app:layout_constraintEnd_toEndOf="@id/name_linear"
+            app:layout_constraintStart_toStartOf="@id/name_linear"
+            app:layout_constraintTop_toBottomOf="@id/name_linear" />
+
+
+        <LinearLayout
+            android:id="@+id/number_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/name_linear"
+            app:layout_constraintStart_toStartOf="@id/name_linear"
+            app:layout_constraintTop_toBottomOf="@id/name_linear">
+
+            <EditText
+                android:id="@+id/number_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_shape"
+                android:hint="ادخل الرقم"
+                android:textColorHint="@color/light_gray"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="5dp"
+                android:text="الرقم"
+                android:textColor="@color/dark_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="@color/dark_green"
+            app:layout_constraintEnd_toEndOf="@id/name_linear"
+            app:layout_constraintStart_toStartOf="@id/name_linear"
+            app:layout_constraintTop_toBottomOf="@id/number_linear" />
+
+        <LinearLayout
+            android:id="@+id/price_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/number_linear"
+            app:layout_constraintStart_toStartOf="@id/number_linear"
+            app:layout_constraintTop_toBottomOf="@id/number_linear">
+
+            <EditText
+                android:id="@+id/price_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_shape"
+                android:hint="ادخل السعر"
+                android:textColorHint="@color/light_gray"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="5dp"
+                android:text="السعر"
+                android:textColor="@color/dark_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="@color/dark_green"
+            app:layout_constraintEnd_toEndOf="@id/name_linear"
+            app:layout_constraintStart_toStartOf="@id/name_linear"
+            app:layout_constraintTop_toBottomOf="@id/price_linear" />
+
+        <LinearLayout
+            android:id="@+id/Benefit_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/price_linear"
+            app:layout_constraintStart_toStartOf="@id/price_linear"
+            app:layout_constraintTop_toBottomOf="@id/price_linear">
+
+            <EditText
+                android:id="@+id/Benefit_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+
+                android:background="@drawable/edit_text_shape"
+                android:hint="ادخل قيمة الفائدة"
+                android:textColorHint="@color/light_gray"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="5dp"
+                android:text="قيمة الفائدة"
+                android:textColor="@color/dark_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="@color/dark_green"
+            app:layout_constraintEnd_toEndOf="@id/name_linear"
+            app:layout_constraintStart_toStartOf="@id/name_linear"
+            app:layout_constraintTop_toBottomOf="@id/Benefit_linear" />
+
+        <LinearLayout
+            android:id="@+id/month_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/Benefit_linear"
+            app:layout_constraintStart_toStartOf="@id/Benefit_linear"
+            app:layout_constraintTop_toBottomOf="@id/Benefit_linear">
+
+            <EditText
+                android:id="@+id/month_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_shape"
+                android:hint="ادخل عدد الشهور"
+                android:textColorHint="@color/light_gray"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="5dp"
+                android:text="عدد الشهور"
+                android:textColor="@color/dark_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="@color/dark_green"
+            app:layout_constraintEnd_toEndOf="@id/name_linear"
+            app:layout_constraintStart_toStartOf="@id/name_linear"
+            app:layout_constraintTop_toBottomOf="@id/month_linear" />
+
+        <LinearLayout
+            android:id="@+id/start_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/month_linear"
+            app:layout_constraintStart_toStartOf="@id/month_linear"
+            app:layout_constraintTop_toBottomOf="@id/month_linear">
+
+            <EditText
+                android:id="@+id/start_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_shape"
+                android:hint="ادخل تاريخ البداية"
+                android:textColorHint="@color/light_gray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="5dp"
+                android:text="تاريخ البداية"
+                android:textColor="@color/dark_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/dark_green"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cancel_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_shape"
+                android:backgroundTint="@color/gray"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="تجاهل"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_shape"
+                android:backgroundTint="@color/dark_green"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="اضافة"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
