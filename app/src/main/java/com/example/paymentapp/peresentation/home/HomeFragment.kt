@@ -7,17 +7,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.paymentapp.R
-import com.example.paymentapp.data.models.BaseModel
-
 import com.example.paymentapp.databinding.FragmentHomeBinding
 import com.example.paymentapp.peresentation.RecyclerView.HomeAdapter
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var adapter: HomeAdapter
-    private lateinit var list: ArrayList<BaseModel>
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
 
@@ -32,41 +30,41 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupRecyclerView()
+        setObservers()
         setupOnClick()
+      //  setupRecyclerView()
+    }
+
+    private fun setObservers() {
+        viewModel.dataList.observe(viewLifecycleOwner) {
+            try {
+                setupRecyclerView()
+                adapter.notifyDataSetChanged()
+            } catch (_: Exception) {
+            }
+        }
     }
 
     private fun setupOnClick() {
         binding.addClient.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
+            // findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
+            viewModel.dataList.value!!.add(viewModel.createFakeData("hhh"))
+            lifecycleScope.launch {
+                viewModel.insertToRoom(viewModel.createFakeData("hhh"))
+            }
         }
     }
 
     private fun setupRecyclerView() {
-        list = ArrayList()
-        list.add(createFakeData())
-        list.add(createFakeData())
-        list.add(createFakeData())
-        adapter = HomeAdapter(list)
+        adapter = HomeAdapter(viewModel.dataList.value!!)
         binding.homeRecyclerView.adapter = adapter
         adapter.setOnItemClickListener(object : HomeAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                Toast.makeText(requireActivity()," $position ",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), " $position ", Toast.LENGTH_SHORT).show()
             }
         })
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
     }
 
-    private fun createFakeData():BaseModel{
-        return BaseModel(
-            "Ibrahim",
-            "01045687563",
-            "2500",
-            0.0f,
-            0,
-            "12/3/2023",
-            "12/1/2023"
-        )
-    }
+
 }
