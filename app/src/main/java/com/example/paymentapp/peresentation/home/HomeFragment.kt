@@ -32,25 +32,26 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
         setupOnClick()
-      //  setupRecyclerView()
     }
 
     private fun setObservers() {
         viewModel.dataList.observe(viewLifecycleOwner) {
             try {
+            if (viewModel.firstData.value == true) {
                 setupRecyclerView()
-                adapter.notifyDataSetChanged()
-            } catch (_: Exception) {
+                viewModel.setFirstData(false)
+                return@observe
             }
+            }catch (_:Exception){}
         }
     }
 
     private fun setupOnClick() {
         binding.addClient.setOnClickListener {
             // findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
-            viewModel.dataList.value!!.add(viewModel.createFakeData("hhh"))
             lifecycleScope.launch {
                 viewModel.insertToRoom(viewModel.createFakeData("hhh"))
+                adapter.notifyItemInserted(viewModel.dataList.value!!.size-1)
             }
         }
     }

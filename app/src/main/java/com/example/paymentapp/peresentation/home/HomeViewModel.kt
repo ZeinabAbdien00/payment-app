@@ -18,6 +18,10 @@ class HomeViewModel : ViewModel() {
     private var _dataList: MutableLiveData<ArrayList<BaseModel>?> = MutableLiveData()
     val dataList: LiveData<ArrayList<BaseModel>?> = _dataList
 
+    private var _firstData: MutableLiveData<Boolean> = MutableLiveData(true)
+    val firstData: LiveData<Boolean> = _firstData
+
+
     private val repository: BaseRepository
 
 
@@ -29,8 +33,11 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    suspend fun insertToRoom(model: BaseModel) = withContext(Dispatchers.IO) {
-        repository.insert(model)
+    suspend fun insertToRoom(model: BaseModel) {
+        _dataList.value!!.add(model)
+        withContext(Dispatchers.IO) {
+            repository.insert(model)
+        }
     }
 
     suspend fun deleteFromRoom(model: BaseModel) = withContext(Dispatchers.IO) {
@@ -51,5 +58,9 @@ class HomeViewModel : ViewModel() {
             "12/3/2023",
             "12/1/2023"
         )
+    }
+
+    fun setFirstData(boolean: Boolean){
+        _firstData.value=boolean
     }
 }
