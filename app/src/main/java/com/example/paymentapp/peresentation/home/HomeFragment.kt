@@ -9,13 +9,20 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.paymentapp.R
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.FragmentHomeBinding
+import com.example.paymentapp.globalUse.SwipeToDeleteCallback
 import com.example.paymentapp.peresentation.RecyclerView.HomeAdapter
 import com.example.paymentapp.peresentation.addClient.AddClientDialog
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var adapter: HomeAdapter
@@ -38,7 +45,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setSearchAdapter()
         setObservers()
         setupOnClick()
+        setupSwipeToDelete()
     }
+
 
     private fun setSearchAdapter() {
         searchArrayList = ArrayList()
@@ -73,21 +82,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupOnClick() {
         binding.addClient.setOnClickListener {
-           //  findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
+            //  findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
             AddClientDialog(viewModel).show(
-                childFragmentManager, null)
+                childFragmentManager, null
+            )
         }
 
         //search feature
         binding.search.doAfterTextChanged {
             val text = it.toString()
             if (text.isNotEmpty()) {
+                viewModel.setIsSearch(true)
                 searchArrayList.clear()
                 searchArrayList.addAll(viewModel.dataList.value!!
                     .filter { it.name.contains(text) } as ArrayList<BaseModel>
                 )
                 binding.homeRecyclerView.adapter = secondAdapter
             } else {//if serach bar is empty restore all data
+                viewModel.setIsSearch(false)
                 lifecycleScope.launch {
                     binding.homeRecyclerView.adapter = adapter
                 }
@@ -106,5 +118,46 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
     }
 
+    private fun setupSwipeToDelete() {
+        val swipeToDeleteCallback: SwipeToDeleteCallback =
+            object : SwipeToDeleteCallback(requireContext()) {
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
+                    removeAfterSwiped(viewHolder)
+                }
+            }
+
+        val itemTouchhelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchhelper.attachToRecyclerView(binding.homeRecyclerView)
+    }
+
+    private fun removeAfterSwiped(viewHolder: RecyclerView.ViewHolder) {
+        lifecycleScope.launch() {
+            val position = viewHolder.adapterPosition
+            if (viewModel.isSearch.value == false) {
+                viewModel.removeItemOf(position)
+            } else {
+                removePositionFromSearch(position)
+            }
+            withContext(Dispatchers.Main) {
+                binding.homeRecyclerView.adapter!!.notifyItemRemoved(position)
+                val snackbar = Snackbar
+                    .make(
+                        binding.homeParent,
+                        "تم الحذف",
+                        Snackbar.LENGTH_LONG
+                    )
+                snackbar.show()
+            }
+        }
+    }
+
+    private fun removePositionFromSearch(position: Int) {
+        lifecycleScope.launch {
+            val item = searchArrayList.get(position)
+            searchArrayList.remove(item)
+            viewModel.removeItemFromDataList(item)
+            viewModel.deleteFromRoom(item)
+        }
+    }
 
 }

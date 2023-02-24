@@ -24,6 +24,9 @@ class HomeViewModel : ViewModel() {
     private var _newItemInserted: MutableLiveData<Boolean> = MutableLiveData(false)
     val newItemInserted: LiveData<Boolean> = _newItemInserted
 
+    private var _isSearch: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isSearch: LiveData<Boolean> = _isSearch
+
 
     private val repository: BaseRepository
 
@@ -71,9 +74,23 @@ class HomeViewModel : ViewModel() {
         _newItemInserted.value = boolean
     }
 
+    fun setIsSearch(boolean:Boolean){
+      _isSearch.value=boolean
+    }
+
     suspend fun resetArrayList() {
-            _dataList.value!!.clear()
-            _dataList.value!!.addAll(getAllFromRoom())
+        _dataList.value!!.clear()
+        _dataList.value!!.addAll(getAllFromRoom())
+    }
+
+    suspend fun removeItemOf(position: Int) {
+        val item =_dataList.value!!.get(position)
+        _dataList.value!!.remove(item)
+            deleteFromRoom(item)
+    }
+
+    fun removeItemFromDataList(item : BaseModel){
+        _dataList.value!!.remove(item)
     }
 
 }
