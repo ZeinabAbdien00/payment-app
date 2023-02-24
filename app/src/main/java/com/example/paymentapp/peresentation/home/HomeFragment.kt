@@ -9,12 +9,12 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.paymentapp.R
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.FragmentHomeBinding
 import com.example.paymentapp.peresentation.RecyclerView.HomeAdapter
+import com.example.paymentapp.peresentation.addClient.AddClientDialog
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -62,10 +62,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         viewModel.newItemInserted.observe(viewLifecycleOwner) {
-            //todo
-            // at add dialog after inserting item remember to set newItemInserted value to true
             if (it) {
-                val position = viewModel.dataList.value!!.size - 1
+                val position = viewModel.dataList.value!!.size
                 adapter.notifyItemInserted(position)
                 binding.homeRecyclerView.smoothScrollToPosition(position)
                 viewModel.setNewItemInserted(false)
@@ -75,11 +73,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupOnClick() {
         binding.addClient.setOnClickListener {
-             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
-            //todo: add this logic to add Fragment
-//            lifecycleScope.launch {
-//                viewModel.insertToRoom(viewModel.createFakeData("mohamed "))
-//            }
+           //  findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
+            AddClientDialog(viewModel).show(
+                childFragmentManager, null)
         }
 
         //search feature

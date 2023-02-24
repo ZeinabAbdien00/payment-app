@@ -7,12 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.findNavController
-import com.example.paymentapp.R
+import androidx.lifecycle.viewModelScope
 import com.example.paymentapp.databinding.FragmentAddClientDialogBinding
+import com.example.paymentapp.peresentation.home.HomeViewModel
+import kotlinx.coroutines.launch
 
 
-class AddClientDialog : DialogFragment() {
+class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
 
     lateinit var binding: FragmentAddClientDialogBinding
 
@@ -36,8 +37,6 @@ class AddClientDialog : DialogFragment() {
         val width = metrics.widthPixels
         val height = metrics.heightPixels
 
-
-        //this.dialog!!.window!!.setLayout((width) , (4 * height) / 6)
         this.dialog!!.window!!.setLayout(((9*width)/10) , (9*height)/10 )
 
         setOnClickListeners()
@@ -45,10 +44,16 @@ class AddClientDialog : DialogFragment() {
     }
     private fun setOnClickListeners(){
         binding.cancelBtn.setOnClickListener{
-            findNavController().navigateUp()
+          this.dismiss()
         }
 
-
+        binding.addBtn.setOnClickListener {
+            viewModel.viewModelScope.launch {
+                viewModel.setNewItemInserted(true)
+                viewModel.insertToRoom(viewModel.createFakeData("namee"))
+                this@AddClientDialog.dismiss()
+            }
+        }
     }
 
 
