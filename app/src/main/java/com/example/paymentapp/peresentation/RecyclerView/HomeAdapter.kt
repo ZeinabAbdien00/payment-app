@@ -2,18 +2,37 @@ package com.example.paymentapp.peresentation.RecyclerView
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.constraintlayout.helper.widget.Carousel.Adapter
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.CardViewBinding
 
 class HomeAdapter(private val list :ArrayList<BaseModel>):RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
-    inner class HomeViewHolder(val binding:CardViewBinding):RecyclerView.ViewHolder(binding.root){
+    private lateinit var listener : OnItemClickListener
+
+    interface OnItemClickListener{
+        fun onItemClick(position: Int)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener)
+    {
+        this.listener = listener
+    }
+
+
+    inner class HomeViewHolder(val binding:CardViewBinding,listener: OnItemClickListener):RecyclerView.ViewHolder(binding.root){
+
+        init {
+            binding.rvItem.setOnClickListener {
+                listener.onItemClick(adapterPosition)
+            }
+        }
 
     }
     override fun onCreateViewHolder(parent:ViewGroup,viewType:Int):HomeViewHolder {
-        return HomeViewHolder(CardViewBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        val binding = CardViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return HomeViewHolder(binding,listener)
     }
 
     override fun onBindViewHolder(holder: HomeViewHolder,position: Int) {
@@ -28,7 +47,4 @@ class HomeAdapter(private val list :ArrayList<BaseModel>):RecyclerView.Adapter<H
         return list.size ?: 0
     }
 
-    class OnAddClickListener(val clickListener: (baseModel: BaseModel, position: Int) -> Unit) {
-        fun onAddBirdClick(baseModel: BaseModel, position: Int) = clickListener(baseModel, position)
-    }
 }

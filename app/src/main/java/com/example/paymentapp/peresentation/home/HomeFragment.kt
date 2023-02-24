@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -33,10 +34,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        setupOnclicks()
+        setupOnClick()
     }
 
-    private fun setupOnclicks() {
+    private fun setupOnClick() {
         binding.addClient.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
         }
@@ -49,18 +50,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         list.add(createFakeData())
         adapter = HomeAdapter(list)
         binding.homeRecyclerView.adapter = adapter
+        adapter.setOnItemClickListener(object : HomeAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                Toast.makeText(requireActivity()," $position ",Toast.LENGTH_SHORT).show()
+            }
+        })
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
     }
 
-    fun createFakeData():BaseModel{
+    private fun createFakeData():BaseModel{
         return BaseModel(
-            "asdfa",
-            "sdsgsdg",
-            "sdgsdg",
+            "Ibrahim",
+            "01045687563",
+            "2500",
             0.0f,
             0,
-            "daf",
-            "adfa"
+            "12/3/2023",
+            "12/1/2023"
         )
     }
 }
