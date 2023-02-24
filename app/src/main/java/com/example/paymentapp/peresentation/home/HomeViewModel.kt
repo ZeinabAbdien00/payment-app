@@ -21,6 +21,9 @@ class HomeViewModel : ViewModel() {
     private var _firstData: MutableLiveData<Boolean> = MutableLiveData(true)
     val firstData: LiveData<Boolean> = _firstData
 
+    private var _newItemInserted: MutableLiveData<Boolean> = MutableLiveData(false)
+    val newItemInserted: LiveData<Boolean> = _newItemInserted
+
 
     private val repository: BaseRepository
 
@@ -62,5 +65,9 @@ class HomeViewModel : ViewModel() {
 
     fun setFirstData(boolean: Boolean){
         _firstData.value=boolean
+    }
+
+    fun setNewItemInserted(boolean: Boolean){
+        _newItemInserted.value=boolean
     }
 }
