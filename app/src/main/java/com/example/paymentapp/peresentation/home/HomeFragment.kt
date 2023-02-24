@@ -5,17 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.paymentapp.R
+import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.FragmentHomeBinding
 import com.example.paymentapp.peresentation.RecyclerView.HomeAdapter
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var adapter: HomeAdapter
+    private lateinit var secondAdapter: HomeAdapter
+    private lateinit var searchArrayList: ArrayList<BaseModel>
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
 
@@ -30,25 +34,37 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setSearchAdapter()
         setObservers()
         setupOnClick()
+    }
+
+    private fun setSearchAdapter() {
+        searchArrayList = ArrayList()
+        secondAdapter = HomeAdapter(searchArrayList)
+        secondAdapter.setOnItemClickListener(object : HomeAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                Toast.makeText(requireActivity(), " $position ", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun setObservers() {
         viewModel.dataList.observe(viewLifecycleOwner) {
             try {
-            if (viewModel.firstData.value == true) {
-                setupRecyclerView()
-                viewModel.setFirstData(false)
+                if (viewModel.firstData.value == true) {
+                    setupRecyclerView()
+                    viewModel.setFirstData(false)
+                }
+            } catch (_: Exception) {
             }
-            }catch (_:Exception){}
         }
 
-        viewModel.newItemInserted.observe(viewLifecycleOwner){
+        viewModel.newItemInserted.observe(viewLifecycleOwner) {
             //todo
             // at add dialog after inserting item remember to set newItemInserted value to true
-            if (it){
-                val position =viewModel.dataList.value!!.size-1
+            if (it) {
+                val position = viewModel.dataList.value!!.size - 1
                 adapter.notifyItemInserted(position)
                 binding.homeRecyclerView.smoothScrollToPosition(position)
                 viewModel.setNewItemInserted(false)
@@ -61,8 +77,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             // findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
             //todo: add this logic to add Fragment
             lifecycleScope.launch {
-                viewModel.insertToRoom(viewModel.createFakeData("hhh"))
-                adapter.notifyItemInserted(viewModel.dataList.value!!.size-1)
+                viewModel.insertToRoom(viewModel.createFakeData("mohamed "))
+                adapter.notifyItemInserted(viewModel.dataList.value!!.size - 1)
+            }
+        }
+
+        //search feature
+        binding.search.doAfterTextChanged {
+            val text = it.toString()
+            if (text.isNotEmpty()) {
+                searchArrayList.clear()
+                searchArrayList.addAll(viewModel.dataList.value!!
+                    .filter { it.name.contains(text) } as ArrayList<BaseModel>
+                )
+                binding.homeRecyclerView.adapter = secondAdapter
+            } else {//if serach bar is empty restore all data
+                lifecycleScope.launch {
+                    binding.homeRecyclerView.adapter = adapter
+                }
             }
         }
     }

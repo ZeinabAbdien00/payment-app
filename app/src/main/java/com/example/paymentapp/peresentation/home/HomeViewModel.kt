@@ -63,11 +63,17 @@ class HomeViewModel : ViewModel() {
         )
     }
 
-    fun setFirstData(boolean: Boolean){
-        _firstData.value=boolean
+    fun setFirstData(boolean: Boolean) {
+        _firstData.value = boolean
     }
 
-    fun setNewItemInserted(boolean: Boolean){
-        _newItemInserted.value=boolean
+    fun setNewItemInserted(boolean: Boolean) {
+        _newItemInserted.value = boolean
     }
+
+    suspend fun resetArrayList() {
+            _dataList.value!!.clear()
+            _dataList.value!!.addAll(getAllFromRoom())
+    }
+
 }
