@@ -92,17 +92,42 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.search.doAfterTextChanged {
             val text = it.toString()
             if (text.isNotEmpty()) {
-                viewModel.setIsSearch(true)
                 searchArrayList.clear()
+                viewModel.setIsSearch(true)
                 searchArrayList.addAll(viewModel.dataList.value!!
                     .filter { it.name.contains(text) } as ArrayList<BaseModel>
                 )
                 binding.homeRecyclerView.adapter = secondAdapter
-            } else {//if serach bar is empty restore all data
+            } else {//if search bar is empty restore all data
                 viewModel.setIsSearch(false)
-                lifecycleScope.launch {
-                    binding.homeRecyclerView.adapter = adapter
-                }
+                binding.homeRecyclerView.adapter = adapter
+
+            }
+        }
+
+        //sorting feature
+        binding.sort.setOnClickListener {
+            sortItems()
+            binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
+        }
+    }
+
+    private fun sortItems() {
+        if (viewModel.isSearch.value == false) {
+            if (viewModel.normalMode.value == true) {
+                viewModel.setIsNormalMode(false)
+                viewModel.dataList.value!!.sortByDescending { it.name }
+            } else {
+                viewModel.setIsNormalMode(true)
+                viewModel.dataList.value!!.sortBy { it.name }
+            }
+        } else {
+            if (viewModel.normalMode.value == true) {
+                viewModel.setIsNormalMode(false)
+                searchArrayList.sortByDescending { it.name }
+            } else {
+                viewModel.setIsNormalMode(true)
+                searchArrayList.sortBy { it.name }
             }
         }
     }
@@ -126,12 +151,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
 
-        val itemTouchhelper = ItemTouchHelper(swipeToDeleteCallback)
-        itemTouchhelper.attachToRecyclerView(binding.homeRecyclerView)
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(binding.homeRecyclerView)
     }
 
     private fun removeAfterSwiped(viewHolder: RecyclerView.ViewHolder) {
-        lifecycleScope.launch() {
+        lifecycleScope.launch {
             val position = viewHolder.adapterPosition
             if (viewModel.isSearch.value == false) {
                 viewModel.removeItemOf(position)
@@ -153,7 +178,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun removePositionFromSearch(position: Int) {
         lifecycleScope.launch {
-            val item = searchArrayList.get(position)
+            val item = searchArrayList[position]
             searchArrayList.remove(item)
             viewModel.removeItemFromDataList(item)
             viewModel.deleteFromRoom(item)

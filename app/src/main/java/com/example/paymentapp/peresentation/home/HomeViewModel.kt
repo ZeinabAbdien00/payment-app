@@ -27,6 +27,9 @@ class HomeViewModel : ViewModel() {
     private var _isSearch: MutableLiveData<Boolean> = MutableLiveData(false)
     val isSearch: LiveData<Boolean> = _isSearch
 
+    private var _normalMode: MutableLiveData<Boolean> = MutableLiveData(false)
+    val normalMode: LiveData<Boolean> = _normalMode
+
 
     private val repository: BaseRepository
 
@@ -91,6 +94,10 @@ class HomeViewModel : ViewModel() {
 
     fun removeItemFromDataList(item : BaseModel){
         _dataList.value!!.remove(item)
+    }
+
+    fun setIsNormalMode(b: Boolean) {
+       _normalMode.value=b
     }
 
 }
