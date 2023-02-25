@@ -19,6 +19,7 @@ data class BaseModel (
     var priceAfterAddition : String,
     var monthlyPay : String,
 ):Parcelable{
+
     @PrimaryKey(autoGenerate = true) var id :Int =0
     // add to this list when person starts to pay the first month
     var historyList : String = ""

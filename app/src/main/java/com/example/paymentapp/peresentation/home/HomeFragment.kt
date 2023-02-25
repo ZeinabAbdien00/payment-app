@@ -9,6 +9,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -137,7 +138,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.homeRecyclerView.adapter = adapter
         adapter.setOnItemClickListener(object : HomeAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                Toast.makeText(requireActivity(), " $position ", Toast.LENGTH_SHORT).show()
+                if (viewModel.isSearch.value == true) {
+                    findNavController().navigate(
+                        HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
+                            searchArrayList[position]
+                        )
+                    )
+                } else {
+                    findNavController().navigate(
+                        HomeFragmentDirections
+                            .actionHomeFragmentToDetailsFragment(viewModel.dataList.value!![position])
+                    )
+                }
             }
         })
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
@@ -189,7 +201,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onResume()
         try {
             setupRecyclerView()
-        }catch (_ : Exception){
+        } catch (_: Exception) {
 
         }
     }
