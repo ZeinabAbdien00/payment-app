@@ -32,7 +32,7 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         requireActivity().setFinishOnTouchOutside(false)
@@ -57,10 +57,10 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
         val height = metrics.heightPixels
         this.dialog!!.window!!.setLayout(((9 * width) / 10), (9 * height) / 10)
 
-        val calendar = Calendar.getInstance();
-        val day = calendar.get(Calendar.DAY_OF_MONTH);
-        val month = calendar.get(Calendar.MONTH);
-        val year = calendar.get(Calendar.YEAR);
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH)
+        val year = calendar.get(Calendar.YEAR)
         binding.startDatePicker.updateDate(year, month, day)
     }
 
