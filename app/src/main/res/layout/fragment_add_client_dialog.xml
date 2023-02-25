@@ -181,6 +181,55 @@
             app:layout_constraintEnd_toEndOf="@id/name_linear"
             app:layout_constraintStart_toStartOf="@id/name_linear"
             app:layout_constraintTop_toBottomOf="@id/number_linear" />
+        <LinearLayout
+            android:id="@+id/itemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/name_linear"
+            app:layout_constraintStart_toStartOf="@id/name_linear"
+            app:layout_constraintTop_toBottomOf="@id/name_linear">
+
+            <EditText
+                android:id="@+id/item_name_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_shape"
+                android:gravity="center"
+                android:hint="ادخل اسم السلعة"
+                android:textColor="@color/black"
+                android:textColorHint="@color/light_gray"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:padding="5dp"
+                android:text="اسم السلعة"
+                android:textColor="@color/dark_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="@color/dark_green"
+            app:layout_constraintEnd_toEndOf="@id/name_linear"
+            app:layout_constraintStart_toStartOf="@id/name_linear"
+            app:layout_constraintTop_toBottomOf="@id/number_linear" />
 
         <LinearLayout
             android:id="@+id/price_linear"

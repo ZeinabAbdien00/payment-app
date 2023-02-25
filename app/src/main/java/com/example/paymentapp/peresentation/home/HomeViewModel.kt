@@ -68,8 +68,7 @@ class HomeViewModel : ViewModel() {
             "12/1/2023",
             "botato",
         "1500",
-        "500",
-        "15"
+        "500"
         )
     }
 

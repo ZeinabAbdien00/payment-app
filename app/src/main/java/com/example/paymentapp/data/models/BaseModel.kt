@@ -18,8 +18,6 @@ data class BaseModel (
     var nameOfBoughtItems:String,       //todo to ui
     var priceAfterAddition : String,
     var monthlyPay : String,
-    var endDate : String                //todo
-
 ):Parcelable{
     @PrimaryKey(autoGenerate = true) var id :Int =0
     // add to this list when person starts to pay the first month
