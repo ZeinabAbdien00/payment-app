@@ -363,7 +363,7 @@
                 android:datePickerMode="spinner"
                 android:textColorHint="@color/light_gray"
                 android:textSize="16sp"
-                style="@style/MyDatePicker"/>
+                style="@style/DatePicker"/>
 
 
             <TextView
