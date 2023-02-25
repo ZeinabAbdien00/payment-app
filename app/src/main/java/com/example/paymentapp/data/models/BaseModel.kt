@@ -1,8 +1,11 @@
 package com.example.paymentapp.data.models
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity
 data class BaseModel (
     var name : String,
@@ -12,7 +15,7 @@ data class BaseModel (
     var numberOfTotalInstallments:Int,   // how many months until done
     var monthlyDayOfPaying : String,
     var startDate : String,
-        ){
+        ): Parcelable{
     @PrimaryKey(autoGenerate = true) var id :Int =0
     // add to this list when person starts to pay the first month
     var historyList : String = ""
