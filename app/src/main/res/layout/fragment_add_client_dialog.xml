@@ -331,14 +331,14 @@
             app:layout_constraintStart_toStartOf="@id/month_linear"
             app:layout_constraintTop_toBottomOf="@id/month_linear">
 
-            <EditText
-                android:id="@+id/start_edit_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+            <DatePicker
+                android:id="@+id/start_date_picker"
+                android:layout_width="0dp"
+                android:layout_height="130dp"
                 android:layout_weight="1"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
                 android:background="@drawable/edit_text_shape"
-                android:hint="ادخل تاريخ البداية"
                 android:textColorHint="@color/light_gray"
                 android:textSize="16sp" />
 
