@@ -24,9 +24,9 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
     private lateinit var phoneNumebr: String
     private var price = 0.0f
     private var penfits = 0.0f
-    private var numberOfMonths = 0
-    private var monthlyPay = 0
-    private var fullPrice = 0
+    private var numberOfMonths = 1
+    private var monthlyPay = 0.0f
+    private var fullPrice = 0.0f
 
 
     override fun onCreateView(
@@ -69,14 +69,6 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
             this.dismiss()
         }
 
-        binding.addBtn.setOnClickListener {
-            viewModel.viewModelScope.launch {
-                viewModel.setNewItemInserted(true)
-                viewModel.insertToRoom(viewModel.createFakeData("namee"))
-                this@AddClientDialog.dismiss()
-            }
-        }
-
         binding.nameEditText.doAfterTextChanged {
             name = it.toString()
         }
@@ -86,21 +78,54 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
         }
 
         binding.priceEditText.doAfterTextChanged {
-            price = it.toString().toFloat()
+            price = if (it.toString().isNotEmpty()){
+                it.toString().toFloat()
+            }else{
+                0.0f
+            }
+
+            fullPrice = price + (price * penfits / 100)
+            binding.fullPrice.text = String.format("%.2f",fullPrice)
         }
 
         binding.BenefitEditText.doAfterTextChanged {
-            penfits=it.toString().toFloat()
+            penfits=if (it.toString().isNotEmpty()){
+            it.toString().toFloat()
+            }else{
+                0.0f
+            }
+                fullPrice = price + (price * penfits / 100)
+                binding.fullPrice.text = String.format("%.2f",fullPrice)
         }
 
         binding.monthEditText.doAfterTextChanged {
-            numberOfMonths=it.toString().toInt()
+            numberOfMonths=if (it.toString().isNotEmpty() && it.toString().toInt() > 0){
+                it.toString().toInt()
+            }else{
+                1
+            }
+                monthlyPay = fullPrice/numberOfMonths
+            binding.installmentText.text=String.format("%.2f",monthlyPay)
+        }
 
+
+        binding.fullPrice.doAfterTextChanged {
+            monthlyPay = (fullPrice/numberOfMonths)
+            binding.installmentText.text=String.format("%.2f",monthlyPay)
         }
 
         binding.startDatePicker.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
             currentDate = "${year}/${monthOfYear}/${dayOfMonth}"
         }
+
+        binding.addBtn.setOnClickListener {
+            viewModel.viewModelScope.launch {
+                viewModel.setNewItemInserted(true)
+                viewModel.insertToRoom(viewModel.createFakeData(name))
+                this@AddClientDialog.dismiss()
+            }
+        }
+
 
     }
 

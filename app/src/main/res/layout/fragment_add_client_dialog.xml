@@ -26,27 +26,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/full_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="6dp"
                 android:padding="5dp"
+                android:text="0.0"
                 android:textColor="@color/dark_green"
-                android:textSize="16sp"
-                tools:text="3500"
-                android:text="3500"
-                />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:padding="5dp"
                 android:text="السعر بعد الفايدة"
                 android:textColor="@color/dark_green"
@@ -65,11 +61,9 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:padding="5dp"
+                android:text="0.0"
                 android:textColor="@color/dark_green"
-                android:textSize="16sp"
-                tools:text="500"
-                android:text="500"
-                />
+                android:textSize="16sp" />
 
 
             <TextView
@@ -79,7 +73,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:padding="5dp"
-                android:text="القسط الشهري "
+                android:text="كل شهر "
                 android:textColor="@color/dark_green"
                 android:textSize="16sp" />
 
@@ -101,12 +95,15 @@
 
             <EditText
                 android:id="@+id/name_edit_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_shape"
+                android:gravity="center"
                 android:hint="ادخل الاسم"
+                android:textColor="@color/black"
                 android:textColorHint="@color/light_gray"
                 android:textSize="16sp" />
 
@@ -114,9 +111,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:padding="5dp"
-                android:text="الاسم"
+                android:text="الاسم        "
                 android:textColor="@color/dark_green"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -148,12 +146,16 @@
 
             <EditText
                 android:id="@+id/number_edit_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_shape"
+                android:gravity="center"
                 android:hint="ادخل الرقم"
+                android:inputType="number"
+                android:textColor="@color/black"
                 android:textColorHint="@color/light_gray"
                 android:textSize="16sp" />
 
@@ -161,9 +163,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:padding="5dp"
-                android:text="الرقم"
+                android:text="الرقم        "
                 android:textColor="@color/dark_green"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -194,12 +197,16 @@
 
             <EditText
                 android:id="@+id/price_edit_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_shape"
+                android:gravity="center"
                 android:hint="ادخل السعر"
+                android:inputType="number"
+                android:textColor="@color/black"
                 android:textColorHint="@color/light_gray"
                 android:textSize="16sp" />
 
@@ -207,9 +214,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:padding="5dp"
-                android:text="السعر"
+                android:text="السعر        "
                 android:textColor="@color/dark_green"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -240,13 +248,16 @@
 
             <EditText
                 android:id="@+id/Benefit_edit_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-
                 android:background="@drawable/edit_text_shape"
+                android:gravity="center"
                 android:hint="ادخل قيمة الفائدة"
+                android:inputType="number"
+                android:textColor="@color/black"
                 android:textColorHint="@color/light_gray"
                 android:textSize="16sp" />
 
@@ -254,6 +265,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:padding="5dp"
                 android:text="قيمة الفائدة"
@@ -287,12 +299,17 @@
 
             <EditText
                 android:id="@+id/month_edit_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_shape"
+                android:gravity="center"
                 android:hint="ادخل عدد الشهور"
+                android:text="1"
+                android:inputType="number"
+                android:textColor="@color/black"
                 android:textColorHint="@color/light_gray"
                 android:textSize="16sp" />
 
@@ -300,9 +317,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:padding="5dp"
-                android:text="عدد الشهور"
+                android:text="عدد الشهور "
                 android:textColor="@color/dark_green"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -331,16 +349,22 @@
             app:layout_constraintStart_toStartOf="@id/month_linear"
             app:layout_constraintTop_toBottomOf="@id/month_linear">
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
             <DatePicker
                 android:id="@+id/start_date_picker"
-                android:layout_width="0dp"
-                android:layout_height="130dp"
-                android:layout_weight="1"
+                android:layout_width="230dp"
+                android:layout_height="150dp"
+                android:background="@drawable/edit_text_shape"
                 android:calendarViewShown="false"
                 android:datePickerMode="spinner"
-                android:background="@drawable/edit_text_shape"
                 android:textColorHint="@color/light_gray"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                style="@style/MyDatePicker"/>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -349,6 +373,8 @@
                 android:padding="5dp"
                 android:text="تاريخ البداية"
                 android:textColor="@color/dark_green"
+                android:textColorHighlight="@color/black"
+                android:textColorHint="@color/dark_grey"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -357,7 +383,7 @@
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/dark_green"/>
+            android:background="@color/dark_green" />
 
         <LinearLayout
             android:layout_width="match_parent"
