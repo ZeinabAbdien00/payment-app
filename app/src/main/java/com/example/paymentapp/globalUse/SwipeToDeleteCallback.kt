@@ -71,7 +71,7 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
         }
         mBackground!!.color = backgroundColor
         mBackground!!.setBounds(
-            itemView.right + dX.toInt(),
+            itemView.right + dX.toInt()-20,
             itemView.top,
             itemView.right,
             itemView.bottom
