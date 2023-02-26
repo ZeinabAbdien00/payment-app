@@ -1,5 +1,7 @@
 package com.example.paymentapp.peresentation.home
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,7 +50,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupOnClick()
         setupSwipeToDelete()
     }
-
 
     private fun setSearchAdapter() {
         searchArrayList = ArrayList()
@@ -168,24 +169,41 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun removeAfterSwiped(viewHolder: RecyclerView.ViewHolder) {
-        lifecycleScope.launch {
-            val position = viewHolder.adapterPosition
-            if (viewModel.isSearch.value == false) {
-                viewModel.removeItemOf(position)
-            } else {
-                removePositionFromSearch(position)
-            }
-            withContext(Dispatchers.Main) {
-                binding.homeRecyclerView.adapter!!.notifyItemRemoved(position)
-                val snackbar = Snackbar
-                    .make(
-                        binding.homeParent,
-                        "تم الحذف",
-                        Snackbar.LENGTH_LONG
-                    )
-                snackbar.show()
-            }
-        }
+
+        val dialogName: AlertDialog.Builder = AlertDialog.Builder(requireContext(),R.style.AlertDialogCustom)
+        dialogName.setTitle("هل تريد حذف هذا العنصر ؟")
+
+        dialogName.setPositiveButton("نعم",
+            DialogInterface.OnClickListener { dialogInterface, i ->
+                lifecycleScope.launch {
+                    val position = viewHolder.adapterPosition
+                    if (viewModel.isSearch.value == false) {
+                        viewModel.removeItemOf(position)
+                    } else {
+                        removePositionFromSearch(position)
+                    }
+                    withContext(Dispatchers.Main) {
+                        binding.homeRecyclerView.adapter!!.notifyItemRemoved(position)
+                        val snackbar = Snackbar
+                            .make(
+                                binding.homeParent,
+                                "تم الحذف",
+                                Snackbar.LENGTH_LONG
+                            )
+                        snackbar.show()
+                    }
+                }
+                dialogInterface.cancel()
+            })
+
+        dialogName.setNegativeButton("لا",
+            DialogInterface.OnClickListener { dialogInterface, i ->
+                val position = viewHolder.adapterPosition
+                adapter.notifyItemChanged(position)
+                dialogInterface.cancel()
+            })
+        dialogName.show()
+
     }
 
     private fun removePositionFromSearch(position: Int) {
