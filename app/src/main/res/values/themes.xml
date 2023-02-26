@@ -29,13 +29,8 @@
         <item name="colorPrimary">@color/main_green</item>
         <item name="colorSecondary">@color/main_green</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:background">#2d2d2d</item>
+        <item name="android:background">#FFFFFF</item>
         <item name="android:textColor">@color/main_green</item>
-    </style>
-
-    <style name="MyDatePicker" parent="android:Widget.Material.Light.DatePicker">
-        <item name="android:textColorPrimary">@color/black</item>
-
     </style>
 
     <style name="DatePicker" parent="@android:style/Theme.Holo.Light">
@@ -44,4 +39,5 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="colorAccent">@color/dark_green</item>
     </style>
+
 </resources>
