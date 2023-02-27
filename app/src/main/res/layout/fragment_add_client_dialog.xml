@@ -405,8 +405,8 @@
 
             <DatePicker
                 android:id="@+id/start_date_picker"
-                android:layout_width="230dp"
-                android:layout_height="150dp"
+                android:layout_width="220dp"
+                android:layout_height="130dp"
                 android:background="@drawable/edit_text_shape"
                 android:calendarViewShown="false"
                 android:datePickerMode="spinner"

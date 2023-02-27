@@ -142,7 +142,8 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
                     monthlyDayOfPaying = today.toString(),
                     startDate = currentDate,
                     nameOfBoughtItems = itemName,
-                    monthlyPay = monthlyPay.toString()
+                    monthlyPay = monthlyPay.toString(),
+                    additionMoney = (fullPrice-price).toString()
                 )
                 viewModel.insertToRoom(model)
                 this@AddClientDialog.dismiss()

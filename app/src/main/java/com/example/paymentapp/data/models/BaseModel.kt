@@ -18,13 +18,13 @@ data class BaseModel (
     var nameOfBoughtItems:String,       //todo to ui
     var priceAfterAddition : String,
     var monthlyPay : String,
+    var additionMoney : String
 ):Parcelable{
 
     @PrimaryKey(autoGenerate = true) var id :Int =0
     // add to this list when person starts to pay the first month
     var historyList : String = ""
     // after getting the percentage do your math and set this value
-    var additionMoney : String=""
     // how much did he paid until now
     var valueOfPayInstallments : String = ""
     // how many Installments did he pay untill now
