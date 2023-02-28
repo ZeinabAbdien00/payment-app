@@ -33,5 +33,7 @@ data class BaseModel (
     var valueOfComingInstallments:String = ""
     // how many Installments are left
     var numberOfComingInstallments : Int =0
+    //number of months that didnot pay yet
+    var numberOfLateMoneyMonths = 0
 
 }
