@@ -20,13 +20,13 @@ import java.util.*
 
 class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
 
-    lateinit var binding: FragmentAddClientDialogBinding
+    private lateinit var binding: FragmentAddClientDialogBinding
     private lateinit var currentDate: String
     private lateinit var name: String
-    private lateinit var phoneNumebr: String
+    private lateinit var phoneNumber: String
     private lateinit var itemName : String
     private var price = 0.0f
-    private var penfits = 0.0f
+    private var benefits = 0.0f
     private var numberOfMonths = 1
     private var monthlyPay = 0.0f
     private var fullPrice = 0.0f
@@ -66,6 +66,7 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
         val month = calendar.get(Calendar.MONTH)
         val year = calendar.get(Calendar.YEAR)
         currentDate = "${year}/${month}/${day}"
+        today=day
         binding.startDatePicker.updateDate(year, month, day)
     }
 
@@ -83,7 +84,7 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
         }
 
         binding.numberEditText.doAfterTextChanged {
-            phoneNumebr = it.toString()
+            phoneNumber = it.toString()
         }
 
         binding.priceEditText.doAfterTextChanged {
@@ -93,17 +94,17 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
                 0.0f
             }
 
-            fullPrice = price + (price * penfits / 100)
+            fullPrice = price + (price * benefits / 100)
             binding.fullPrice.text = String.format("%.2f",fullPrice)
         }
 
         binding.BenefitEditText.doAfterTextChanged {
-            penfits=if (it.toString().isNotEmpty()){
+            benefits=if (it.toString().isNotEmpty()){
             it.toString().toFloat()
             }else{
                 0.0f
             }
-                fullPrice = price + (price * penfits / 100)
+                fullPrice = price + (price * benefits / 100)
                 binding.fullPrice.text = String.format("%.2f",fullPrice)
         }
 
@@ -123,7 +124,7 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
             binding.installmentText.text=String.format("%.2f",monthlyPay)
         }
 
-        binding.startDatePicker.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
+        binding.startDatePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
             currentDate = "${year}/${monthOfYear}/${dayOfMonth}"
             today=dayOfMonth
         }
@@ -131,13 +132,17 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
         binding.addBtn.setOnClickListener {
             viewModel.viewModelScope.launch {
                 try {
+
+                    if(today == 29) today=28
+                    else if(today == 30 || today == 31) today=1
+
                     viewModel.setNewItemInserted(true)
                 val model = BaseModel(
                     name = name,
-                    phoneNumber = phoneNumebr,
+                    phoneNumber = phoneNumber,
                     priceWithoutAddition = price.toString(),
                     priceAfterAddition = fullPrice.toString(),
-                    addintionPercentage = penfits,
+                    addintionPercentage = benefits,
                     numberOfTotalInstallments = numberOfMonths,
                     monthlyDayOfPaying = today.toString(),
                     startDate = currentDate,
