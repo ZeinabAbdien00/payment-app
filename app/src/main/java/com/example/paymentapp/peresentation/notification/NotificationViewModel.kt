@@ -33,6 +33,7 @@ class NotificationViewModel : ViewModel() {
                 it.monthlyDayOfPaying == day.toString() ||
                         it.numberOfLateMoneyMonths > 0
             } as ArrayList<BaseModel>
+
         }
     }
 

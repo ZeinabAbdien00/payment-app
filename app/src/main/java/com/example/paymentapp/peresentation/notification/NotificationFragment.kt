@@ -9,8 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.paymentapp.databinding.FragmentNotificationBinding
-import com.example.paymentapp.peresentation.RecyclerView.HomeAdapter
 import com.example.paymentapp.peresentation.home.HomeFragmentDirections
+import com.example.paymentapp.peresentation.recyclerView.HomeAdapter
 
 class NotificationFragment : Fragment() {
 
@@ -32,7 +32,7 @@ class NotificationFragment : Fragment() {
     }
 
     private fun setObservers() {
-        viewModel.notificationsList.observe(viewLifecycleOwner){
+        viewModel.notificationsList.observe(viewLifecycleOwner) {
             try {
                 if (viewModel.firstData.value == true) {
                     setupRecyclerView()
@@ -48,14 +48,22 @@ class NotificationFragment : Fragment() {
         binding.notificationsRecycler.adapter = adapter
         adapter.setOnItemClickListener(object : HomeAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                    findNavController().navigate(
-                        HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                            viewModel.notificationsList.value!![position]
-                        )
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
+                        viewModel.notificationsList.value!![position]
                     )
+                )
             }
         })
         binding.notificationsRecycler.layoutManager = LinearLayoutManager(requireActivity())
     }
 
+    override fun onResume() {
+        super.onResume()
+        try {
+            setupRecyclerView()
+        } catch (_: Exception) {
+
+        }
+    }
 }

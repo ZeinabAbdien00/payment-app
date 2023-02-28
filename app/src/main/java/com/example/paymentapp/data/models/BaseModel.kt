@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+import java.util.*
 
 @Parcelize
 @Entity
@@ -35,5 +36,25 @@ data class BaseModel (
     var numberOfComingInstallments : Int =0
     //number of months that didnot pay yet
     var numberOfLateMoneyMonths = 0
+    // indicates if we added 1 to late or not if today is paying day
 
+    var oneWasAdded = false
+    //indicates if user have paid that 1 or not
+    var userPaidToday = false
+
+    init {
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        if (day.toString() == monthlyDayOfPaying&&!oneWasAdded){
+            oneWasAdded=true
+            numberOfLateMoneyMonths++
+        }else if (day.toString() != monthlyDayOfPaying){
+            oneWasAdded=false
+            userPaidToday=false
+        }
+    }
+
+    fun userHavePaid(){
+        userPaidToday=true
+    }
 }

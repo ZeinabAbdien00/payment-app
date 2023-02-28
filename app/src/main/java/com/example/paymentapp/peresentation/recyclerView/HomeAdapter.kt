@@ -1,4 +1,4 @@
-package com.example.paymentapp.peresentation.RecyclerView
+package com.example.paymentapp.peresentation.recyclerView
 
 import android.view.LayoutInflater
 import android.view.View
@@ -71,7 +71,7 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
     }
 
     override fun getItemCount(): Int {
-        return list.size ?: 0
+        return list.size
     }
 
 }
