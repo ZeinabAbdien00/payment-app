@@ -203,7 +203,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_shape"
                 android:gravity="center"
-                android:hint="ادخل اسم السلعة"
+                android:hint="ادخل اسم السيارة"
                 android:textColor="@color/black"
                 android:textColorHint="@color/light_gray"
                 android:textSize="16sp" />
@@ -215,7 +215,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:padding="5dp"
-                android:text="اسم السلعة"
+                android:text="موديل السيارة"
                 android:textColor="@color/dark_green"
                 android:textSize="16sp" />
         </LinearLayout>
