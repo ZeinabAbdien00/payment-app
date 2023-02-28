@@ -4,14 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.paymentapp.data.models.BaseModel
-import com.example.paymentapp.databinding.CardViewBinding
-import com.example.paymentapp.databinding.FragmentDetailsBinding
 import com.example.paymentapp.databinding.ListViewBinding
 
 class HistoryAdapter(private val list:ArrayList<BaseModel>):RecyclerView.Adapter<HistoryAdapter.HistoryViewModel>() {
 
     inner class HistoryViewModel(val binding: ListViewBinding):RecyclerView.ViewHolder(binding.root){
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewModel {
