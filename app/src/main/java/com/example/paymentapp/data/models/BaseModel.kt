@@ -1,9 +1,11 @@
 package com.example.paymentapp.data.models
 
 import android.os.Parcelable
+import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+import java.util.*
 
 @Parcelize
 @Entity
@@ -13,9 +15,9 @@ data class BaseModel (
     var priceWithoutAddition : String,
     var addintionPercentage : Float,
     var numberOfTotalInstallments:Int,   // how many months until done
-    var monthlyDayOfPaying : String,    //todo to ui
+    var monthlyDayOfPaying : String,
     var startDate : String,
-    var nameOfBoughtItems:String,       //todo to ui
+    var nameOfBoughtItems:String,
     var priceAfterAddition : String,
     var monthlyPay : String,
     var additionMoney : String
@@ -33,5 +35,30 @@ data class BaseModel (
     var valueOfComingInstallments:String = ""
     // how many Installments are left
     var numberOfComingInstallments : Int =0
+    //number of months that didnot pay yet
+    var numberOfLateMoneyMonths = 0
+    //notes
+    var note =" "
+    // indicates if we added 1 to late or not if today is paying day
+    var oneWasAdded = false
+    //indicates if user have paid that 1 or not
+    var userPaidToday = false
 
+    init {
+        Log.d("mohamed", ": hello from " + name)
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        if (day.toString() == monthlyDayOfPaying&&!oneWasAdded){
+            oneWasAdded=true
+            numberOfLateMoneyMonths++
+        }else if (day.toString() != monthlyDayOfPaying){
+            oneWasAdded=false
+            userPaidToday=false
+        }
+    }
+
+    fun userHavePaidToday(){
+        userPaidToday=true
+        numberOfLateMoneyMonths--
+    }
 }
