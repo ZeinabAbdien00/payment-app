@@ -178,7 +178,7 @@
         android:id="@+id/all_cost_paid_edit_text"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="23dp"
         android:layout_width="0dp"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -393,5 +393,6 @@
         app:layout_constraintTop_toBottomOf="@id/model_of_car_edit_text"
         android:layout_marginTop="30dp"
         android:textAlignment="center" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
