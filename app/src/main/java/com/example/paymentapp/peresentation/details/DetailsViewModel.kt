@@ -25,11 +25,19 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
     suspend fun addDateToItem(model: BaseModel, currentDate: String) {
         model.historyList.add(currentDate)
+        model.numberOfPaidInstallments++
+        model.numberOfComingInstallments--
+        model.valueOfPayInstallments=(model.valueOfPayInstallments.toFloat()+model.monthlyPay.toFloat()).toString()
+        model.valueOfComingInstallments=(model.valueOfComingInstallments.toFloat()-model.monthlyPay.toFloat()).toString()
         updateModel(model)
     }
 
     suspend fun removeLastDateFromItem(model: BaseModel) {
         model.historyList.removeLast()
+        model.numberOfPaidInstallments--
+        model.numberOfComingInstallments++
+        model.valueOfPayInstallments=(model.valueOfPayInstallments.toFloat()-model.monthlyPay.toFloat()).toString()
+        model.valueOfComingInstallments=(model.valueOfComingInstallments.toFloat()+model.monthlyPay.toFloat()).toString()
         updateModel(model)
     }
 

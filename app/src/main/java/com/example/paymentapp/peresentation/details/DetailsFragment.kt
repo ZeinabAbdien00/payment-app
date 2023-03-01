@@ -45,13 +45,16 @@ class DetailsFragment : Fragment() {
             lifecycleScope.launch(Dispatchers.Main) {
                 it.isClickable = false
                 try {
-                    val calendar = Calendar.getInstance()
-                    val day = calendar.get(Calendar.DAY_OF_MONTH)
-                    val month = calendar.get(Calendar.MONTH)
-                    val year = calendar.get(Calendar.YEAR)
-                    val currentDate = "${year}/${month}/${day}"
-                    viewModel.addDateToItem(model, currentDate)
-                    adapter.notifyDataSetChanged()
+                    if (model.numberOfPaidInstallments<model.numberOfTotalInstallments) {
+                        val calendar = Calendar.getInstance()
+                        val day = calendar.get(Calendar.DAY_OF_MONTH)
+                        val month = calendar.get(Calendar.MONTH)
+                        val year = calendar.get(Calendar.YEAR)
+                        val currentDate = "${year}/${month}/${day}"
+                        viewModel.addDateToItem(model, currentDate)
+                        adapter.notifyDataSetChanged()
+                        setViews()
+                    }
                 } catch (_: Exception) {
                 }
                 it.isClickable = true
@@ -61,12 +64,15 @@ class DetailsFragment : Fragment() {
         binding.btnDidnotPay.setOnClickListener {
             lifecycleScope.launch(Dispatchers.Main) {
                 it.isClickable = false
-                try {
+                if (model.numberOfComingInstallments<model.numberOfTotalInstallments) {
+                    try {
                     viewModel.removeLastDateFromItem(model)
                     adapter.notifyDataSetChanged()
+                    setViews()
                 } catch (_: Exception) {
                 }
                 it.isClickable = true
+            }
             }
         }
     }
