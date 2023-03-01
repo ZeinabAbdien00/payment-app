@@ -75,7 +75,7 @@ class DetailsFragment : Fragment() {
             //تاريخ البداية
             startDateEditText.setText(model.startDate)
             //تاريخ النهايه
-            endDateEditText.setText("not Yet")
+//            endDateEditText.setText("not Yet")
             // موديل السيارة
             modelOfCarEditText.setText(model.nameOfBoughtItems)
         }
