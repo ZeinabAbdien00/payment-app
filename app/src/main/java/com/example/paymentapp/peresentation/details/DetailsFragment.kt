@@ -294,4 +294,7 @@ class DetailsFragment : Fragment() {
             viewModel.saveData(model)
         }
     }
+
+    private fun checkIfDataChanged():Boolean=
+            viewModel.isNewData(model)
 }

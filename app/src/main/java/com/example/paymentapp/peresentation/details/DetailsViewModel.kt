@@ -66,7 +66,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     }
 
     //return true if any data was changed
-    suspend fun isNewData(model: BaseModel): Boolean =
+     fun isNewData(model: BaseModel): Boolean =
         model.phoneNumber == phone &&
                 model.priceWithoutAddition == priceBefore &&
                 model.addintionPercentage == benefits.toFloat() &&
