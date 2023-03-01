@@ -429,6 +429,37 @@
             tools:text="BMW" />
 
         <TextView
+            android:id="@+id/monthly_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text=" القسط الشهري :"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/model_of_car" />
+
+        <EditText
+            android:id="@+id/montthly_pay_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:inputType="number"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/main_green"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/monthly_pay"
+            tools:text="500" />
+
+
+        <TextView
             android:id="@+id/History_Of_client"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -437,7 +468,7 @@
             android:text="سجل العميل :"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/model_of_car" />
+            app:layout_constraintTop_toTopOf="@id/monthly_pay" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_history_view"

@@ -1,11 +1,8 @@
 package com.example.paymentapp.data.models
 
 import android.os.Parcelable
-import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.example.paymentapp.globalUse.Converters
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -46,7 +43,6 @@ data class BaseModel (
     var userPaidToday = false
 
     init {
-        Log.d("mohamed", ": hello from " + name)
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         if (day.toString() == monthlyDayOfPaying&&!oneWasAdded){
