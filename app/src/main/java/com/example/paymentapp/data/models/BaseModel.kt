@@ -28,11 +28,11 @@ data class BaseModel (
     var historyList : String = ""
     // after getting the percentage do your math and set this value
     // how much did he paid until now
-    var valueOfPayInstallments : String = ""
+    var valueOfPayInstallments : String = "0"
     // how many Installments did he pay untill now
     var numberOfPaidInstallments :Int = 0
     // how much money is left to pay
-    var valueOfComingInstallments:String = ""
+    var valueOfComingInstallments:String = "0"
     // how many Installments are left
     var numberOfComingInstallments : Int =0
     //number of months that didnot pay yet
