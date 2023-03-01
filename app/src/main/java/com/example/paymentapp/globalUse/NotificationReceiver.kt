@@ -32,33 +32,22 @@ class NotificationReceiver : BroadcastReceiver() {
 
     companion object {
         private const val REQUEST_TIMER1 = 1
-        fun getIntent(context: Context, requestCode: Int): PendingIntent? {
+        private fun getIntent(context: Context, requestCode: Int): PendingIntent? {
             val intent = Intent(context, NotificationReceiver::class.java)
 
-            Log.d("suzan", "before Done")
 
-            val pendingIntent = PendingIntent.getBroadcast(
+            return PendingIntent.getBroadcast(
                 context,
                 requestCode,
                 intent,
                 PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
-            Log.d("suzan", "after Done")
-
-            return pendingIntent
-
-
         }
 
         fun startAlarm(context: Context) {
 
-            Log.d("suzan", "Done")
-
             val pendingIntent = getIntent(context, REQUEST_TIMER1)
             val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-            Log.d("suzan", "Done1")
-
 
             // trigger at 6:30pm
             val alarmTime = LocalTime.of(21, 48)
@@ -66,30 +55,20 @@ class NotificationReceiver : BroadcastReceiver() {
             if (now.toLocalTime().isAfter(alarmTime)) {
                 now = now.plusDays(1)
             }
-            Log.d("suzan", "Done2")
 
             now = now.withHour(alarmTime.hour)
-                .withMinute(alarmTime.minute) // .withSecond(alarmTime.second).withNano(alarmTime.nano)
-
-            Log.d("suzan", "Done3")
+                .withMinute(alarmTime.minute)
 
             val utc = now.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC)
                 .toLocalDateTime()
             val triggerAtMillis = utc.atZone(ZoneOffset.UTC)!!.toInstant()!!.toEpochMilli()
 
-            Log.d("suzan", "Done4")
-
-
-            // first trigger at next 8:30am, then repeat each day
             alarm.setInexactRepeating(
                 AlarmManager.RTC_WAKEUP,
                 triggerAtMillis,
                 AlarmManager.INTERVAL_DAY,
                 pendingIntent
             )
-
-            Log.d("suzan", "Done5")
-
         }
 
         fun cancelAlarm(context: Context) {
@@ -104,37 +83,46 @@ class NotificationReceiver : BroadcastReceiver() {
 
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val namedData =
-            getAllFromRoom().filter { it.monthlyDayOfPaying.toString() == day.toString() }
-                .map { it.name } as ArrayList
-
-
+        val namedData = getAllFromRoom().filter { it.monthlyDayOfPaying == day.toString() }
+            .map { it.name } as ArrayList
         var stringData = ""
         for (i in namedData) {
-
             stringData += i + "\n"
         }
-
         return stringData
-
     }
 
     private suspend fun getAllFromRoom(): ArrayList<BaseModel> = withContext(Dispatchers.IO) {
         repository.getAll() as ArrayList<BaseModel>
     }
 
-
     override fun onReceive(context: Context, intent: Intent) {
-
         GlobalScope.launch {
+
+            laterCustomInit()
             val dao = HomeDataBase.getInstance(context).myDao()
             repository = BaseRepository(dao)
             showNotification(context, "العملاء اليوم", todayData(), 123)
+        }
+    }
+
+    private fun laterCustomInit() {
+
+        GlobalScope.launch {
+            val namedData = getAllFromRoom()
+
+
+            for (i in namedData){
+                i.customInit()
+                updateModel(i)
+            }
 
         }
-
     }
+    private suspend fun updateModel(model: BaseModel) = withContext(Dispatchers.IO) {
+        repository.update(model)
+    }
+
 
     private fun showNotification(
         context: Context,
@@ -161,7 +149,7 @@ class NotificationReceiver : BroadcastReceiver() {
         notificationManager.notify(
             reqCode,
             notificationBuilder.build()
-        ) // 0 is the request code, it should be unique id
+        )
         Log.d("showNotification", "showNotification: $reqCode")
     }
 }

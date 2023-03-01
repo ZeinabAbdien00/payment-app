@@ -8,6 +8,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.paymentapp.data.models.BaseModel
@@ -237,6 +238,12 @@ class DetailsFragment : Fragment() {
                 }
             }
         }
+
+        binding.backArrow.setOnClickListener {
+
+            findNavController().navigateUp()
+
+        }
     }
 
     private fun setupHistoryRV() {
@@ -249,6 +256,9 @@ class DetailsFragment : Fragment() {
     private fun setViews() {
         model = args.model
         binding.apply {
+
+            barTxt.setText(model.name)
+
             numberEditText.setText(model.phoneNumber)
             //السعر قبل الزياده
             priceBeforeTaxEditText.setText(model.priceWithoutAddition)

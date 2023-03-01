@@ -43,6 +43,10 @@ data class BaseModel (
     var userPaidToday = false
 
     init {
+        customInit()
+    }
+
+    fun customInit() {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         if (day.toString() == monthlyDayOfPaying&&!oneWasAdded){
