@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/phone_number"
@@ -312,30 +312,30 @@
             tools:text="19/1/2023" />
 
 
-<!--        <TextView-->
-<!--            android:id="@+id/end_date"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="45dp"-->
-<!--            android:layout_marginEnd="15dp"-->
-<!--            android:text="نهاية تاريخ الاقساط :"-->
-<!--            android:textSize="18sp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@id/start_date" />-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/end_date"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="45dp"-->
+        <!--            android:layout_marginEnd="15dp"-->
+        <!--            android:text="نهاية تاريخ الاقساط :"-->
+        <!--            android:textSize="18sp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/start_date" />-->
 
-<!--        <EditText-->
-<!--            android:id="@+id/end_date_edit_text"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@color/white"-->
-<!--            android:gravity="center"-->
-<!--            android:inputType="number"-->
-<!--            android:textColor="@color/main_green"-->
-<!--            android:textSize="18sp"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/all_cost_paid"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@id/end_date"-->
-<!--            tools:text="19/6/2023" />-->
+        <!--        <EditText-->
+        <!--            android:id="@+id/end_date_edit_text"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="@color/white"-->
+        <!--            android:gravity="center"-->
+        <!--            android:inputType="number"-->
+        <!--            android:textColor="@color/main_green"-->
+        <!--            android:textSize="18sp"-->
+        <!--            app:layout_constraintEnd_toStartOf="@id/all_cost_paid"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/end_date"-->
+        <!--            tools:text="19/6/2023" />-->
 
         <TextView
             android:id="@+id/model_of_car"
@@ -376,7 +376,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_history_view"
             android:layout_width="0dp"
-            android:layout_height="150dp"
+            android:layout_height="180dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="55dp"
             android:background="@drawable/green_frame"
@@ -385,6 +385,66 @@
             app:layout_constraintEnd_toStartOf="@id/History_Of_client"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/History_Of_client" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            android:background="@drawable/light_ripple"
+            android:backgroundTint="@color/green"
+            android:text="دفع اليوم"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/History_Of_client"
+            app:layout_constraintStart_toStartOf="@id/History_Of_client"
+            app:layout_constraintTop_toBottomOf="@id/History_Of_client" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_didnot_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="10dp"
+            android:background="@drawable/light_ripple"
+            android:backgroundTint="@color/red"
+            android:text="لم يدفع"
+            android:textColor="@color/light_green_300"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/History_Of_client"
+            app:layout_constraintStart_toStartOf="@id/History_Of_client"
+            app:layout_constraintTop_toBottomOf="@id/btn_pay" />
+
+        <TextView
+            android:id="@+id/notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:text="ملاحظات :"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_history_view" />
+
+        <EditText
+            android:id="@+id/the_note"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="16sp"
+            android:gravity="start"
+            android:background="@drawable/green_frame"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notes"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:hint="ادخل ملاحظاتك هنا"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
