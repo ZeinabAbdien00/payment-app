@@ -51,7 +51,6 @@ class DetailsFragment : Fragment() {
                     val year = calendar.get(Calendar.YEAR)
                     val currentDate = "${year}/${month}/${day}"
                     viewModel.addDateToItem(model, currentDate)
-                    myList.add(currentDate)
                     adapter.notifyDataSetChanged()
                 } catch (_: Exception) {
                 }
@@ -64,7 +63,6 @@ class DetailsFragment : Fragment() {
                 it.isClickable = false
                 try {
                     viewModel.removeLastDateFromItem(model)
-                    myList.remove(myList[myList.size - 1])
                     adapter.notifyDataSetChanged()
                 } catch (_: Exception) {
                 }
@@ -74,13 +72,10 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setupHistoryRV() {
-        try {
-            myList = model.historyList.split(",") as ArrayList
+            myList = model.historyList
             adapter = HistoryAdapter(myList)
             binding.rvHistoryView.adapter = adapter
             binding.rvHistoryView.layoutManager = LinearLayoutManager(requireActivity())
-        } catch (_: Exception) {
-        }
     }
 
     private fun setViews() {

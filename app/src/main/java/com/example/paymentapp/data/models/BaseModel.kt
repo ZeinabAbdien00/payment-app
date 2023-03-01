@@ -4,6 +4,8 @@ import android.os.Parcelable
 import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.paymentapp.globalUse.Converters
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -25,8 +27,7 @@ data class BaseModel (
 
     @PrimaryKey(autoGenerate = true) var id :Int =0
     // add to this list when person starts to pay the first month
-    var historyList : String = ""
-    // after getting the percentage do your math and set this value
+    lateinit var historyList : ArrayList<String>
     // how much did he paid until now
     var valueOfPayInstallments : String = "0"
     // how many Installments did he pay untill now

@@ -24,20 +24,12 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
 
     suspend fun addDateToItem(model: BaseModel, currentDate: String) {
-        if (model.historyList != "")
-            model.historyList += ",$currentDate"
-        else model.historyList += currentDate
+        model.historyList.add(currentDate)
         updateModel(model)
     }
 
     suspend fun removeLastDateFromItem(model: BaseModel) {
-        val tempList = model.historyList.split(",") as ArrayList
-        tempList.removeLast()
-        val tempString = if (tempList.isEmpty()) ""
-        else model.historyList.removeSuffix("," + tempList[tempList.size - 1])
-
-
-        model.historyList = tempString
+        model.historyList.removeLast()
         updateModel(model)
     }
 

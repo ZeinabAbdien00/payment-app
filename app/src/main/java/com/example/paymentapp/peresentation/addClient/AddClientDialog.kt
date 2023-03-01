@@ -150,9 +150,11 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
                     monthlyPay = monthlyPay.toString(),
                     additionMoney = (fullPrice-price).toString()
                 )
+                    model.historyList= ArrayList()
                 viewModel.insertToRoom(model)
                 this@AddClientDialog.dismiss()
             }catch (E:Exception){
+               //     Toast.makeText(requireActivity(),E.message.toString(),Toast.LENGTH_SHORT).show()
                     Toast.makeText(requireActivity(),"ادخل جميع البيانات",Toast.LENGTH_SHORT).show()
                 }
             }
