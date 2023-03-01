@@ -14,6 +14,7 @@ import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.FragmentDetailsBinding
 import com.example.paymentapp.peresentation.recyclerView.HistoryAdapter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -25,22 +26,6 @@ class DetailsFragment : Fragment() {
     private lateinit var adapter: HistoryAdapter
     private lateinit var myList: ArrayList<String>
     private val viewModel: DetailsViewModel by viewModels()
-
-    private var phone = ""
-    private var priceBefore = ""
-    private var benefits = ""
-    private var benefitsValue = ""
-    private var priceAfter = ""
-    private var totalInstallmentsNumber = ""
-    private var payiedInstallmentsNumber = ""
-    private var payiedInstallmentsValue = ""
-    private var comingInstallmentsVlaue = ""
-    private var comingInstallmentsNumber = ""
-    private var dayOfPaying = ""
-    private var startDate = " "
-    private var carModel = ""
-    private var monthlyPayValue = ""
-    private var note=""
 
 
     override fun onCreateView(
@@ -61,153 +46,155 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setInitials() {
-        phone = model.phoneNumber
-        priceBefore = model.priceWithoutAddition
-        benefits = model.addintionPercentage.toString()
-        benefitsValue = model.additionMoney
-        priceAfter = model.priceAfterAddition
-        totalInstallmentsNumber = model.numberOfTotalInstallments.toString()
-        payiedInstallmentsNumber = model.numberOfPaidInstallments.toString()
-        payiedInstallmentsValue = model.valueOfPayInstallments
-        comingInstallmentsNumber = model.numberOfComingInstallments.toString()
-        comingInstallmentsVlaue = model.valueOfComingInstallments
-        dayOfPaying = model.monthlyDayOfPaying
-        startDate = model.startDate
-        carModel = model.nameOfBoughtItems
-        monthlyPayValue = model.monthlyPay
-        note = model.note
+        viewModel.phone = model.phoneNumber
+        viewModel.priceBefore = model.priceWithoutAddition
+        viewModel.benefits = model.addintionPercentage.toString()
+        viewModel.benefitsValue = model.additionMoney
+        viewModel.priceAfter = model.priceAfterAddition
+        viewModel.totalInstallmentsNumber = model.numberOfTotalInstallments.toString()
+        viewModel.payiedInstallmentsNumber = model.numberOfPaidInstallments.toString()
+        viewModel.payiedInstallmentsValue = model.valueOfPayInstallments
+        viewModel.comingInstallmentsNumber = model.numberOfComingInstallments.toString()
+        viewModel.comingInstallmentsVlaue = model.valueOfComingInstallments
+        viewModel.dayOfPaying = model.monthlyDayOfPaying
+        viewModel.startDate = model.startDate
+        viewModel.carModel = model.nameOfBoughtItems
+        viewModel.monthlyPayValue = model.monthlyPay
+        viewModel.myNote = model.note
     }
 
     private fun setOnChangeLogic() {
         binding.numberEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                phone = it.toString()
+                viewModel.phone = it.toString()
             } else {
-                phone = model.phoneNumber
+                viewModel.phone = model.phoneNumber
                 binding.numberEditText.hint = model.phoneNumber
             }
         }
 
         binding.priceBeforeTaxEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                priceBefore = it.toString()
+                viewModel.priceBefore = it.toString()
             } else {
-                priceBefore = model.priceWithoutAddition
+                viewModel.priceBefore = model.priceWithoutAddition
                 binding.priceBeforeTaxEditText.hint = model.priceWithoutAddition
             }
         }
         binding.ratioEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                benefits = it.toString()
+                viewModel.benefits = it.toString()
             } else {
-                benefits = model.priceWithoutAddition
+                viewModel.benefits = model.priceWithoutAddition
                 binding.ratioEditText.hint = model.addintionPercentage.toString()
             }
         }
 
         binding.priceTaxEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                benefitsValue = it.toString()
+                viewModel.benefitsValue = it.toString()
             } else {
-                benefitsValue = model.additionMoney
+                viewModel.benefitsValue = model.additionMoney
                 binding.priceTaxEditText.hint = model.additionMoney.toString()
             }
         }
 
         binding.priceAfterTaxEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                priceAfter = it.toString()
+                viewModel.priceAfter = it.toString()
             } else {
-                priceAfter = model.priceAfterAddition
+                viewModel.priceAfter = model.priceAfterAddition
                 binding.priceAfterTaxEditText.hint = model.priceAfterAddition.toString()
             }
         }
 
         binding.allCostEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                totalInstallmentsNumber = it.toString()
+                viewModel.totalInstallmentsNumber = it.toString()
             } else {
-                totalInstallmentsNumber = model.numberOfTotalInstallments.toString()
+                viewModel.totalInstallmentsNumber = model.numberOfTotalInstallments.toString()
                 binding.allCostEditText.hint = model.numberOfTotalInstallments.toString()
             }
         }
 
         binding.allCostPaidEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                payiedInstallmentsValue = it.toString()
+                viewModel.payiedInstallmentsValue = it.toString()
             } else {
-                payiedInstallmentsValue = model.valueOfPayInstallments.toString()
+                viewModel.payiedInstallmentsValue = model.valueOfPayInstallments.toString()
                 binding.allCostPaidEditText.hint = model.valueOfPayInstallments.toString()
             }
         }
         binding.paidInstallmentEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                payiedInstallmentsNumber = it.toString()
+                viewModel.payiedInstallmentsNumber = it.toString()
             } else {
-                payiedInstallmentsNumber = model.numberOfPaidInstallments.toString()
+                viewModel.payiedInstallmentsNumber = model.numberOfPaidInstallments.toString()
                 binding.paidInstallmentEditText.hint = model.numberOfPaidInstallments.toString()
             }
         }
 
         binding.costRemainingInstallmentEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                comingInstallmentsVlaue = it.toString()
+                viewModel.comingInstallmentsVlaue = it.toString()
             } else {
-                comingInstallmentsVlaue = model.valueOfComingInstallments.toString()
-                binding.costRemainingInstallmentEditText.hint = model.valueOfComingInstallments.toString()
+                viewModel.comingInstallmentsVlaue = model.valueOfComingInstallments.toString()
+                binding.costRemainingInstallmentEditText.hint =
+                    model.valueOfComingInstallments.toString()
             }
         }
 
         binding.remainingInstallmentEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                comingInstallmentsVlaue = it.toString()
+                viewModel.comingInstallmentsVlaue = it.toString()
             } else {
-                comingInstallmentsVlaue = model.valueOfComingInstallments.toString()
-                binding.remainingInstallmentEditText.hint = model.valueOfComingInstallments.toString()
+                viewModel.comingInstallmentsVlaue = model.valueOfComingInstallments.toString()
+                binding.remainingInstallmentEditText.hint =
+                    model.valueOfComingInstallments.toString()
             }
         }
 
         binding.payDayEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                dayOfPaying = it.toString()
+                viewModel.dayOfPaying = it.toString()
             } else {
-                dayOfPaying = model.monthlyDayOfPaying.toString()
+                viewModel.dayOfPaying = model.monthlyDayOfPaying.toString()
                 binding.payDayEditText.hint = model.monthlyPay.toString()
             }
         }
 
         binding.startDateEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                startDate = it.toString()
+                viewModel.startDate = it.toString()
             } else {
-                startDate = model.startDate.toString()
+                viewModel.startDate = model.startDate.toString()
                 binding.startDateEditText.hint = model.startDate.toString()
             }
         }
 
         binding.modelOfCarEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                carModel = it.toString()
+                viewModel.carModel = it.toString()
             } else {
-                carModel = model.nameOfBoughtItems.toString()
+                viewModel.carModel = model.nameOfBoughtItems.toString()
                 binding.modelOfCarEditText.hint = model.nameOfBoughtItems.toString()
             }
         }
 
         binding.montthlyPayEditText.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                monthlyPayValue = it.toString()
+                viewModel.monthlyPayValue = it.toString()
             } else {
-                monthlyPayValue = model.monthlyPay.toString()
+                viewModel.monthlyPayValue = model.monthlyPay.toString()
                 binding.montthlyPayEditText.hint = model.monthlyPay.toString()
             }
         }
 
         binding.theNote.doAfterTextChanged {
             if (it.toString().isNotEmpty()) {
-                note = it.toString()
+                viewModel.myNote = it.toString()
             } else {
-                note = model.note.toString()
+                viewModel.myNote = model.note.toString()
                 binding.theNote.hint = model.note.toString()
             }
         }
@@ -299,6 +286,12 @@ class DetailsFragment : Fragment() {
             theNote.setText(model.note)
             //القسط
             montthlyPayEditText.setText(model.monthlyPay)
+        }
+    }
+
+    private fun saveNewData() {
+        GlobalScope.launch {
+            viewModel.saveData(model)
         }
     }
 }
