@@ -5,11 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.FragmentDetailsBinding
 import com.example.paymentapp.peresentation.recyclerView.HistoryAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
 
 class DetailsFragment : Fragment() {
 
@@ -17,6 +22,8 @@ class DetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var model: BaseModel
     private lateinit var adapter: HistoryAdapter
+    private lateinit var myList: ArrayList<String>
+    private val viewModel: DetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,11 +37,45 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setViews()
         setupHistoryRV()
+        setOnClicks()
+    }
+
+    private fun setOnClicks() {
+        binding.btnPay.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.Main) {
+                it.isClickable = false
+                try {
+                    val calendar = Calendar.getInstance()
+                    val day = calendar.get(Calendar.DAY_OF_MONTH)
+                    val month = calendar.get(Calendar.MONTH)
+                    val year = calendar.get(Calendar.YEAR)
+                    val currentDate = "${year}/${month}/${day}"
+                    viewModel.addDateToItem(model, currentDate)
+                    myList.add(currentDate)
+                    adapter.notifyDataSetChanged()
+                } catch (_: Exception) {
+                }
+                it.isClickable = true
+            }
+        }
+
+        binding.btnDidnotPay.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.Main) {
+                it.isClickable = false
+                try {
+                    viewModel.removeLastDateFromItem(model)
+                    myList.remove(myList[myList.size - 1])
+                    adapter.notifyDataSetChanged()
+                } catch (_: Exception) {
+                }
+                it.isClickable = true
+            }
+        }
     }
 
     private fun setupHistoryRV() {
         try {
-            val myList = model.historyList.split(",") as ArrayList
+            myList = model.historyList.split(",") as ArrayList
             adapter = HistoryAdapter(myList)
             binding.rvHistoryView.adapter = adapter
             binding.rvHistoryView.layoutManager = LinearLayoutManager(requireActivity())
@@ -68,7 +109,7 @@ class DetailsFragment : Fragment() {
             )
             //عدد اللاقساط المتبقيه
             remainingInstallmentEditText.setText(
-                "${model.numberOfTotalInstallments-model.numberOfPaidInstallments}"
+                "${model.numberOfTotalInstallments - model.numberOfPaidInstallments}"
             )
             //يوم السداد
             payDayEditText.setText(model.monthlyDayOfPaying)
