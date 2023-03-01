@@ -67,9 +67,10 @@ class HomeViewModel : ViewModel() {
             "12/3/2023",
             "12/1/2023",
             "botato",
-        "1500",
-        "500",
-        "")
+            "1500",
+            "500",
+            additionMoney = "50"
+        )
     }
 
     fun setFirstData(boolean: Boolean) {
@@ -80,8 +81,8 @@ class HomeViewModel : ViewModel() {
         _newItemInserted.value = boolean
     }
 
-    fun setIsSearch(boolean:Boolean){
-      _isSearch.value=boolean
+    fun setIsSearch(boolean: Boolean) {
+        _isSearch.value = boolean
     }
 
     suspend fun resetArrayList() {
@@ -90,17 +91,17 @@ class HomeViewModel : ViewModel() {
     }
 
     suspend fun removeItemOf(position: Int) {
-        val item =_dataList.value!!.get(position)
+        val item = _dataList.value!!.get(position)
         _dataList.value!!.remove(item)
-            deleteFromRoom(item)
+        deleteFromRoom(item)
     }
 
-    fun removeItemFromDataList(item : BaseModel){
+    fun removeItemFromDataList(item: BaseModel) {
         _dataList.value!!.remove(item)
     }
 
     fun setIsNormalMode(b: Boolean) {
-       _normalMode.value=b
+        _normalMode.value = b
     }
 
 }
