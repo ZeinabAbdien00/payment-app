@@ -1,7 +1,6 @@
 package com.example.paymentapp.data.models
 
 import android.os.Parcelable
-import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
@@ -25,14 +24,13 @@ data class BaseModel (
 
     @PrimaryKey(autoGenerate = true) var id :Int =0
     // add to this list when person starts to pay the first month
-    var historyList : String = ""
-    // after getting the percentage do your math and set this value
+    lateinit var historyList : ArrayList<String>
     // how much did he paid until now
-    var valueOfPayInstallments : String = ""
+    var valueOfPayInstallments : String = "0"
     // how many Installments did he pay untill now
     var numberOfPaidInstallments :Int = 0
     // how much money is left to pay
-    var valueOfComingInstallments:String = ""
+    var valueOfComingInstallments:String = "0"
     // how many Installments are left
     var numberOfComingInstallments : Int =0
     //number of months that didnot pay yet
@@ -45,7 +43,6 @@ data class BaseModel (
     var userPaidToday = false
 
     init {
-        Log.d("mohamed", ": hello from " + name)
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         if (day.toString() == monthlyDayOfPaying&&!oneWasAdded){

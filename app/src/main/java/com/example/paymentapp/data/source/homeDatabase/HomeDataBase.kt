@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.paymentapp.data.models.BaseModel
+import com.example.paymentapp.globalUse.Converters
 
 
+@TypeConverters(Converters::class)
 @Database(entities = [BaseModel::class], version = 1)
 abstract class HomeDataBase : RoomDatabase() {
 
