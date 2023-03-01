@@ -49,12 +49,12 @@ class DetailsFragment : Fragment() {
             //السعر قبل الزياده
             priceBeforeTaxEditText.setText(model.priceWithoutAddition)
             //نسبة الفائدة
-            ratioEditText.setText(model.addintionPercentage.toString())
+            ratioEditText.setText("${model.addintionPercentage} %")
             //قيمة الفائدة
             priceTaxEditText.setText(model.additionMoney)
             //السعر بعد الفائدة
             priceAfterTaxEditText.setText(model.priceAfterAddition)
-            //السعر الاجمالي
+            // الاقساط الكلية عدد
             allCostEditText.setText(model.numberOfTotalInstallments.toString())
             //قيمة الاقساط المسددة
             allCostPaidEditText.setText(model.valueOfPayInstallments)
@@ -67,7 +67,9 @@ class DetailsFragment : Fragment() {
                         ).toString()
             )
             //عدد اللاقساط المتبقيه
-            remainingInstallmentEditText.setText(model.numberOfComingInstallments.toString())
+            remainingInstallmentEditText.setText(
+                "${model.numberOfTotalInstallments-model.numberOfPaidInstallments}"
+            )
             //يوم السداد
             payDayEditText.setText(model.monthlyDayOfPaying)
             //تاريخ البداية
