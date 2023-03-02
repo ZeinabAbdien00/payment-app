@@ -9,12 +9,14 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.paymentapp.MainActivity
 import com.example.paymentapp.R
+import com.example.paymentapp.data.dataStore.DataStoreImpl
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
 import com.example.paymentapp.data.source.homeDatabase.HomeDataBase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,8 +27,13 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class NotificationReceiver : BroadcastReceiver() {
+
+    @Inject
+    lateinit var dataStore: DataStoreImpl
 
     private lateinit var repository: BaseRepository
 
@@ -40,17 +47,17 @@ class NotificationReceiver : BroadcastReceiver() {
                 context,
                 requestCode,
                 intent,
-                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+                PendingIntent.FLAG_CANCEL_CURRENT)
 
         }
 
-        fun startAlarm(context: Context) {
+        fun startAlarm(context: Context,hour:Int,minute:Int) {
 
             val pendingIntent = getIntent(context, REQUEST_TIMER1)
             val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
             // trigger at 6:30pm
-            val alarmTime = LocalTime.of(21, 48)
+            val alarmTime = LocalTime.of(hour, minute)
             var now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
             if (now.toLocalTime().isAfter(alarmTime)) {
                 now = now.plusDays(1)
@@ -89,6 +96,7 @@ class NotificationReceiver : BroadcastReceiver() {
         for (i in namedData) {
             stringData += i + "\n"
         }
+        if (stringData.isEmpty()) stringData = "لا يوجد عملاء اليوم"
         return stringData
     }
 
@@ -102,7 +110,10 @@ class NotificationReceiver : BroadcastReceiver() {
             laterCustomInit()
             val dao = HomeDataBase.getInstance(context).myDao()
             repository = BaseRepository(dao)
-            showNotification(context, "العملاء اليوم", todayData(), 123)
+            val useNotifications = dataStore.getUseNotifications()
+            if (useNotifications) {
+                showNotification(context, "العملاء اليوم", todayData(), 123)
+            }
         }
     }
 
@@ -110,15 +121,14 @@ class NotificationReceiver : BroadcastReceiver() {
 
         GlobalScope.launch {
             val namedData = getAllFromRoom()
-
-
-            for (i in namedData){
+            for (i in namedData) {
                 i.customInit()
                 updateModel(i)
             }
 
         }
     }
+
     private suspend fun updateModel(model: BaseModel) = withContext(Dispatchers.IO) {
         repository.update(model)
     }
@@ -130,18 +140,32 @@ class NotificationReceiver : BroadcastReceiver() {
         message: String?,
         reqCode: Int,
     ) {
-        val CHANNEL_ID = "channel_name" // The id of the channel.
+
+        val intent = Intent(context, MainActivity::class.java)
+        val pendingIntent: PendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_ONE_SHOT
+            )
+        }
+
+        val CHANNEL_ID = "main_chanel" // The id of the channel.
         val notificationBuilder: NotificationCompat.Builder =
             NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_delete)
+                .setSmallIcon(R.drawable.app_icon)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name: CharSequence = "Channel Name" // The user-visible name of the channel.
+            val name: CharSequence = "Main Notification Channel" // The user-visible name of the channel.
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
             notificationManager.createNotificationChannel(mChannel)
@@ -150,6 +174,6 @@ class NotificationReceiver : BroadcastReceiver() {
             reqCode,
             notificationBuilder.build()
         )
-        Log.d("showNotification", "showNotification: $reqCode")
+       // Log.d("showNotification", "showNotification: $reqCode")
     }
 }
