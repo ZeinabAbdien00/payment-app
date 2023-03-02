@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -44,6 +45,49 @@ class DetailsFragment : Fragment() {
         setOnClicks()
         setInitials()
         setOnChangeLogic()
+        setAddEditTextChanged()
+    }
+
+    private fun setAddEditTextChanged() {
+        binding.apply {
+
+            ratioEditText.addTextChangedListener {
+
+                if (ratioEditText.text.contains(" ")) {
+                    val o = ratioEditText.text.toString().split(" ")
+                    val percentage = (o[0].toFloat() / 100)
+                    ratioChanged(percentage)
+                } else if (ratioEditText.text.contains("%")) {
+                    val o = ratioEditText.text.toString().split("%")
+                    val percentage = (o[0].toFloat() / 100)
+                    ratioChanged(percentage)
+                }
+            }
+
+            allCostEditText.addTextChangedListener {
+
+                remainingInstallmentEditText.setText((allCostEditText.text.toString()
+                    .toFloat() - paidInstallmentEditText.text.toString().toFloat()).toString())
+
+                montthlyPayEditText.setText((priceAfterTaxEditText.text.toString()
+                    .toFloat() / allCostEditText.text.toString().toFloat()).toString())
+
+            }
+        }
+    }
+
+    private fun ratioChanged(percentage: Float) {
+
+        binding.apply {
+            priceAfterTaxEditText.setText((priceBeforeTaxEditText.text.toString()
+                .toFloat() * (percentage + 1)).toString())
+            priceTaxEditText.setText((priceBeforeTaxEditText.text.toString()
+                .toFloat() * percentage).toString())
+            montthlyPayEditText.setText((priceAfterTaxEditText.text.toString()
+                .toFloat() / allCostEditText.text.toString().toFloat()).toString())
+        }
+
+
     }
 
     private fun setInitials() {
@@ -215,8 +259,6 @@ class DetailsFragment : Fragment() {
             saveNewData()
 
 
-
-
         }
 
 
@@ -321,6 +363,6 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun checkIfDataChanged():Boolean=
-            viewModel.isNewData(model)
+    private fun checkIfDataChanged(): Boolean =
+        viewModel.isNewData(model)
 }
