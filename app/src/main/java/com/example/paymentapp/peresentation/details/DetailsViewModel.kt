@@ -16,6 +16,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
     private val repository: BaseRepository
 
+    var name = ""
     var phone = ""
     var priceBefore = ""
     var benefits = ""
@@ -81,11 +82,13 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
                 model.startDate == startDate &&
                 model.nameOfBoughtItems == carModel &&
                 model.monthlyPay == monthlyPayValue &&
-                model.note == myNote
+                model.note == myNote &&
+                model.name == name
 
 
 
     suspend fun saveData(model: BaseModel) {
+        model.name = name
         model.phoneNumber = phone
         model.priceWithoutAddition = priceBefore
         model.addintionPercentage = benefits.toFloat()
