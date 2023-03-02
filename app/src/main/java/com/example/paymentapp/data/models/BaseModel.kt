@@ -8,37 +8,47 @@ import java.util.*
 
 @Parcelize
 @Entity
-data class BaseModel (
-    var name : String,
-    var phoneNumber : String,
-    var priceWithoutAddition : String,
-    var addintionPercentage : Float,
-    var numberOfTotalInstallments:Int,   // how many months until done
-    var monthlyDayOfPaying : String,
-    var startDate : String,
-    var nameOfBoughtItems:String,
-    var priceAfterAddition : String,
-    var monthlyPay : String,
-    var additionMoney : String
-):Parcelable{
+data class BaseModel(
+    var name: String,
+    var phoneNumber: String,
+    var priceWithoutAddition: String,
+    var addintionPercentage: Float,
+    var numberOfTotalInstallments: Int,   // how many months until done
+    var monthlyDayOfPaying: String,
+    var startDate: String,
+    var nameOfBoughtItems: String,
+    var priceAfterAddition: String,
+    var monthlyPay: String,
+    var additionMoney: String
+) : Parcelable {
 
-    @PrimaryKey(autoGenerate = true) var id :Int =0
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+
     // add to this list when person starts to pay the first month
-    lateinit var historyList : ArrayList<String>
+    lateinit var historyList: ArrayList<String>
+
     // how much did he paid until now
-    var valueOfPayInstallments : String = "0"
+    var valueOfPayInstallments: String = "0"
+
     // how many Installments did he pay untill now
-    var numberOfPaidInstallments :Int = 0
+    var numberOfPaidInstallments: Int = 0
+
     // how much money is left to pay
-    var valueOfComingInstallments:String = "0"
+    var valueOfComingInstallments: String = "0"
+
     // how many Installments are left
-    var numberOfComingInstallments : Int =0
+    var numberOfComingInstallments: Int = 0
+
     //number of months that didnot pay yet
     var numberOfLateMoneyMonths = 0
+
     //notes
-    var note =" "
+    var note = " "
+
     // indicates if we added 1 to late or not if today is paying day
     var oneWasAdded = false
+
     //indicates if user have paid that 1 or not
     var userPaidToday = false
 
@@ -49,17 +59,32 @@ data class BaseModel (
     fun customInit() {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        if (day.toString() == monthlyDayOfPaying&&!oneWasAdded){
-            oneWasAdded=true
+
+        if (day.toString() == monthlyDayOfPaying && !oneWasAdded) {
+            oneWasAdded = true
             numberOfLateMoneyMonths++
-        }else if (day.toString() != monthlyDayOfPaying){
-            oneWasAdded=false
-            userPaidToday=false
+        } else if (day.toString() != monthlyDayOfPaying) {
+            oneWasAdded = false
+            userPaidToday = false
         }
     }
 
-    fun userHavePaidToday(){
-        userPaidToday=true
+    fun userHavePaidToday() {
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        if (monthlyDayOfPaying == day.toString()) {
+            userPaidToday = true
+        }
         numberOfLateMoneyMonths--
     }
+
+    fun undoPay() {
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        if (day.toString() == monthlyDayOfPaying) {
+            userPaidToday = false
+        }
+        numberOfLateMoneyMonths++
+    }
+
 }
