@@ -43,7 +43,6 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             _dataList.value = getAllFromRoom()
             _dataList!!.value!!.sortByDescending { day - it.monthlyDayOfPaying.toInt()}
-            _dataList!!.value!!.sortByDescending { it.numberOfLateMoneyMonths }
         }
     }
 

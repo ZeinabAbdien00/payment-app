@@ -102,9 +102,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 viewModel.setIsSearch(true)
                 searchArrayList.addAll(viewModel.dataList.value!!
                     .filter { it.name.contains(text) }.sortedByDescending {
-                        day - it.monthlyDayOfPaying.toInt() }
+                        day - it.monthlyDayOfPaying.toInt()
+                    }
                 )
-                searchArrayList.sortByDescending { it.numberOfLateMoneyMonths }
+                // searchArrayList.sortByDescending { it.numberOfLateMoneyMonths }
 
                 binding.homeRecyclerView.adapter = secondAdapter
             } else {//if search bar is empty restore all data
@@ -117,11 +118,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         //sorting feature
         binding.sort.setOnClickListener {
             sortItems()
-            binding.homeRecyclerView.adapter!!.notifyItemRangeChanged(0,
-            if (viewModel.isSearch.value==true)
-                searchArrayList.size
-            else viewModel.dataList.value!!.size
-                )
+            binding.homeRecyclerView.adapter!!.notifyItemRangeChanged(
+                0,
+                if (viewModel.isSearch.value == true)
+                    searchArrayList.size
+                else viewModel.dataList.value!!.size
+            )
         }
 
     }
@@ -132,22 +134,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         if (viewModel.isSearch.value == false) {
             if (viewModel.normalMode.value == true) {
                 viewModel.setIsNormalMode(false)
-                viewModel.dataList.value!!.sortByDescending { day - it.monthlyDayOfPaying.toInt()}
-                viewModel.dataList.value!!.sortByDescending { it.numberOfLateMoneyMonths}
+                viewModel.dataList.value!!.sortByDescending { day - it.monthlyDayOfPaying.toInt() }
+                //  viewModel.dataList.value!!.sortByDescending { it.numberOfLateMoneyMonths}
             } else {
                 viewModel.setIsNormalMode(true)
-                viewModel.dataList.value!!.sortBy { day - it.monthlyDayOfPaying.toInt()}
-                viewModel.dataList.value!!.sortBy { it.numberOfLateMoneyMonths}
+                viewModel.dataList.value!!.sortBy { day - it.monthlyDayOfPaying.toInt() }
+                //  viewModel.dataList.value!!.sortBy { it.numberOfLateMoneyMonths}
             }
         } else {
             if (viewModel.normalMode.value == true) {
                 viewModel.setIsNormalMode(false)
-                searchArrayList.sortByDescending { day - it.monthlyDayOfPaying.toInt()}
-                searchArrayList.sortByDescending { it.numberOfLateMoneyMonths}
+                searchArrayList.sortByDescending { day - it.monthlyDayOfPaying.toInt() }
+                // searchArrayList.sortByDescending { it.numberOfLateMoneyMonths}
             } else {
                 viewModel.setIsNormalMode(true)
                 searchArrayList.sortBy { day - it.monthlyDayOfPaying.toInt() }
-                searchArrayList.sortBy { it.numberOfLateMoneyMonths}
+                // searchArrayList.sortBy { it.numberOfLateMoneyMonths}
             }
         }
     }
@@ -188,7 +190,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun removeAfterSwiped(viewHolder: RecyclerView.ViewHolder) {
 
-        val dialogName: AlertDialog.Builder = AlertDialog.Builder(requireContext(),R.style.AlertDialogCustom)
+        val dialogName: AlertDialog.Builder =
+            AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
         dialogName.setTitle("هل تريد حذف هذا العنصر ؟")
 
         dialogName.setPositiveButton("نعم",
