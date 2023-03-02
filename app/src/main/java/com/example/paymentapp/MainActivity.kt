@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
-        NotificationReceiver.startAlarm(this)
+        NotificationReceiver.startAlarm(this,5,30)
         setContentView(view)
         setupNavigation()
         setUpVisibilityOfBottomBar()

@@ -11,6 +11,7 @@ import com.example.paymentapp.globalUse.MyApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
 class HomeViewModel : ViewModel() {
@@ -37,8 +38,11 @@ class HomeViewModel : ViewModel() {
     init {
         val dao = HomeDataBase.getInstance(MyApp.context).myDao()
         repository = BaseRepository(dao)
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
         viewModelScope.launch {
             _dataList.value = getAllFromRoom()
+            _dataList!!.value!!.sortByDescending { day - it.monthlyDayOfPaying.toInt()}
         }
     }
 

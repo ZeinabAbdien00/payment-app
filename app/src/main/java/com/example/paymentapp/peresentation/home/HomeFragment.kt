@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -93,12 +94,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         //search feature
         binding.search.doAfterTextChanged {
             val text = it.toString()
+            val calendar = Calendar.getInstance()
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
             if (text.isNotEmpty()) {
                 searchArrayList.clear()
                 viewModel.setIsSearch(true)
                 searchArrayList.addAll(viewModel.dataList.value!!
-                    .filter { it.name.contains(text) } as ArrayList<BaseModel>
+                    .filter { it.name.contains(text) }.sortedByDescending {
+                        day - it.monthlyDayOfPaying.toInt()
+                    }
                 )
+                // searchArrayList.sortByDescending { it.numberOfLateMoneyMonths }
+
                 binding.homeRecyclerView.adapter = secondAdapter
             } else {//if search bar is empty restore all data
                 viewModel.setIsSearch(false)
@@ -110,26 +118,38 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         //sorting feature
         binding.sort.setOnClickListener {
             sortItems()
-            binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
+            binding.homeRecyclerView.adapter!!.notifyItemRangeChanged(
+                0,
+                if (viewModel.isSearch.value == true)
+                    searchArrayList.size
+                else viewModel.dataList.value!!.size
+            )
         }
+
     }
 
     private fun sortItems() {
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
         if (viewModel.isSearch.value == false) {
             if (viewModel.normalMode.value == true) {
                 viewModel.setIsNormalMode(false)
-                viewModel.dataList.value!!.sortByDescending { it.name }
+                viewModel.dataList.value!!.sortByDescending { day - it.monthlyDayOfPaying.toInt() }
+                //  viewModel.dataList.value!!.sortByDescending { it.numberOfLateMoneyMonths}
             } else {
                 viewModel.setIsNormalMode(true)
-                viewModel.dataList.value!!.sortBy { it.name }
+                viewModel.dataList.value!!.sortBy { day - it.monthlyDayOfPaying.toInt() }
+                //  viewModel.dataList.value!!.sortBy { it.numberOfLateMoneyMonths}
             }
         } else {
             if (viewModel.normalMode.value == true) {
                 viewModel.setIsNormalMode(false)
-                searchArrayList.sortByDescending { it.name }
+                searchArrayList.sortByDescending { day - it.monthlyDayOfPaying.toInt() }
+                // searchArrayList.sortByDescending { it.numberOfLateMoneyMonths}
             } else {
                 viewModel.setIsNormalMode(true)
-                searchArrayList.sortBy { it.name }
+                searchArrayList.sortBy { day - it.monthlyDayOfPaying.toInt() }
+                // searchArrayList.sortBy { it.numberOfLateMoneyMonths}
             }
         }
     }
@@ -170,7 +190,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun removeAfterSwiped(viewHolder: RecyclerView.ViewHolder) {
 
-        val dialogName: AlertDialog.Builder = AlertDialog.Builder(requireContext(),R.style.AlertDialogCustom)
+        val dialogName: AlertDialog.Builder =
+            AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
         dialogName.setTitle("هل تريد حذف هذا العنصر ؟")
 
         dialogName.setPositiveButton("نعم",
