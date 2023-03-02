@@ -48,10 +48,7 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViews()
-
-
         setOnClickListeners()
-
     }
 
     @SuppressLint("SimpleDateFormat")
