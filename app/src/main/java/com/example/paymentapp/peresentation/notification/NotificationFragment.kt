@@ -34,6 +34,7 @@ class NotificationFragment : Fragment() {
         viewModel.notificationsList.observe(viewLifecycleOwner) {
             try {
                 if (viewModel.firstData.value == true) {
+                    viewModel.setFirstData(false)
                     setupRecyclerView()
                 }
             } catch (_: Exception) {
@@ -42,7 +43,8 @@ class NotificationFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = HomeAdapter(viewModel.notificationsList.value!!)
+        val list = viewModel.getList()
+        adapter = HomeAdapter(list)
         binding.notificationsRecycler.adapter = adapter
         adapter.setOnItemClickListener(object : HomeAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {

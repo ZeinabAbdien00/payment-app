@@ -43,4 +43,18 @@ class NotificationViewModel : ViewModel() {
     private suspend fun getAllFromRoom(): ArrayList<BaseModel> = withContext(Dispatchers.IO) {
         repository.getAll() as ArrayList<BaseModel>
     }
+
+    fun getList(): ArrayList<BaseModel> {
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val listOnTop = ArrayList<BaseModel>()
+        listOnTop.addAll(_notificationsList.value!!.filter { it.monthlyDayOfPaying.toInt() == day })
+        var tempList = ArrayList<BaseModel>()
+        tempList.addAll(_notificationsList.value!!.sortedByDescending { it.numberOfLateMoneyMonths })
+        for (i in listOnTop) tempList.remove(i)
+        var listToReturn = ArrayList<BaseModel>()
+        listToReturn.addAll(listOnTop)
+        listToReturn.addAll(tempList)
+        return listToReturn
+    }
 }
