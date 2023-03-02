@@ -3,13 +3,12 @@ package com.example.paymentapp.peresentation.notification
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
 import com.example.paymentapp.data.source.homeDatabase.HomeDataBase
 import com.example.paymentapp.globalUse.MyApp
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.util.*
 
@@ -21,27 +20,28 @@ class NotificationViewModel : ViewModel() {
     private var _firstData: MutableLiveData<Boolean> = MutableLiveData(true)
     val firstData: LiveData<Boolean> = _firstData
 
-    private val repository: BaseRepository
+     val repository: BaseRepository
 
     init {
         val dao = HomeDataBase.getInstance(MyApp.context).myDao()
         repository = BaseRepository(dao)
-        viewModelScope.launch {
-            val calendar = Calendar.getInstance()
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
-            _notificationsList.value = getAllFromRoom().filter {
-                it.monthlyDayOfPaying == day.toString() ||
-                        it.numberOfLateMoneyMonths > 0
-            } as ArrayList<BaseModel>
-        }
+        _notificationsList.value= ArrayList()
+ //       viewModelScope.launch {
+ //           val calendar = Calendar.getInstance()
+//            val day = calendar.get(Calendar.DAY_OF_MONTH)
+//            _notificationsList.value!!.addAll(getAllFromRoom().first().filter {
+//                it.monthlyDayOfPaying == day.toString() ||
+//                        it.numberOfLateMoneyMonths > 0
+//            } )
+//        }
     }
 
     fun setFirstData(boolean: Boolean) {
         _firstData.value = boolean
     }
 
-    private suspend fun getAllFromRoom(): ArrayList<BaseModel> = withContext(Dispatchers.IO) {
-        repository.getAll() as ArrayList<BaseModel>
+    suspend fun getAllFromRoom(): Flow<List<BaseModel>> = withContext(Dispatchers.IO) {
+        repository.getAllToObserve()
     }
 
     fun getList(): ArrayList<BaseModel> {
@@ -57,4 +57,15 @@ class NotificationViewModel : ViewModel() {
         listToReturn.addAll(tempList)
         return listToReturn
     }
+
+    suspend fun resetArrayList(baseModels: List<BaseModel>) {
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        _notificationsList.value!!.clear()
+        _notificationsList.value!!.addAll(baseModels.filter {
+            it.monthlyDayOfPaying == day.toString() ||
+                    it.numberOfLateMoneyMonths > 0
+        } )
+    }
+
 }

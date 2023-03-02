@@ -8,6 +8,8 @@ import com.example.paymentapp.data.source.homeDatabase.HomeDataBase
 import com.example.paymentapp.globalUse.MyApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -30,7 +32,7 @@ class SplashViewModel @Inject constructor() : ViewModel() {
     }
 
     suspend fun updateList() {
-        val list = getAllFromRoom()
+        val list = getAllFromRoom().first()
         for (model in list) {
             model.customInit()
             updateModel(model)
@@ -41,8 +43,9 @@ class SplashViewModel @Inject constructor() : ViewModel() {
         repository.update(model)
     }
 
-    private suspend fun getAllFromRoom(): ArrayList<BaseModel> = withContext(Dispatchers.IO) {
-        repository.getAll() as ArrayList<BaseModel>
+    private suspend fun getAllFromRoom(): Flow<List<BaseModel>> = withContext(Dispatchers.IO) {
+        repository.getAllToObserve()
     }
 
 }
+

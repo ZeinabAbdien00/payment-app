@@ -64,13 +64,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setObservers() {
         viewModel.dataList.observe(viewLifecycleOwner) {
-            try {
-                if (viewModel.firstData.value == true) {
-                    setupRecyclerView()
-                    viewModel.setFirstData(false)
-                }
-            } catch (_: Exception) {
-            }
+
         }
 
         viewModel.newItemInserted.observe(viewLifecycleOwner) {
@@ -79,6 +73,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 adapter.notifyItemInserted(position)
                 binding.homeRecyclerView.smoothScrollToPosition(position)
                 viewModel.setNewItemInserted(false)
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.getAllFromRoom().collect{
+                    lifecycleScope.launch {
+                        viewModel.resetArrayList(it)
+                        try {
+                            if (viewModel.firstData.value == true) {
+                                setupRecyclerView()
+                                viewModel.setFirstData(false)
+                            }
+                        } catch (_: Exception) {
+                            binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
+                        }
+                    }
+
             }
         }
     }
@@ -195,7 +206,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         dialogName.setTitle("هل تريد حذف هذا العنصر ؟")
 
         dialogName.setPositiveButton("نعم",
-            DialogInterface.OnClickListener { dialogInterface, i ->
+            DialogInterface.OnClickListener { dialogInterface, _ ->
                 lifecycleScope.launch {
                     val position = viewHolder.adapterPosition
                     if (viewModel.isSearch.value == false) {
@@ -218,7 +229,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             })
 
         dialogName.setNegativeButton("لا",
-            DialogInterface.OnClickListener { dialogInterface, i ->
+            DialogInterface.OnClickListener { dialogInterface, _ ->
                 val position = viewHolder.adapterPosition
                 adapter.notifyItemChanged(position)
                 dialogInterface.cancel()
