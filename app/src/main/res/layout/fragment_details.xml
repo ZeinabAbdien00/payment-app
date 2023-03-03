@@ -34,7 +34,7 @@
 
 
             <EditText
-                android:id="@+id/bar_txt"
+                android:id="@+id/client_name"
                 android:layout_width="0dp"
                 android:background="@drawable/edit_text_shape"
                 android:layout_height="wrap_content"
