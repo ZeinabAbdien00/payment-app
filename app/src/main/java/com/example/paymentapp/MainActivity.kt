@@ -1,5 +1,10 @@
 package com.example.paymentapp
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -11,8 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.paymentapp.data.source.notification.alarmManger.NotificationReceiver
 import com.example.paymentapp.databinding.ActivityMainBinding
+import com.example.paymentapp.notifications.NotificationReceiver
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var binding: ActivityMainBinding
+    private var alarmMgr: AlarmManager? = null
+    private lateinit var alarmIntent: PendingIntent
     private val viewModel: MainActivityViewModel by viewModels()
 
     private val pushPermissionLauncher = registerForActivityResult(
@@ -33,12 +40,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
-        NotificationReceiver.startAlarm(this)
+        //   NotificationReceiver.startAlarm(this)
+        setNotificationAlarm()
         setContentView(view)
         setupNavigation()
         setUpVisibilityOfBottomBar()
         setStatusBarGradiant()
         requestForPermission()
+    }
+
+    private fun setNotificationAlarm() {
+        alarmMgr = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmIntent = Intent(this, NotificationReceiver::class.java).let { intent ->
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 19)
+            set(Calendar.MINUTE,55)
+        }
+        alarmMgr?.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            alarmIntent
+        )
+
     }
 
     private fun setupNavigation() {
@@ -51,6 +79,10 @@ class MainActivity : AppCompatActivity() {
     private fun requestForPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             pushPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        if (Build.VERSION.SDK_INT >= 31) {
+            pushPermissionLauncher.launch(android.Manifest.permission.SCHEDULE_EXACT_ALARM)
         }
     }
 
