@@ -48,6 +48,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
             (model.valueOfPayInstallments.toFloat() + model.monthlyPay.toFloat()).toString()
         model.valueOfComingInstallments =
             (model.valueOfComingInstallments.toFloat() - model.monthlyPay.toFloat()).toString()
+        model.userHavePaidToday()
         updateModel(model)
     }
 
@@ -59,6 +60,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
             (model.valueOfPayInstallments.toFloat() - model.monthlyPay.toFloat()).toString()
         model.valueOfComingInstallments =
             (model.valueOfComingInstallments.toFloat() + model.monthlyPay.toFloat()).toString()
+        model.undoPay()
         updateModel(model)
     }
 
@@ -67,8 +69,8 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         repository.update(model)
     }
 
-    //return true if any data was changed
-    fun isNewData(model: BaseModel): Boolean =
+
+     fun isNewData(model: BaseModel): Boolean =
         model.phoneNumber == phone &&
                 model.priceWithoutAddition == priceBefore &&
                 model.addintionPercentage == splitPercentage(benefits) &&

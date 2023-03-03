@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var binding: ActivityMainBinding
-    private val viewModel : MainActivityViewModel by viewModels()
+    private val viewModel: MainActivityViewModel by viewModels()
 
     private val pushPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
-        NotificationReceiver.startAlarm(this)
+        NotificationReceiver.startAlarm(this,5,30)
         setContentView(view)
         setupNavigation()
         setUpVisibilityOfBottomBar()
@@ -62,14 +62,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpVisibilityOfBottomBar() {
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.passwordFragment){
+            if (destination.id == R.id.splashFragment) {
                 navHostFragment.navController.graph.setStartDestination(R.id.homeFragment)
             }
 
             when (destination.id) {
-                R.id.homeFragment, R.id.notificationsFragment, R.id.moreFragment ->
+                R.id.homeFragment, R.id.notificationsFragment, R.id.moreFragment -> {
                     bottomNavigationView.visibility = View.VISIBLE
-                else -> bottomNavigationView.visibility = View.GONE
+                }
+                else -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
             }
         }
     }
