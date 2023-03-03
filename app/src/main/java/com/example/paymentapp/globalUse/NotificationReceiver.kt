@@ -58,7 +58,9 @@ class NotificationReceiver : BroadcastReceiver() {
             val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
             // trigger at 6:30pm
+
             val alarmTime = LocalTime.of(hour, minute)
+
             var now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
             if (now.toLocalTime().isAfter(alarmTime)) {
                 now = now.plusDays(1)

@@ -1,9 +1,11 @@
 package com.example.paymentapp.peresentation.details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -34,19 +36,49 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentDetailsBinding.inflate(layoutInflater)
+        binding.saveBtn.isEnabled = false
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setViews()
         setupHistoryRV()
-        setOnClicks()
         setInitials()
+        setOnClicks()
         setOnChangeLogic()
     }
 
+
+    private fun splitRatio(): Float {
+        binding.apply {
+            if (ratioEditText.text.contains(" ")) {
+                val o = ratioEditText.text.toString().split(" ")
+                return (o[0].toFloat() / 100)
+
+            } else if (ratioEditText.text.contains("%")) {
+                val o = ratioEditText.text.toString().split("%")
+                return (o[0].toFloat() / 100)
+            }else{
+                return ratioEditText.text.toString().toFloat()
+            }
+        }
+    }
+
+    private fun ratioChanged(percentage: Float) {
+        binding.apply {
+            priceAfterTaxEditText.setText((priceBeforeTaxEditText.text.toString()
+                .toFloat() * (percentage + 1)).toString())
+            priceTaxEditText.setText((priceBeforeTaxEditText.text.toString()
+                .toFloat() * percentage).toString())
+            montthlyPayEditText.setText((priceAfterTaxEditText.text.toString()
+                .toFloat() / allCostEditText.text.toString().toFloat()).toString())
+        }
+    }
+
     private fun setInitials() {
+        viewModel.name = model.name
         viewModel.phone = model.phoneNumber
         viewModel.priceBefore = model.priceWithoutAddition
         viewModel.benefits = model.addintionPercentage.toString()
@@ -65,145 +97,186 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setOnChangeLogic() {
-        binding.numberEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.phone = it.toString()
-            } else {
-                viewModel.phone = model.phoneNumber
-                binding.numberEditText.hint = model.phoneNumber
-            }
-        }
 
-        binding.priceBeforeTaxEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.priceBefore = it.toString()
-            } else {
-                viewModel.priceBefore = model.priceWithoutAddition
-                binding.priceBeforeTaxEditText.hint = model.priceWithoutAddition
-            }
-        }
-        binding.ratioEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.benefits = it.toString()
-            } else {
-                viewModel.benefits = model.priceWithoutAddition
-                binding.ratioEditText.hint = model.addintionPercentage.toString()
-            }
-        }
+        binding.apply {
 
-        binding.priceTaxEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.benefitsValue = it.toString()
-            } else {
-                viewModel.benefitsValue = model.additionMoney
-                binding.priceTaxEditText.hint = model.additionMoney.toString()
+            clientName.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.name = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.name = model.name
+                }
+            }
+
+            numberEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.phone = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.phone = model.phoneNumber
+                }
+            }
+
+            priceBeforeTaxEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.priceBefore = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.priceBefore = model.priceWithoutAddition
+                }
+            }
+
+            ratioEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    binding.saveBtn.isEnabled = true
+                    viewModel.benefits = it.toString()
+                    ratioChanged(splitRatio())
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.benefits = model.priceWithoutAddition
+                }
+            }
+
+            priceTaxEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.benefitsValue = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.benefitsValue = model.additionMoney
+                }
+            }
+
+            priceAfterTaxEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.priceAfter = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.priceAfter = model.priceAfterAddition
+                }
+            }
+
+            allCostEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    binding.saveBtn.isEnabled = true
+                    viewModel.totalInstallmentsNumber = it.toString()
+                    remainingInstallmentEditText.setText((allCostEditText.text.toString()
+                        .toFloat() - paidInstallmentEditText.text.toString().toFloat()).toString())
+
+                    montthlyPayEditText.setText((priceAfterTaxEditText.text.toString()
+                        .toFloat() / allCostEditText.text.toString().toFloat()).toString())
+                } else {
+                    binding.saveBtn.isEnabled = false
+                }
+            }
+
+            allCostPaidEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.payiedInstallmentsValue = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                }
+            }
+
+            paidInstallmentEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.payiedInstallmentsNumber = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                }
+            }
+
+            costRemainingInstallmentEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.comingInstallmentsVlaue = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.comingInstallmentsVlaue = model.valueOfComingInstallments
+                }
+            }
+
+            remainingInstallmentEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.comingInstallmentsVlaue = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.comingInstallmentsVlaue = model.valueOfComingInstallments
+                }
+            }
+
+            payDayEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.dayOfPaying = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.dayOfPaying = model.monthlyDayOfPaying
+                }
+            }
+
+            startDateEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.startDate = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.startDate = model.startDate
+                }
+            }
+
+            modelOfCarEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.carModel = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.carModel = model.nameOfBoughtItems
+                }
+            }
+
+            montthlyPayEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.monthlyPayValue = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.monthlyPayValue = model.monthlyPay
+                }
+            }
+
+            theNote.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    binding.saveBtn.isEnabled = true
+                    viewModel.myNote = it.toString()
+                } else {
+                    binding.saveBtn.isEnabled = false
+                    viewModel.myNote = model.note
+                }
             }
         }
-
-        binding.priceAfterTaxEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.priceAfter = it.toString()
-            } else {
-                viewModel.priceAfter = model.priceAfterAddition
-                binding.priceAfterTaxEditText.hint = model.priceAfterAddition.toString()
-            }
-        }
-
-        binding.allCostEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.totalInstallmentsNumber = it.toString()
-            } else {
-                viewModel.totalInstallmentsNumber = model.numberOfTotalInstallments.toString()
-                binding.allCostEditText.hint = model.numberOfTotalInstallments.toString()
-            }
-        }
-
-        binding.allCostPaidEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.payiedInstallmentsValue = it.toString()
-            } else {
-                viewModel.payiedInstallmentsValue = model.valueOfPayInstallments.toString()
-                binding.allCostPaidEditText.hint = model.valueOfPayInstallments.toString()
-            }
-        }
-        binding.paidInstallmentEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.payiedInstallmentsNumber = it.toString()
-            } else {
-                viewModel.payiedInstallmentsNumber = model.numberOfPaidInstallments.toString()
-                binding.paidInstallmentEditText.hint = model.numberOfPaidInstallments.toString()
-            }
-        }
-
-        binding.costRemainingInstallmentEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.comingInstallmentsVlaue = it.toString()
-            } else {
-                viewModel.comingInstallmentsVlaue = model.valueOfComingInstallments.toString()
-                binding.costRemainingInstallmentEditText.hint =
-                    model.valueOfComingInstallments.toString()
-            }
-        }
-
-        binding.remainingInstallmentEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.comingInstallmentsVlaue = it.toString()
-            } else {
-                viewModel.comingInstallmentsVlaue = model.valueOfComingInstallments.toString()
-                binding.remainingInstallmentEditText.hint =
-                    model.valueOfComingInstallments.toString()
-            }
-        }
-
-        binding.payDayEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.dayOfPaying = it.toString()
-            } else {
-                viewModel.dayOfPaying = model.monthlyDayOfPaying.toString()
-                binding.payDayEditText.hint = model.monthlyPay.toString()
-            }
-        }
-
-        binding.startDateEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.startDate = it.toString()
-            } else {
-                viewModel.startDate = model.startDate.toString()
-                binding.startDateEditText.hint = model.startDate.toString()
-            }
-        }
-
-        binding.modelOfCarEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.carModel = it.toString()
-            } else {
-                viewModel.carModel = model.nameOfBoughtItems.toString()
-                binding.modelOfCarEditText.hint = model.nameOfBoughtItems.toString()
-            }
-        }
-
-        binding.montthlyPayEditText.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.monthlyPayValue = it.toString()
-            } else {
-                viewModel.monthlyPayValue = model.monthlyPay.toString()
-                binding.montthlyPayEditText.hint = model.monthlyPay.toString()
-            }
-        }
-
-        binding.theNote.doAfterTextChanged {
-            if (it.toString().isNotEmpty()) {
-                viewModel.myNote = it.toString()
-            } else {
-                viewModel.myNote = model.note.toString()
-                binding.theNote.hint = model.note.toString()
-            }
-        }
-
-
     }
 
     private fun setOnClicks() {
+
+        binding.saveBtn.setOnClickListener {
+            if (!checkIfDataChanged()) {
+                saveNewData()
+            }
+            findNavController().navigateUp()
+        }
+
+
         binding.btnPay.setOnClickListener {
             lifecycleScope.launch(Dispatchers.Main) {
                 it.isClickable = false
@@ -256,9 +329,9 @@ class DetailsFragment : Fragment() {
     private fun setViews() {
         model = args.model
         binding.apply {
-
-            barTxt.setText(model.name)
-
+            //اسم العميل
+            clientName.setText(model.name)
+            //رقم العميل
             numberEditText.setText(model.phoneNumber)
             //السعر قبل الزياده
             priceBeforeTaxEditText.setText(model.priceWithoutAddition)
@@ -276,14 +349,9 @@ class DetailsFragment : Fragment() {
             paidInstallmentEditText.setText(model.numberOfPaidInstallments.toString())
             //قيمة الاقساط المتبقيه
             costRemainingInstallmentEditText.setText(
-                (
-                        model.priceAfterAddition.toFloat() - model.valueOfPayInstallments.toFloat()
-                        ).toString()
-            )
+                (model.priceAfterAddition.toFloat() - model.valueOfPayInstallments.toFloat()).toString())
             //عدد اللاقساط المتبقيه
-            remainingInstallmentEditText.setText(
-                "${model.numberOfTotalInstallments - model.numberOfPaidInstallments}"
-            )
+            remainingInstallmentEditText.setText("${model.numberOfTotalInstallments - model.numberOfPaidInstallments}")
             //يوم السداد
             payDayEditText.setText(model.monthlyDayOfPaying)
             //تاريخ البداية
@@ -305,6 +373,6 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun checkIfDataChanged():Boolean=
-            viewModel.isNewData(model)
+    private fun checkIfDataChanged(): Boolean =
+        viewModel.isNewData(model)
 }

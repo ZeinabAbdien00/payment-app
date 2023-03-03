@@ -1,5 +1,6 @@
 package com.example.paymentapp.peresentation.details
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
@@ -16,6 +17,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
     private val repository: BaseRepository
 
+    var name = ""
     var phone = ""
     var priceBefore = ""
     var benefits = ""
@@ -67,10 +69,11 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         repository.update(model)
     }
 
+
      fun isNewData(model: BaseModel): Boolean =
         model.phoneNumber == phone &&
                 model.priceWithoutAddition == priceBefore &&
-                model.addintionPercentage == benefits.toFloat() &&
+                model.addintionPercentage == splitPercentage(benefits) &&
                 model.additionMoney == benefitsValue &&
                 model.priceAfterAddition == priceAfter &&
                 model.numberOfTotalInstallments == totalInstallmentsNumber.toInt() &&
@@ -82,14 +85,29 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
                 model.startDate == startDate &&
                 model.nameOfBoughtItems == carModel &&
                 model.monthlyPay == monthlyPayValue &&
-                model.note == myNote
+                model.note == myNote &&
+                model.name == name
 
 
+    private fun splitPercentage(benefits:String): Float {
+
+        if (benefits.contains(" ")) {
+            val o = benefits.split(" ")
+            return (o[0].toFloat())
+        } else if (benefits.contains("%")) {
+            val o = benefits.split("%")
+            return (o[0].toFloat())
+        }else{
+            return benefits.toFloat()
+        }
+    }
 
     suspend fun saveData(model: BaseModel) {
+
+        model.name = name
         model.phoneNumber = phone
         model.priceWithoutAddition = priceBefore
-        model.addintionPercentage = benefits.toFloat()
+        model.addintionPercentage = splitPercentage(benefits)
         model.additionMoney = benefitsValue
         model.priceAfterAddition = priceAfter
         model.numberOfTotalInstallments = totalInstallmentsNumber.toInt()
