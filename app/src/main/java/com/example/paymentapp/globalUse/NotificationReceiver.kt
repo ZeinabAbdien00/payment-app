@@ -19,6 +19,7 @@ import com.example.paymentapp.data.source.homeDatabase.HomeDataBase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
@@ -100,8 +101,8 @@ class NotificationReceiver : BroadcastReceiver() {
         return stringData
     }
 
-    private suspend fun getAllFromRoom(): ArrayList<BaseModel> = withContext(Dispatchers.IO) {
-        repository.getAll() as ArrayList<BaseModel>
+    private suspend fun getAllFromRoom(): List<BaseModel> = withContext(Dispatchers.IO) {
+        repository.getAllToObserve().first()
     }
 
     override fun onReceive(context: Context, intent: Intent) {

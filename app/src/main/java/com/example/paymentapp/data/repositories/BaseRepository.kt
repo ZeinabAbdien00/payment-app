@@ -3,14 +3,15 @@ package com.example.paymentapp.data.repositories
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.source.homeDatabase.HomeDao
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class BaseRepository(
-private val myDao: HomeDao
+    private val myDao: HomeDao
 ) {
 
-    suspend fun getAll(): List<BaseModel> = withContext(Dispatchers.IO) {
-        myDao.getAll()
+    suspend fun getAllToObserve(): Flow<List<BaseModel>> = withContext(Dispatchers.IO) {
+        myDao.getAllToObserve()
     }
 
     suspend fun insert(modelClass: BaseModel) {
