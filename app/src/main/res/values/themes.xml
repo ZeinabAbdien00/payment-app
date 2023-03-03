@@ -40,4 +40,9 @@
         <item name="colorAccent">@color/dark_green</item>
     </style>
 
+    <style name="CustomActionBarTheme"
+        parent="@android:style/Theme.Holo">
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
 </resources>
