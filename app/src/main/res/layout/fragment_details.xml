@@ -547,7 +547,7 @@
 
                 android:layout_marginTop="20dp"
                 android:background="@drawable/light_ripple"
-                android:backgroundTint="@color/green"
+                android:backgroundTint="@color/light_green_500"
                 android:text="دفع اليوم"
                 android:textColor="@color/black"
                 android:textSize="12sp"
@@ -562,7 +562,7 @@
 
                 android:layout_marginTop="10dp"
                 android:background="@drawable/light_ripple"
-                android:backgroundTint="@color/red"
+                android:backgroundTint="@color/gray"
                 android:text="لم يدفع"
                 android:textColor="@color/light_green_300"
                 android:textSize="12sp"

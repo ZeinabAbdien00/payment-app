@@ -42,7 +42,8 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
     suspend fun addDateToItem(model: BaseModel, currentDate: String) {
         model.historyList.add(currentDate)
-        model.numberOfPaidInstallments++
+        model.numberOfPaidInstallments ++
+        Log.d("suzan" , model.numberOfPaidInstallments.toString())
         model.numberOfComingInstallments--
         model.valueOfPayInstallments =
             (model.valueOfPayInstallments.toFloat() + model.monthlyPay.toFloat()).toString()
