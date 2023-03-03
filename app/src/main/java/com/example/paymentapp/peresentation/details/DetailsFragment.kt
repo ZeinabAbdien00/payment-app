@@ -1,6 +1,7 @@
 package com.example.paymentapp.peresentation.details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,9 +42,10 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setInitials()
+
         setViews()
         setupHistoryRV()
+        setInitials()
         setOnClicks()
         setOnChangeLogic()
     }
@@ -58,9 +60,10 @@ class DetailsFragment : Fragment() {
             } else if (ratioEditText.text.contains("%")) {
                 val o = ratioEditText.text.toString().split("%")
                 return (o[0].toFloat() / 100)
+            }else{
+                return ratioEditText.text.toString().toFloat()
             }
         }
-        return 0f
     }
 
     private fun ratioChanged(percentage: Float) {
