@@ -1,15 +1,14 @@
 package com.example.paymentapp.data.source.notification.alarmManger
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
+import android.icu.util.Calendar
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.paymentapp.MainActivity
 import com.example.paymentapp.R
 import com.example.paymentapp.data.dataStore.DataStoreImpl
@@ -27,8 +26,8 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
-import java.util.*
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class NotificationReceiver : BroadcastReceiver() {
@@ -52,14 +51,11 @@ class NotificationReceiver : BroadcastReceiver() {
 
         }
 
-        fun startAlarm(context: Context,hour:Int,minute:Int) {
+        fun startAlarm(context: Context) {
 
             val pendingIntent = getIntent(context, REQUEST_TIMER1)
             val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-            // trigger at 6:30pm
-
-            val alarmTime = LocalTime.of(hour, minute)
+            val alarmTime = LocalTime.of(17, 35)
 
             var now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
             if (now.toLocalTime().isAfter(alarmTime)) {
@@ -115,7 +111,7 @@ class NotificationReceiver : BroadcastReceiver() {
             repository = BaseRepository(dao)
             val useNotifications = dataStore.getUseNotifications()
             if (useNotifications) {
-                showNotification(context, "العملاء اليوم", todayData(), 123)
+                createNotification(context, "العملاء اليوم", todayData(), 123)
             }
         }
     }
@@ -136,15 +132,15 @@ class NotificationReceiver : BroadcastReceiver() {
         repository.update(model)
     }
 
-
-    private fun showNotification(
+    private fun createNotification(
         context: Context,
         title: String?,
         message: String?,
-        reqCode: Int,
+        reqCode: Int
     ) {
 
         val intent = Intent(context, MainActivity::class.java)
+
         val pendingIntent: PendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_MUTABLE)
         } else {
@@ -156,27 +152,15 @@ class NotificationReceiver : BroadcastReceiver() {
             )
         }
 
-        val CHANNEL_ID = "main_chanel" // The id of the channel.
-        val notificationBuilder: NotificationCompat.Builder =
-            NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.app_icon)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name: CharSequence = "Main Notification Channel" // The user-visible name of the channel.
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
-            notificationManager.createNotificationChannel(mChannel)
-        }
-        notificationManager.notify(
-            reqCode,
-            notificationBuilder.build()
-        )
-       // Log.d("showNotification", "showNotification: $reqCode")
+        val notification = NotificationCompat.Builder(context, "AB Motors")
+            .setContentTitle(title)
+            .setContentText(message)
+            .setAutoCancel(true)
+            .setSmallIcon(R.drawable.app_icon)
+            .setContentIntent(pendingIntent)
+
+        val notificationManager = NotificationManagerCompat.from(context)
+        notificationManager.notify(reqCode, notification.build())
     }
+
 }
