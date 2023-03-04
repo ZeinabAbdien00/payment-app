@@ -66,18 +66,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.getAllFromRoom().collect{
                     lifecycleScope.launch {
-                        if (viewModel.newItemInserted.value==false) {
                             viewModel.resetArrayList(it)
-                        }else{
-                            val position = viewModel.dataList.value!!.size
-                            adapter.notifyItemInserted(position)
-                            binding.homeRecyclerView.smoothScrollToPosition(position)
-                            viewModel.setNewItemInserted(false)
-                        }
                         try {
                             if (viewModel.firstData.value == true) {
                                 setupRecyclerView()
                                 viewModel.setFirstData(false)
+                            }else{
+                                binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
                             }
                         } catch (_: Exception) {
                             binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
