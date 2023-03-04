@@ -103,8 +103,12 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
             } else {
                 0.0f
             }
-            fullPrice = price + (price * benefits / 100)
+            fullPrice = (price-income) + ((price-income) * benefits / 100)
             binding.fullPrice.text = String.format("%.2f", fullPrice)
+
+            monthlyPay = (fullPrice )/ numberOfMonths
+            binding.installmentText.text = String.format("%.2f", monthlyPay)
+
         }
 
         binding.monthEditText.doAfterTextChanged {
@@ -113,7 +117,7 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
             } else {
                 1
             }
-            monthlyPay = fullPrice / numberOfMonths
+            monthlyPay = (fullPrice) / numberOfMonths
             binding.installmentText.text = String.format("%.2f", monthlyPay)
         }
 
@@ -131,6 +135,11 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
         binding.incomeDialogEditText.doAfterTextChanged {
             if (it!!.isNotEmpty()) {
                 income =it.toString().toFloat()
+                monthlyPay = (fullPrice- income) / numberOfMonths
+                binding.installmentText.text = String.format("%.2f", monthlyPay)
+
+                fullPrice = (price-income)
+                binding.fullPrice.text = String.format("%.2f", fullPrice)
             } else {
                 income =0.0f
             }
