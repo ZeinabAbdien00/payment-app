@@ -21,13 +21,10 @@ class HomeViewModel : ViewModel() {
     private var _firstData: MutableLiveData<Boolean> = MutableLiveData(true)
     val firstData: LiveData<Boolean> = _firstData
 
-    private var _newItemInserted: MutableLiveData<Boolean> = MutableLiveData(false)
-    val newItemInserted: LiveData<Boolean> = _newItemInserted
-
     private var _isSearch: MutableLiveData<Boolean> = MutableLiveData(false)
     val isSearch: LiveData<Boolean> = _isSearch
 
-    private var _normalMode: MutableLiveData<Boolean> = MutableLiveData(false)
+    private var _normalMode: MutableLiveData<Boolean> = MutableLiveData(true)
     val normalMode: LiveData<Boolean> = _normalMode
 
 
@@ -37,44 +34,28 @@ class HomeViewModel : ViewModel() {
     init {
         val dao = HomeDataBase.getInstance(MyApp.context).myDao()
         repository = BaseRepository(dao)
-        _dataList.value= ArrayList()
-        val calendar = Calendar.getInstance()
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-//        viewModelScope.launch {
-//            _dataList.value!!.addAll(getAllFromRoom().first())
-//            _dataList.value!!.sortByDescending { day - it.monthlyDayOfPaying.toInt()}
-//        }
-    }
-
-    suspend fun insertToRoom(model: BaseModel) {
-        _dataList.value!!.add(model)
-        withContext(Dispatchers.IO) {
-            repository.insert(model)
-        }
+        _dataList.value = ArrayList()
     }
 
     suspend fun deleteFromRoom(model: BaseModel) = withContext(Dispatchers.IO) {
         repository.delete(model)
     }
 
-     suspend fun getAllFromRoom(): Flow<List<BaseModel>> = withContext(Dispatchers.IO) {
+    suspend fun getAllFromRoom(): Flow<List<BaseModel>> = withContext(Dispatchers.IO) {
         repository.getAllToObserve()
     }
 
     suspend fun resetArrayList(baseModels: List<BaseModel>) {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        _dataList.value!!.clear()
-        _dataList.value!!.addAll(baseModels)
-        _dataList.value!!.sortByDescending { day - it.monthlyDayOfPaying.toInt()}
+//        _dataList.value!!.clear()
+//        _dataList.value!!.addAll(baseModels)
+        _dataList.value= baseModels as ArrayList<BaseModel>
+        _dataList.value!!.sortByDescending { it.monthlyDayOfPaying.toInt() - day }
     }
 
     fun setFirstData(boolean: Boolean) {
         _firstData.value = boolean
-    }
-
-    fun setNewItemInserted(boolean: Boolean) {
-        _newItemInserted.value = boolean
     }
 
     fun setIsSearch(boolean: Boolean) {
@@ -87,29 +68,23 @@ class HomeViewModel : ViewModel() {
 
     suspend fun removeItemOf(position: Int) {
         val item = _dataList.value!!.get(position)
-        _dataList.value!!.remove(item)
         deleteFromRoom(item)
     }
 
-    fun removeItemFromDataList(item: BaseModel) {
-        _dataList.value!!.remove(item)
+    fun getListForNonNormalMode(day: Int) {
+        val list = ArrayList<BaseModel>()
+        list.addAll(dataList.value!!)
+        list.sortByDescending { day - it.monthlyDayOfPaying.toInt() }
+        _dataList.value!!.clear()
+        _dataList.value!!.addAll(list)
     }
 
-    fun createFakeData(name: String): BaseModel {
-        return BaseModel(
-            name,
-            "01045687563",
-            "2500",
-            0.0f,
-            0,
-            "12/3/2023",
-            "12/1/2023",
-            "botato",
-            "1500",
-            "500",
-            additionMoney = "50",
-            income = 1000.0f
-        )
+    fun getListForNormalMode(day: Int) {
+        val list = ArrayList<BaseModel>()
+        list.addAll(dataList.value!!)
+        list.sortBy { day - it.monthlyDayOfPaying.toInt() }
+        _dataList.value!!.clear()
+        _dataList.value!!.addAll(list)
     }
 
 }

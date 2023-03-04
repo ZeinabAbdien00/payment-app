@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.paymentapp.MainActivity
 import com.example.paymentapp.R
@@ -52,19 +53,17 @@ class NotificationReceiver : BroadcastReceiver() {
 
         }
 
-        fun startAlarm(context: Context,hour:Int,minute:Int) {
+        fun startAlarm(context: Context) {
 
             val pendingIntent = getIntent(context, REQUEST_TIMER1)
             val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-            // trigger at 6:30pm
-
-            val alarmTime = LocalTime.of(hour, minute)
+            val alarmTime = LocalTime.of(5, 30)
 
             var now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
-            if (now.toLocalTime().isAfter(alarmTime)) {
+//            if (now.toLocalTime().isAfter(alarmTime)) {
                 now = now.plusDays(1)
-            }
+//            }
 
             now = now.withHour(alarmTime.hour)
                 .withMinute(alarmTime.minute)
@@ -73,10 +72,9 @@ class NotificationReceiver : BroadcastReceiver() {
                 .toLocalDateTime()
             val triggerAtMillis = utc.atZone(ZoneOffset.UTC)!!.toInstant()!!.toEpochMilli()
 
-            alarm.setInexactRepeating(
+            alarm.setAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 triggerAtMillis,
-                AlarmManager.INTERVAL_DAY,
                 pendingIntent
             )
         }
@@ -93,6 +91,7 @@ class NotificationReceiver : BroadcastReceiver() {
 
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
+
         val namedData = getAllFromRoom().filter { it.monthlyDayOfPaying == day.toString() }
             .map { it.name } as ArrayList
         var stringData = ""
@@ -108,11 +107,12 @@ class NotificationReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
+        startAlarm(context)
         GlobalScope.launch {
-
-            laterCustomInit()
             val dao = HomeDataBase.getInstance(context).myDao()
             repository = BaseRepository(dao)
+            Log.d("mohamed", "showNotification: 1")
+            laterCustomInit()
             val useNotifications = dataStore.getUseNotifications()
             if (useNotifications) {
                 showNotification(context, "العملاء اليوم", todayData(), 123)
@@ -168,7 +168,7 @@ class NotificationReceiver : BroadcastReceiver() {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name: CharSequence = "Main Notification Channel" // The user-visible name of the channel.
+            val name: CharSequence = "Main Notification Channel"
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
             notificationManager.createNotificationChannel(mChannel)
@@ -177,6 +177,6 @@ class NotificationReceiver : BroadcastReceiver() {
             reqCode,
             notificationBuilder.build()
         )
-       // Log.d("showNotification", "showNotification: $reqCode")
+        Log.d("mohamed", "showNotification: $reqCode")
     }
 }

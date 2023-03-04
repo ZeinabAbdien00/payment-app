@@ -21,5 +21,6 @@
     <color name="day_is_today">#32CD32</color>
     <color name="dialog_color">#E4E3E3</color>
     <color name="day_is_today_background">#DAECDA</color>
+    <color name="some_green">#016E53</color>
 
 </resources>
