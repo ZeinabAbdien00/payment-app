@@ -56,15 +56,15 @@ class DetailsFragment : Fragment() {
 
     private fun splitRatio(): Float {
         binding.apply {
-            if (ratioEditText.text.contains(" ")) {
+            return if (ratioEditText.text.contains(" ")) {
                 val o = ratioEditText.text.toString().split(" ")
-                return (o[0].toFloat() / 100)
+                (o[0].toFloat() / 100)
 
             } else if (ratioEditText.text.contains("%")) {
                 val o = ratioEditText.text.toString().split("%")
-                return (o[0].toFloat() / 100)
+                (o[0].toFloat() / 100)
             } else {
-                return ratioEditText.text.toString().toFloat()
+                ratioEditText.text.toString().toFloat()
             }
         }
     }
@@ -83,6 +83,7 @@ class DetailsFragment : Fragment() {
     private fun setInitials() {
         viewModel.name = model.name
         viewModel.phone = model.phoneNumber
+        viewModel
         viewModel.priceBefore = model.priceWithoutAddition
         viewModel.benefits = model.addintionPercentage.toString()
         viewModel.benefitsValue = model.additionMoney
@@ -123,6 +124,15 @@ class DetailsFragment : Fragment() {
                 }
             }
 
+            incomeEditText.addTextChangedListener {
+                priceAfterTaxEditText.setText((priceAfterTaxEditText.toString()
+                    .toFloat() - incomeEditText.toString().toFloat()).toString())
+
+                montthlyPayEditText.setText((priceAfterTaxEditText.toString()
+                    .toFloat() / allCostEditText.toString().toFloat()).toString())
+
+            }
+
             priceBeforeTaxEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     binding.saveBtn.isEnabled = true
@@ -135,7 +145,6 @@ class DetailsFragment : Fragment() {
 
             ratioEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
                     binding.saveBtn.isEnabled = true
                     viewModel.benefits = it.toString()
                     ratioChanged(splitRatio())
@@ -275,15 +284,16 @@ class DetailsFragment : Fragment() {
         binding.saveBtn.setOnClickListener {
             if (!checkIfDataChanged()) {
                 saveNewData()
+                binding.saveBtn.isEnabled = false
             }
-            findNavController().navigateUp()
+//            findNavController().navigateUp()
         }
 
 
         binding.btnPay.setOnClickListener {
 
             if (model.historyList.size == model.numberOfTotalInstallments) {
-                Toast.makeText(requireContext() , "تم سداد جميع الاقساط" , Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "تم سداد جميع الاقساط", Toast.LENGTH_SHORT).show()
             } else {
                 lifecycleScope.launch(Dispatchers.Main) {
                     it.isClickable = false
@@ -293,10 +303,11 @@ class DetailsFragment : Fragment() {
                             val day = calendar.get(Calendar.DAY_OF_MONTH)
                             val month = calendar.get(Calendar.MONTH)
                             val year = calendar.get(Calendar.YEAR)
-                            val currentDate = "${year}/${month}/${day}"
+                            val currentDate = "${year}/${month + 1}/${day}"
                             viewModel.addDateToItem(model, currentDate)
                             adapter.notifyDataSetChanged()
-                            setPayment()
+                            //setPayment()
+                            saveNewData()
                         }
                     } catch (_: Exception) {
                     }
@@ -308,7 +319,7 @@ class DetailsFragment : Fragment() {
         binding.btnDidnotPay.setOnClickListener {
 
             if (model.historyList.size == 0) {
-                Toast.makeText(requireContext() , "لا يوجد اقساط مدفوعه" , Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "لا يوجد اقساط مدفوعه", Toast.LENGTH_SHORT).show()
             } else {
                 lifecycleScope.launch(Dispatchers.Main) {
                     it.isClickable = false
@@ -317,6 +328,7 @@ class DetailsFragment : Fragment() {
                             viewModel.removeLastDateFromItem(model)
                             adapter.notifyDataSetChanged()
                             setViews()
+                            //saveNewData()
                         } catch (_: Exception) {
                         }
                         it.isClickable = true
@@ -363,6 +375,8 @@ class DetailsFragment : Fragment() {
             clientName.setText(model.name)
             //رقم العميل
             numberEditText.setText(model.phoneNumber)
+            //المقدم
+            incomeEditText.setText(model.income.toString())
             //السعر قبل الزياده
             priceBeforeTaxEditText.setText(model.priceWithoutAddition)
             //نسبة الفائدة
