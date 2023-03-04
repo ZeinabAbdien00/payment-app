@@ -11,7 +11,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var alarmMgr: AlarmManager? = null
     private lateinit var alarmIntent: PendingIntent
-    private val viewModel: MainActivityViewModel by viewModels()
 
     private val pushPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -57,8 +55,12 @@ class MainActivity : AppCompatActivity() {
 
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 19)
-            set(Calendar.MINUTE,55)
+            set(Calendar.HOUR_OF_DAY, 11)
+            set(Calendar.MINUTE, 5)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            alarmMgr?.canScheduleExactAlarms()
         }
         alarmMgr?.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
@@ -79,10 +81,6 @@ class MainActivity : AppCompatActivity() {
     private fun requestForPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             pushPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-        }
-
-        if (Build.VERSION.SDK_INT >= 31) {
-            pushPermissionLauncher.launch(android.Manifest.permission.SCHEDULE_EXACT_ALARM)
         }
     }
 

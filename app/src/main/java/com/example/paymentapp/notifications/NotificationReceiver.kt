@@ -35,11 +35,15 @@ class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.d("mohamed", "onReceive: ff")
         GlobalScope.launch{
+            Log.d("mohamed", "onReceive: kk")
             updateRoomData()
+            Log.d("mohamed", "onReceive: cc")
             val dao = HomeDataBase.getInstance(context).myDao()
             repository = BaseRepository(dao)
             val useNotifications = dataStore.getUseNotifications()
+            Log.d("mohamed", "onReceive: aa")
             if (useNotifications) {
+                Log.d("mohamed", "onReceive: oo")
                 createNotification(context, "العملاء اليوم", todayData(), 123)
             }
         }
@@ -61,6 +65,7 @@ class NotificationReceiver : BroadcastReceiver() {
         message: String?,
         reqCode: Int
     ) {
+        Log.d("mohamed", "onReceive: sss")
 
         val intent = Intent(context, MainActivity::class.java)
 
@@ -74,6 +79,7 @@ class NotificationReceiver : BroadcastReceiver() {
                 PendingIntent.FLAG_ONE_SHOT
             )
         }
+        Log.d("mohamed", "onReceive: vvv")
 
         val notification = NotificationCompat.Builder(context, "AB Motors")
             .setContentTitle(title)
@@ -83,6 +89,8 @@ class NotificationReceiver : BroadcastReceiver() {
             .setContentIntent(pendingIntent)
 
         val notificationManager = NotificationManagerCompat.from(context)
+        Log.d("mohamed", "onReceive: oooo")
+
         notificationManager.notify(reqCode, notification.build())
     }
 

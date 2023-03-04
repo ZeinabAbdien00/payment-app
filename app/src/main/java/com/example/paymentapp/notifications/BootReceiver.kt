@@ -8,8 +8,7 @@ import android.content.Intent
 import android.icu.util.Calendar
 
 class BootReceiver :BroadcastReceiver() {
-    private var alarmMgr: AlarmManager? = null
-    private lateinit var alarmIntent: PendingIntent
+
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == "android.intent.action.BOOT_COMPLETED") {
             setNotificationAlarm(context)
@@ -17,6 +16,8 @@ class BootReceiver :BroadcastReceiver() {
     }
 
     private fun setNotificationAlarm(myContext: Context) {
+         var alarmMgr: AlarmManager? = null
+         var alarmIntent: PendingIntent? = null
         alarmMgr = myContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmIntent = Intent(myContext, NotificationReceiver::class.java).let { intent ->
             PendingIntent.getBroadcast(myContext, 0, intent, 0)
