@@ -48,7 +48,7 @@ class DataStoreImpl (
 
     override suspend fun getUseNotifications(): Boolean = withContext(dispatcher) {
         mDataStore.data.map { settings ->
-            settings[booleanPreferencesKey(USE_NOTIFICATIONS)] ?: false
+            settings[booleanPreferencesKey(USE_NOTIFICATIONS)] ?: true
         }.first()
     }
 

@@ -8,7 +8,7 @@ import com.example.paymentapp.data.source.notification.alarmManger.NotificationR
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == "android.intent.action.BOOT_COMPLETED") {
-            NotificationReceiver.startAlarm(context = context, hour = 5, minute = 30)
+            NotificationReceiver.startAlarm(context = context)
         }
     }
 }

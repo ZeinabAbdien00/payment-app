@@ -60,6 +60,15 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
             )
         } else {
             holder.binding.dateOfTheDebt.text = currentItem.monthlyDayOfPaying
+            holder.binding.nameOfCustomer.background= ContextCompat.getDrawable(holder.binding.nameOfCustomer.context
+                , R.color.some_green
+            )
+            holder.binding.btnNavigate.background= ContextCompat.getDrawable(holder.binding.btnNavigate.context
+                , R.drawable.round_button
+            )
+            holder.binding.rvItems.background= ContextCompat.getDrawable(holder.binding.btnNavigate.context
+                , R.color.day_is_today_background
+            )
         }
 
         if (currentItem.numberOfLateMoneyMonths > 0) {

@@ -63,26 +63,31 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setObservers() {
+        viewModel.isSearch.observe(viewLifecycleOwner){
+            if (it){
+                binding.sort.visibility=View.INVISIBLE
+            }else{
+                binding.sort.visibility=View.VISIBLE
+            }
+        }
+
         lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.getAllFromRoom().collect{
-                    lifecycleScope.launch {
-                        if (viewModel.newItemInserted.value==false) {
-                            viewModel.resetArrayList(it)
-                        }else{
-                            val position = viewModel.dataList.value!!.size
-                            adapter.notifyItemInserted(position)
-                            binding.homeRecyclerView.smoothScrollToPosition(position)
-                            viewModel.setNewItemInserted(false)
-                        }
-                        try {
-                            if (viewModel.firstData.value == true) {
-                                setupRecyclerView()
-                                viewModel.setFirstData(false)
-                            }
-                        } catch (_: Exception) {
-                            binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
-                        }
+            viewModel.getAllFromRoom().collect {
+                lifecycleScope.launch {
+                    if (viewModel.firstData.value == false) {
+                        viewModel.resetArrayList(it)
+                        binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
                     }
+                    try {
+                        if (viewModel.firstData.value == true) {
+                            viewModel.resetArrayList(it)
+                            setupRecyclerView()
+                            viewModel.setFirstData(false)
+                        }
+                    } catch (_: Exception) {
+                        binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
+                    }
+                }
             }
         }
     }
@@ -90,7 +95,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setupOnClick() {
         binding.addClient.setOnClickListener {
             //  findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
-            AddClientDialog(viewModel).show(
+            AddClientDialog().show(
                 childFragmentManager, null
             )
         }
@@ -124,38 +129,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             sortItems()
             binding.homeRecyclerView.adapter!!.notifyItemRangeChanged(
                 0,
-                if (viewModel.isSearch.value == true)
-                    searchArrayList.size
-                else viewModel.dataList.value!!.size
+                viewModel.dataList.value!!.size
             )
         }
-
     }
 
     private fun sortItems() {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
+
         if (viewModel.isSearch.value == false) {
-            if (viewModel.normalMode.value == true) {
-                viewModel.setIsNormalMode(false)
-                viewModel.dataList.value!!.sortByDescending { day - it.monthlyDayOfPaying.toInt() }
-                //  viewModel.dataList.value!!.sortByDescending { it.numberOfLateMoneyMonths}
-            } else {
-                viewModel.setIsNormalMode(true)
-                viewModel.dataList.value!!.sortBy { day - it.monthlyDayOfPaying.toInt() }
-                //  viewModel.dataList.value!!.sortBy { it.numberOfLateMoneyMonths}
-            }
-        } else {
-            if (viewModel.normalMode.value == true) {
-                viewModel.setIsNormalMode(false)
-                searchArrayList.sortByDescending { day - it.monthlyDayOfPaying.toInt() }
-                // searchArrayList.sortByDescending { it.numberOfLateMoneyMonths}
-            } else {
-                viewModel.setIsNormalMode(true)
-                searchArrayList.sortBy { day - it.monthlyDayOfPaying.toInt() }
-                // searchArrayList.sortBy { it.numberOfLateMoneyMonths}
-            }
+
+            if (viewModel.normalMode.value == true) viewModel.getListForNonNormalMode(day)
+            else viewModel.getListForNormalMode(day)
         }
+        viewModel.setIsNormalMode(viewModel.normalMode.value != true)
     }
 
     private fun setupRecyclerView() {
@@ -235,7 +223,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         lifecycleScope.launch {
             val item = searchArrayList[position]
             searchArrayList.remove(item)
-            viewModel.removeItemFromDataList(item)
             viewModel.deleteFromRoom(item)
         }
     }
