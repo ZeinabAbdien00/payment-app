@@ -32,7 +32,7 @@ class DetailsFragment : Fragment() {
     private lateinit var adapter: HistoryAdapter
     private lateinit var myList: ArrayList<String>
     private val viewModel: DetailsViewModel by viewModels()
-
+// add income logic
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
