@@ -1,10 +1,12 @@
 package com.example.paymentapp.peresentation.details
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -13,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.paymentapp.R
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.FragmentDetailsBinding
 import com.example.paymentapp.peresentation.recyclerView.HistoryAdapter
@@ -60,7 +63,7 @@ class DetailsFragment : Fragment() {
             } else if (ratioEditText.text.contains("%")) {
                 val o = ratioEditText.text.toString().split("%")
                 return (o[0].toFloat() / 100)
-            }else{
+            } else {
                 return ratioEditText.text.toString().toFloat()
             }
         }
@@ -278,36 +281,46 @@ class DetailsFragment : Fragment() {
 
 
         binding.btnPay.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.Main) {
-                it.isClickable = false
-                try {
-                    if (model.numberOfPaidInstallments < model.numberOfTotalInstallments) {
-                        val calendar = Calendar.getInstance()
-                        val day = calendar.get(Calendar.DAY_OF_MONTH)
-                        val month = calendar.get(Calendar.MONTH)
-                        val year = calendar.get(Calendar.YEAR)
-                        val currentDate = "${year}/${month}/${day}"
-                        viewModel.addDateToItem(model, currentDate)
-                        adapter.notifyDataSetChanged()
-                        setViews()
+
+            if (model.historyList.size == model.numberOfTotalInstallments) {
+                Toast.makeText(requireContext() , "تم سداد جميع الاقساط" , Toast.LENGTH_SHORT).show()
+            } else {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    it.isClickable = false
+                    try {
+                        if (model.numberOfPaidInstallments < model.numberOfTotalInstallments) {
+                            val calendar = Calendar.getInstance()
+                            val day = calendar.get(Calendar.DAY_OF_MONTH)
+                            val month = calendar.get(Calendar.MONTH)
+                            val year = calendar.get(Calendar.YEAR)
+                            val currentDate = "${year}/${month}/${day}"
+                            viewModel.addDateToItem(model, currentDate)
+                            adapter.notifyDataSetChanged()
+                            setPayment()
+                        }
+                    } catch (_: Exception) {
                     }
-                } catch (_: Exception) {
+                    it.isClickable = true
                 }
-                it.isClickable = true
             }
         }
 
         binding.btnDidnotPay.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.Main) {
-                it.isClickable = false
-                if (model.numberOfComingInstallments < model.numberOfTotalInstallments) {
-                    try {
-                        viewModel.removeLastDateFromItem(model)
-                        adapter.notifyDataSetChanged()
-                        setViews()
-                    } catch (_: Exception) {
+
+            if (model.historyList.size == 0) {
+                Toast.makeText(requireContext() , "لا يوجد اقساط مدفوعه" , Toast.LENGTH_SHORT).show()
+            } else {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    it.isClickable = false
+                    if (model.numberOfComingInstallments < model.numberOfTotalInstallments) {
+                        try {
+                            viewModel.removeLastDateFromItem(model)
+                            adapter.notifyDataSetChanged()
+                            setViews()
+                        } catch (_: Exception) {
+                        }
+                        it.isClickable = true
                     }
-                    it.isClickable = true
                 }
             }
         }
@@ -324,6 +337,23 @@ class DetailsFragment : Fragment() {
         adapter = HistoryAdapter(myList)
         binding.rvHistoryView.adapter = adapter
         binding.rvHistoryView.layoutManager = LinearLayoutManager(requireActivity())
+    }
+
+    private fun setPayment() {
+
+        binding.apply {
+            //قيمة الاقساط المسددة
+            allCostPaidEditText.setText(model.valueOfPayInstallments)
+            //عدد الاقساط المدفوعه
+            paidInstallmentEditText.setText(model.numberOfPaidInstallments.toString())
+            //قيمة الاقساط المتبقيه
+            costRemainingInstallmentEditText.setText(
+                (model.priceAfterAddition.toFloat() - model.valueOfPayInstallments.toFloat()).toString())
+            //عدد اللاقساط المتبقيه
+            remainingInstallmentEditText.setText("${model.numberOfTotalInstallments - model.numberOfPaidInstallments}")
+
+        }
+
     }
 
     private fun setViews() {
