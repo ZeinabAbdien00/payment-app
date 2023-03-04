@@ -9,7 +9,7 @@
 
 
     <application
-        android:name=".globalUse.MyApp"
+        android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -40,7 +40,7 @@
         </receiver>
 
         <receiver
-            android:name=".globalUse.BootReceiver"
+            android:name=".receivers.BootReceiver"
             android:enabled="true"
             android:exported="false">
 

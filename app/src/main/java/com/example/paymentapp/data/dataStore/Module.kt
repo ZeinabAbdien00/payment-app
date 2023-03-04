@@ -1,7 +1,7 @@
 package com.example.paymentapp.data.dataStore
 
 import android.content.Context
-import com.example.paymentapp.globalUse.MyApp
+import com.example.paymentapp.MyApp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

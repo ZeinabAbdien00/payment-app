@@ -3,10 +3,10 @@ package com.example.paymentapp.peresentation.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.paymentapp.MyApp
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
 import com.example.paymentapp.data.source.homeDatabase.HomeDataBase
-import com.example.paymentapp.globalUse.MyApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -30,7 +30,6 @@ class HomeViewModel : ViewModel() {
     private var _normalMode: MutableLiveData<Boolean> = MutableLiveData(false)
     val normalMode: LiveData<Boolean> = _normalMode
 
-    var firstTime = true
 
     private val repository: BaseRepository
 
