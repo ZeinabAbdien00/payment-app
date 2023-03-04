@@ -34,14 +34,14 @@ class HomeViewModel : ViewModel() {
     init {
         val dao = HomeDataBase.getInstance(MyApp.context).myDao()
         repository = BaseRepository(dao)
-        _dataList.value= ArrayList()
+        _dataList.value = ArrayList()
     }
 
     suspend fun deleteFromRoom(model: BaseModel) = withContext(Dispatchers.IO) {
         repository.delete(model)
     }
 
-     suspend fun getAllFromRoom(): Flow<List<BaseModel>> = withContext(Dispatchers.IO) {
+    suspend fun getAllFromRoom(): Flow<List<BaseModel>> = withContext(Dispatchers.IO) {
         repository.getAllToObserve()
     }
 
@@ -50,7 +50,7 @@ class HomeViewModel : ViewModel() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         _dataList.value!!.clear()
         _dataList.value!!.addAll(baseModels)
-        _dataList.value!!.sortByDescending {it.monthlyDayOfPaying.toInt()-day}
+        _dataList.value!!.sortByDescending { it.monthlyDayOfPaying.toInt() - day }
     }
 
     fun setFirstData(boolean: Boolean) {
@@ -68,6 +68,22 @@ class HomeViewModel : ViewModel() {
     suspend fun removeItemOf(position: Int) {
         val item = _dataList.value!!.get(position)
         deleteFromRoom(item)
+    }
+
+    fun getListForNonNormalMode(day: Int) {
+        val list = ArrayList<BaseModel>()
+        list.addAll(dataList.value!!)
+        list.sortByDescending { day - it.monthlyDayOfPaying.toInt() }
+        _dataList.value!!.clear()
+        _dataList.value!!.addAll(list)
+    }
+
+    fun getListForNormalMode(day: Int) {
+        val list = ArrayList<BaseModel>()
+        list.addAll(dataList.value!!)
+        list.sortBy { day - it.monthlyDayOfPaying.toInt() }
+        _dataList.value!!.clear()
+        _dataList.value!!.addAll(list)
     }
 
 }
