@@ -24,7 +24,7 @@ class HomeViewModel : ViewModel() {
     private var _isSearch: MutableLiveData<Boolean> = MutableLiveData(false)
     val isSearch: LiveData<Boolean> = _isSearch
 
-    private var _normalMode: MutableLiveData<Boolean> = MutableLiveData(false)
+    private var _normalMode: MutableLiveData<Boolean> = MutableLiveData(true)
     val normalMode: LiveData<Boolean> = _normalMode
 
 
@@ -35,12 +35,6 @@ class HomeViewModel : ViewModel() {
         val dao = HomeDataBase.getInstance(MyApp.context).myDao()
         repository = BaseRepository(dao)
         _dataList.value= ArrayList()
-    }
-
-    suspend fun insertToRoom(model: BaseModel) {
-        withContext(Dispatchers.IO) {
-            repository.insert(model)
-        }
     }
 
     suspend fun deleteFromRoom(model: BaseModel) = withContext(Dispatchers.IO) {
@@ -56,7 +50,7 @@ class HomeViewModel : ViewModel() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         _dataList.value!!.clear()
         _dataList.value!!.addAll(baseModels)
-        _dataList.value!!.sortByDescending { day - it.monthlyDayOfPaying.toInt()}
+        _dataList.value!!.sortByDescending {it.monthlyDayOfPaying.toInt()-day}
     }
 
     fun setFirstData(boolean: Boolean) {
@@ -74,27 +68,6 @@ class HomeViewModel : ViewModel() {
     suspend fun removeItemOf(position: Int) {
         val item = _dataList.value!!.get(position)
         deleteFromRoom(item)
-    }
-
-    fun removeItemFromDataList(item: BaseModel) {
-        _dataList.value!!.remove(item)
-    }
-
-    fun createFakeData(name: String): BaseModel {
-        return BaseModel(
-            name,
-            "01045687563",
-            "2500",
-            0.0f,
-            0,
-            "12/3/2023",
-            "12/1/2023",
-            "botato",
-            "1500",
-            "500",
-            additionMoney = "50",
-            income = 1000.0f
-        )
     }
 
 }

@@ -66,13 +66,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.getAllFromRoom().collect{
                     lifecycleScope.launch {
+                        if (viewModel.firstData.value==false){
                             viewModel.resetArrayList(it)
+                            binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
+                        }
                         try {
                             if (viewModel.firstData.value == true) {
+                                viewModel.resetArrayList(it)
                                 setupRecyclerView()
                                 viewModel.setFirstData(false)
-                            }else{
-                                binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
                             }
                         } catch (_: Exception) {
                             binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
@@ -85,7 +87,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setupOnClick() {
         binding.addClient.setOnClickListener {
             //  findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddClientDialog())
-            AddClientDialog(viewModel).show(
+            AddClientDialog().show(
                 childFragmentManager, null
             )
         }
@@ -230,7 +232,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         lifecycleScope.launch {
             val item = searchArrayList[position]
             searchArrayList.remove(item)
-            viewModel.removeItemFromDataList(item)
             viewModel.deleteFromRoom(item)
         }
     }
