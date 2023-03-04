@@ -63,23 +63,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setObservers() {
-        viewModel.dataList.observe(viewLifecycleOwner) {
-
-        }
-
-        viewModel.newItemInserted.observe(viewLifecycleOwner) {
-            if (it) {
-                val position = viewModel.dataList.value!!.size
-                adapter.notifyItemInserted(position)
-                binding.homeRecyclerView.smoothScrollToPosition(position)
-                viewModel.setNewItemInserted(false)
-            }
-        }
-
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.getAllFromRoom().collect{
                     lifecycleScope.launch {
-                        viewModel.resetArrayList(it)
+                        if (viewModel.newItemInserted.value==false) {
+                            viewModel.resetArrayList(it)
+                        }else{
+                            val position = viewModel.dataList.value!!.size
+                            adapter.notifyItemInserted(position)
+                            binding.homeRecyclerView.smoothScrollToPosition(position)
+                            viewModel.setNewItemInserted(false)
+                        }
                         try {
                             if (viewModel.firstData.value == true) {
                                 setupRecyclerView()
@@ -89,7 +83,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                             binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
                         }
                     }
-
             }
         }
     }
