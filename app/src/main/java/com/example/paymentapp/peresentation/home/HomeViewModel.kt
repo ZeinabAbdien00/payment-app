@@ -48,8 +48,9 @@ class HomeViewModel : ViewModel() {
     suspend fun resetArrayList(baseModels: List<BaseModel>) {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        _dataList.value!!.clear()
-        _dataList.value!!.addAll(baseModels)
+//        _dataList.value!!.clear()
+//        _dataList.value!!.addAll(baseModels)
+        _dataList.value= baseModels as ArrayList<BaseModel>
         _dataList.value!!.sortByDescending { it.monthlyDayOfPaying.toInt() - day }
     }
 

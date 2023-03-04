@@ -129,12 +129,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             sortItems()
             binding.homeRecyclerView.adapter!!.notifyItemRangeChanged(
                 0,
-                if (viewModel.isSearch.value == true)
-                    searchArrayList.size
-                else viewModel.dataList.value!!.size
+                viewModel.dataList.value!!.size
             )
         }
-
     }
 
     private fun sortItems() {
@@ -145,10 +142,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
             if (viewModel.normalMode.value == true) viewModel.getListForNonNormalMode(day)
             else viewModel.getListForNormalMode(day)
-
         }
         viewModel.setIsNormalMode(viewModel.normalMode.value != true)
-        binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
     }
 
     private fun setupRecyclerView() {
