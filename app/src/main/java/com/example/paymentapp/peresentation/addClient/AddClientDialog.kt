@@ -108,8 +108,12 @@ class AddClientDialog : DialogFragment() {
             } else {
                 0.0f
             }
-            fullPrice = price + (price * benefits / 100)
+            fullPrice = (price-income) + ((price-income) * benefits / 100)
             binding.fullPrice.text = String.format("%.2f", fullPrice)
+
+            monthlyPay = (fullPrice )/ numberOfMonths
+            binding.installmentText.text = String.format("%.2f", monthlyPay)
+
         }
 
         binding.monthEditText.doAfterTextChanged {
@@ -118,7 +122,7 @@ class AddClientDialog : DialogFragment() {
             } else {
                 1
             }
-            monthlyPay = fullPrice / numberOfMonths
+            monthlyPay = (fullPrice) / numberOfMonths
             binding.installmentText.text = String.format("%.2f", monthlyPay)
         }
 
@@ -134,8 +138,15 @@ class AddClientDialog : DialogFragment() {
         }
 
         binding.incomeDialogEditText.doAfterTextChanged {
-            income = if (it!!.isNotEmpty()) {
-                it.toString().toFloat()
+
+            if (it!!.isNotEmpty()) {
+                income =it.toString().toFloat()
+                monthlyPay = (fullPrice- income) / numberOfMonths
+                binding.installmentText.text = String.format("%.2f", monthlyPay)
+
+                fullPrice = (price-income)
+                binding.fullPrice.text = String.format("%.2f", fullPrice)
+
             } else {
                 0.0f
             }
