@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.viewModelScope
@@ -24,13 +25,14 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
     private lateinit var currentDate: String
     private lateinit var name: String
     private lateinit var phoneNumber: String
-    private lateinit var itemName : String
+    private lateinit var itemName: String
     private var price = 0.0f
     private var benefits = 0.0f
     private var numberOfMonths = 1
     private var monthlyPay = 0.0f
     private var fullPrice = 0.0f
-    private var today : Int =0
+    private var today: Int = 0
+    private var income: Float = 0.0f
 
 
     override fun onCreateView(
@@ -63,7 +65,7 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
         val month = calendar.get(Calendar.MONTH)
         val year = calendar.get(Calendar.YEAR)
         currentDate = "${year}/${month}/${day}"
-        today=day
+        today = day
         binding.startDatePicker.updateDate(year, month, day)
     }
 
@@ -77,7 +79,7 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
         }
 
         binding.itemNameText.doAfterTextChanged {
-               itemName=it.toString()
+            itemName = it.toString()
         }
 
         binding.numberEditText.doAfterTextChanged {
@@ -85,73 +87,84 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
         }
 
         binding.priceEditText.doAfterTextChanged {
-            price = if (it.toString().isNotEmpty()){
+            price = if (it.toString().isNotEmpty()) {
                 it.toString().toFloat()
-            }else{
+            } else {
                 0.0f
             }
 
             fullPrice = price + (price * benefits / 100)
-            binding.fullPrice.text = String.format("%.2f",fullPrice)
+            binding.fullPrice.text = String.format("%.2f", fullPrice)
         }
 
         binding.BenefitEditText.doAfterTextChanged {
-            benefits=if (it.toString().isNotEmpty()){
-            it.toString().toFloat()
-            }else{
+            benefits = if (it.toString().isNotEmpty()) {
+                it.toString().toFloat()
+            } else {
                 0.0f
             }
-                fullPrice = price + (price * benefits / 100)
-                binding.fullPrice.text = String.format("%.2f",fullPrice)
+            fullPrice = price + (price * benefits / 100)
+            binding.fullPrice.text = String.format("%.2f", fullPrice)
         }
 
         binding.monthEditText.doAfterTextChanged {
-            numberOfMonths=if (it.toString().isNotEmpty() && it.toString().toInt() > 0){
+            numberOfMonths = if (it.toString().isNotEmpty() && it.toString().toInt() > 0) {
                 it.toString().toInt()
-            }else{
+            } else {
                 1
             }
-                monthlyPay = fullPrice/numberOfMonths
-            binding.installmentText.text=String.format("%.2f",monthlyPay)
+            monthlyPay = fullPrice / numberOfMonths
+            binding.installmentText.text = String.format("%.2f", monthlyPay)
         }
 
 
         binding.fullPrice.doAfterTextChanged {
-            monthlyPay = (fullPrice/numberOfMonths)
-            binding.installmentText.text=String.format("%.2f",monthlyPay)
+            monthlyPay = (fullPrice / numberOfMonths)
+            binding.installmentText.text = String.format("%.2f", monthlyPay)
         }
 
         binding.startDatePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
-            currentDate = "${year}/${monthOfYear}/${dayOfMonth}"
-            today=dayOfMonth
+            currentDate = "${year}/${monthOfYear + 1}/${dayOfMonth}"
+            today = dayOfMonth
+        }
+
+        binding.incomeDialogEditText.doAfterTextChanged {
+            if (it!!.isNotEmpty()) {
+                income =it.toString().toFloat()
+            } else {
+                income =0.0f
+            }
         }
 
         binding.addBtn.setOnClickListener {
             viewModel.viewModelScope.launch {
                 try {
 
-                    if(today == 29) today=28
-                    else if(today == 30 || today == 31) today=1
+
+                    if (today == 29) today = 28
+                    else if (today == 30 || today == 31) today = 1
+
                     viewModel.setNewItemInserted(true)
-                val model = BaseModel(
-                    name = name,
-                    phoneNumber = phoneNumber,
-                    priceWithoutAddition = price.toString(),
-                    priceAfterAddition = fullPrice.toString(),
-                    addintionPercentage = benefits,
-                    numberOfTotalInstallments = numberOfMonths,
-                    monthlyDayOfPaying = today.toString(),
-                    startDate = currentDate,
-                    nameOfBoughtItems = itemName,
-                    monthlyPay = monthlyPay.toString(),
-                    additionMoney = (fullPrice-price).toString()
-                )
-                    model.historyList= ArrayList()
-                viewModel.insertToRoom(model)
-                this@AddClientDialog.dismiss()
-            }catch (E:Exception){
-               //     Toast.makeText(requireActivity(),E.message.toString(),Toast.LENGTH_SHORT).show()
-                    Toast.makeText(requireActivity(),"ادخل جميع البيانات",Toast.LENGTH_SHORT).show()
+                    val model = BaseModel(
+                        name = name,
+                        phoneNumber = phoneNumber,
+                        priceWithoutAddition = price.toString(),
+                        priceAfterAddition = fullPrice.toString(),
+                        addintionPercentage = benefits,
+                        numberOfTotalInstallments = numberOfMonths,
+                        monthlyDayOfPaying = today.toString(),
+                        startDate = currentDate,
+                        nameOfBoughtItems = itemName,
+                        monthlyPay = monthlyPay.toString(),
+                        additionMoney = (fullPrice - price).toString(),
+                        income = income
+                    )
+                    model.historyList = ArrayList()
+                    viewModel.insertToRoom(model)
+                    this@AddClientDialog.dismiss()
+                } catch (E: Exception) {
+                    Toast.makeText(requireActivity(), "ادخل جميع البيانات", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 

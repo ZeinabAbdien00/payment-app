@@ -107,7 +107,8 @@ class HomeViewModel : ViewModel() {
             "botato",
             "1500",
             "500",
-            additionMoney = "50"
+            additionMoney = "50",
+            income = 1000.0f
         )
     }
 

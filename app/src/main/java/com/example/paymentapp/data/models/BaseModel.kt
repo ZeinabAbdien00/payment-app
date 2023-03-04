@@ -19,7 +19,8 @@ data class BaseModel(
     var nameOfBoughtItems: String,
     var priceAfterAddition: String,
     var monthlyPay: String,
-    var additionMoney: String
+    var additionMoney: String,
+    var income : Float
 ) : Parcelable {
 
     @PrimaryKey(autoGenerate = true)
