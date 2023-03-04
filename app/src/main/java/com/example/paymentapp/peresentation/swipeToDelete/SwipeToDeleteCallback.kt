@@ -1,4 +1,4 @@
-package com.example.paymentapp.globalUse
+package com.example.paymentapp.peresentation.swipeToDelete
 
 import android.content.Context
 import android.graphics.*

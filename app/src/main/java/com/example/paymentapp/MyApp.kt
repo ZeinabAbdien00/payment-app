@@ -1,4 +1,4 @@
-package com.example.paymentapp.globalUse
+package com.example.paymentapp
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -28,7 +28,7 @@ class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        context=applicationContext
+        context =applicationContext
         instance = this
     }
 

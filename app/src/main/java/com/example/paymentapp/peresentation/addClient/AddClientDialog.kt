@@ -132,7 +132,6 @@ class AddClientDialog(private val viewModel: HomeViewModel) : DialogFragment() {
 
                     if(today == 29) today=28
                     else if(today == 30 || today == 31) today=1
-
                     viewModel.setNewItemInserted(true)
                 val model = BaseModel(
                     name = name,

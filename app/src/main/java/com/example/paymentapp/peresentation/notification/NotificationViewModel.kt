@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
 import com.example.paymentapp.data.source.homeDatabase.HomeDataBase
-import com.example.paymentapp.globalUse.MyApp
+import com.example.paymentapp.MyApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

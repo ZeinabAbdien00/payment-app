@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.paymentapp.R
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.FragmentHomeBinding
-import com.example.paymentapp.globalUse.SwipeToDeleteCallback
 import com.example.paymentapp.peresentation.addClient.AddClientDialog
 import com.example.paymentapp.peresentation.recyclerView.HomeAdapter
+import com.example.paymentapp.peresentation.swipeToDelete.SwipeToDeleteCallback
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

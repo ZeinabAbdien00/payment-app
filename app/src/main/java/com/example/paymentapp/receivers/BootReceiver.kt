@@ -1,4 +1,4 @@
-package com.example.paymentapp.globalUse
+package com.example.paymentapp.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
