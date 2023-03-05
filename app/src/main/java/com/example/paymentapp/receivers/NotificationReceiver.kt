@@ -18,11 +18,8 @@ import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
 import com.example.paymentapp.data.source.homeDatabase.HomeDataBase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
@@ -58,12 +55,12 @@ class NotificationReceiver : BroadcastReceiver() {
             val pendingIntent = getIntent(context, REQUEST_TIMER1)
             val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-            val alarmTime = LocalTime.of(5, 30)
+            val alarmTime = LocalTime.of(15, 50)
 
             var now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
-//            if (now.toLocalTime().isAfter(alarmTime)) {
+            if (now.toLocalTime().isAfter(alarmTime)) {
                 now = now.plusDays(1)
-//            }
+            }
 
             now = now.withHour(alarmTime.hour)
                 .withMinute(alarmTime.minute)
@@ -107,7 +104,6 @@ class NotificationReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        startAlarm(context)
         GlobalScope.launch {
             val dao = HomeDataBase.getInstance(context).myDao()
             repository = BaseRepository(dao)
@@ -117,6 +113,10 @@ class NotificationReceiver : BroadcastReceiver() {
             if (useNotifications) {
                 showNotification(context, "العملاء اليوم", todayData(), 123)
             }
+        }
+        GlobalScope.launch {
+            delay(1000*70)
+            startAlarm(context)
         }
     }
 
@@ -167,12 +167,12 @@ class NotificationReceiver : BroadcastReceiver() {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name: CharSequence = "Main Notification Channel"
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
             notificationManager.createNotificationChannel(mChannel)
-        }
+      //  }
         notificationManager.notify(
             reqCode,
             notificationBuilder.build()
