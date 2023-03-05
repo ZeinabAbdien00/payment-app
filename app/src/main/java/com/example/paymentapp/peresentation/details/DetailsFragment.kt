@@ -302,8 +302,7 @@ class DetailsFragment : Fragment() {
                             val currentDate = "${year}/${month + 1}/${day}"
                             viewModel.addDateToItem(model, currentDate)
                             adapter.notifyDataSetChanged()
-                            //setPayment()
-                            saveNewData()
+                            setPayment()
                         }
                     } catch (_: Exception) {
                     }
