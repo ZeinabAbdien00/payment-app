@@ -74,19 +74,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.getAllFromRoom().collect {
                 lifecycleScope.launch {
-                    if (viewModel.firstData.value == false) {
                         viewModel.resetArrayList(it)
-                        binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
-                    }
-                    try {
+                //    try {
                         if (viewModel.firstData.value == true) {
                             viewModel.resetArrayList(it)
                             setupRecyclerView()
                             viewModel.setFirstData(false)
                         }
-                    } catch (_: Exception) {
                         binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
-                    }
                 }
             }
         }
