@@ -129,11 +129,12 @@ class DetailsFragment : Fragment() {
 
                     priceAfterTaxEditText.text =
                         (((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
-                            .toFloat())*(1+splitRatio())).toString())
+                            .toFloat()) * (1 + splitRatio())).toString())
                     priceTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
                         .toFloat()) * splitRatio()).toString())
                     montthlyPayEditText.text =
-                        ((priceAfterTaxEditText.text.toString().toFloat() / allCostEditText.text.toString()
+                        ((priceAfterTaxEditText.text.toString()
+                            .toFloat() / allCostEditText.text.toString()
                             .toFloat()).toString())
 
                 } else {
@@ -141,11 +142,10 @@ class DetailsFragment : Fragment() {
                     binding.apply {
                         priceAfterTaxEditText.setText(((viewModel.priceBefore.toFloat()) * (1 + splitRatio())).toString())
                         priceTaxEditText.setText(((viewModel.priceBefore.toFloat()) * splitRatio()).toString())
-                        montthlyPayEditText.setText((priceAfterTaxEditText.text.toString().toFloat() / allCostEditText.text.toString()
+                        montthlyPayEditText.setText((priceAfterTaxEditText.text.toString()
+                            .toFloat() / allCostEditText.text.toString()
                             .toFloat()).toString())
                     }
-
-
                 }
 
             }
@@ -206,16 +206,6 @@ class DetailsFragment : Fragment() {
                 } else {
                     binding.saveBtn.isEnabled = false
                     viewModel.carModel = model.nameOfBoughtItems
-                }
-            }
-
-            montthlyPayEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
-                    viewModel.monthlyPayValue = it.toString()
-                } else {
-                    binding.saveBtn.isEnabled = false
-                    viewModel.monthlyPayValue = model.monthlyPay
                 }
             }
 
