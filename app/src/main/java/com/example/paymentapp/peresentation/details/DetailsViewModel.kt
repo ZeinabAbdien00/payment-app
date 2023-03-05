@@ -1,11 +1,10 @@
 package com.example.paymentapp.peresentation.details
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.paymentapp.MyApp
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
 import com.example.paymentapp.data.source.homeDatabase.HomeDataBase
-import com.example.paymentapp.MyApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,6 +33,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     var carModel = ""
     var monthlyPayValue = ""
     var myNote = ""
+    var newHistory = false
 
     init {
         val dao = HomeDataBase.getInstance(MyApp.context).myDao()
@@ -41,20 +41,19 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     }
 
 
-    suspend fun addDateToItem(model: BaseModel, currentDate: String) {
+     fun addDateToItem(model: BaseModel, currentDate: String) {
         model.historyList.add(currentDate)
         model.numberOfPaidInstallments ++
-        Log.d("suzan" , model.numberOfPaidInstallments.toString())
+       // Log.d("suzan" , model.numberOfPaidInstallments.toString())
         model.numberOfComingInstallments--
         model.valueOfPayInstallments =
             (model.valueOfPayInstallments.toFloat() + model.monthlyPay.toFloat()).toString()
         model.valueOfComingInstallments =
             (model.valueOfComingInstallments.toFloat() - model.monthlyPay.toFloat()).toString()
         model.userHavePaidToday()
-        updateModel(model)
     }
 
-    suspend fun removeLastDateFromItem(model: BaseModel) {
+     fun removeLastDateFromItem(model: BaseModel) {
         model.historyList.removeLast()
         model.numberOfPaidInstallments--
         model.numberOfComingInstallments++
@@ -63,33 +62,26 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.valueOfComingInstallments =
             (model.valueOfComingInstallments.toFloat() + model.monthlyPay.toFloat()).toString()
         model.undoPay()
-        updateModel(model)
     }
-
-
-    private suspend fun updateModel(model: BaseModel) = withContext(Dispatchers.IO) {
-        repository.update(model)
-    }
-
 
      fun isNewData(model: BaseModel): Boolean =
-        model.phoneNumber == phone &&
-                model.priceWithoutAddition == priceBefore &&
-                model.income == income &&
-                model.addintionPercentage == splitPercentage(benefits) &&
-                model.additionMoney == benefitsValue &&
-                model.priceAfterAddition == priceAfter &&
-                model.numberOfTotalInstallments == totalInstallmentsNumber.toInt() &&
-                model.numberOfPaidInstallments == payiedInstallmentsNumber.toInt() &&
-                model.valueOfPayInstallments == payiedInstallmentsValue &&
-                model.numberOfComingInstallments == comingInstallmentsNumber.toInt() &&
-                model.valueOfComingInstallments == comingInstallmentsVlaue &&
-                model.monthlyDayOfPaying == dayOfPaying &&
-                model.startDate == startDate &&
-                model.nameOfBoughtItems == carModel &&
-                model.monthlyPay == monthlyPayValue &&
-                model.note == myNote &&
-                model.name == name
+         model.phoneNumber == phone &&
+                 model.priceWithoutAddition == priceBefore &&
+                 model.income == income &&
+                 model.addintionPercentage == splitPercentage(benefits) &&
+                 model.additionMoney == benefitsValue &&
+                 model.priceAfterAddition == priceAfter &&
+                 model.numberOfTotalInstallments == totalInstallmentsNumber.toInt() &&
+                 model.numberOfPaidInstallments == payiedInstallmentsNumber.toInt() &&
+                 model.valueOfPayInstallments == payiedInstallmentsValue &&
+                 model.numberOfComingInstallments == comingInstallmentsNumber.toInt() &&
+                 model.valueOfComingInstallments == comingInstallmentsVlaue &&
+                 model.monthlyDayOfPaying == dayOfPaying &&
+                 model.startDate == startDate &&
+                 model.nameOfBoughtItems == carModel &&
+                 model.monthlyPay == monthlyPayValue &&
+                 model.note == myNote &&
+                 model.name == name && !newHistory
 
 
     private fun splitPercentage(benefits:String): Float {
@@ -106,7 +98,6 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     }
 
     suspend fun saveData(model: BaseModel) {
-
         model.name = name
         model.phoneNumber = phone
         model.income = income
@@ -126,4 +117,9 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.note = myNote
         updateModel(model)
     }
+
+    private suspend fun updateModel(model: BaseModel) = withContext(Dispatchers.IO) {
+        repository.update(model)
+    }
+
 }
