@@ -55,12 +55,12 @@ class DetailsFragment : Fragment() {
     private fun splitRatio(): Float {
         binding.apply {
             return if (ratioEditText.text.contains(" ")) {
-                val o = ratioEditText.text.toString().split(" ")
-                (o[0].toFloat() / 100)
+                val s = ratioEditText.text.toString().split(" ")
+                (s[0].toFloat() / 100)
 
             } else if (ratioEditText.text.contains("%")) {
-                val o = ratioEditText.text.toString().split("%")
-                (o[0].toFloat() / 100)
+                val s = ratioEditText.text.toString().split("%")
+                (s[0].toFloat() / 100)
             } else {
                 ratioEditText.text.toString().toFloat() / 100
             }
@@ -70,10 +70,10 @@ class DetailsFragment : Fragment() {
     private fun ratioChanged(percentage: Float) {
 
         binding.apply {
-            priceAfterTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
-                .toFloat()) * (1 + percentage)).toString())
-            priceTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
-                .toFloat()) * percentage).toString())
+            priceAfterTaxEditText.setText(((viewModel.priceBefore.toInt() - incomeEditText.text.toString()
+                .toInt()) * (1 + percentage)).toString())
+            priceTaxEditText.setText(((viewModel.priceBefore.toInt() - incomeEditText.text.toString()
+                .toInt()) * percentage).toString())
             montthlyPayEditText.setText((viewModel.priceAfter.toFloat() / viewModel.priceAfter.toFloat()).toString())
         }
     }
