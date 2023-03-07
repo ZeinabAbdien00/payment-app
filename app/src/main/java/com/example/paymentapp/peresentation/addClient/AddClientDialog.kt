@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.math.roundToInt
 
 
 class AddClientDialog : DialogFragment() {
@@ -31,13 +32,13 @@ class AddClientDialog : DialogFragment() {
     private lateinit var phoneNumber: String
     private lateinit var itemName: String
     private lateinit var repository: BaseRepository
-    private var price = 0.0f
-    private var benefits = 0.0f
+    private var price = 0
+    private var benefits = 0.0
     private var numberOfMonths = 1
-    private var monthlyPay = 0.0f
-    private var fullPrice = 0.0f
+    private var monthlyPay = 0.0
+    private var fullPrice = 0.0
     private var today: Int = 0
-    private var income: Float = 0.0f
+    private var income: Double = 0.0
 
 
     override fun onCreateView(
@@ -94,27 +95,22 @@ class AddClientDialog : DialogFragment() {
 
         binding.priceEditText.doAfterTextChanged {
             price = if (it.toString().isNotEmpty()) {
-                it.toString().toFloat()
+                it.toString().toInt()
             } else {
-                0.0f
+                0
             }
 
-            fullPrice = price + (price * benefits / 100)
-            binding.fullPrice.text = String.format("%.2f", fullPrice)
+            calculateFun()
         }
 
         binding.BenefitEditText.doAfterTextChanged {
             benefits = if (it.toString().isNotEmpty()) {
-                it.toString().toFloat()
+                it.toString().toDouble()
             } else {
-                0.0f
+                0.0
             }
-            fullPrice = (price-income) + ((price-income) * benefits / 100)
-            binding.fullPrice.text = String.format("%.2f", fullPrice)
 
-            monthlyPay = (fullPrice )/ numberOfMonths
-            binding.installmentText.text = String.format("%.2f", monthlyPay)
-
+            calculateFun()
         }
 
         binding.monthEditText.doAfterTextChanged {
@@ -123,14 +119,8 @@ class AddClientDialog : DialogFragment() {
             } else {
                 1
             }
-            monthlyPay = (fullPrice) / numberOfMonths
-            binding.installmentText.text = String.format("%.2f", monthlyPay)
-        }
 
-
-        binding.fullPrice.doAfterTextChanged {
-            monthlyPay = (fullPrice / numberOfMonths)
-            binding.installmentText.text = String.format("%.2f", monthlyPay)
+            calculateFun()
         }
 
         binding.startDatePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
@@ -139,17 +129,12 @@ class AddClientDialog : DialogFragment() {
         }
 
         binding.incomeDialogEditText.doAfterTextChanged {
+            income = if (it.toString().isNotEmpty()) {
+                it.toString().toDouble()
+            } else 0.0
 
-            if (it!!.isNotEmpty()) {
-                income =it.toString().toFloat()
-                monthlyPay = (fullPrice- income) / numberOfMonths
-                binding.installmentText.text = String.format("%.2f", monthlyPay)
+            calculateFun()
 
-                fullPrice = (price-income)
-                binding.fullPrice.text = String.format("%.2f", fullPrice)
-            } else {
-                0.0f
-            }
         }
 
         binding.addBtn.setOnClickListener {
@@ -185,7 +170,24 @@ class AddClientDialog : DialogFragment() {
 
         }
 
+    }
 
+    private fun calculateFun() {
+        /*
+        price -> السعر الاصلي   int
+        income -> المقدم  float
+        benfits -> نسبة الفوائد float
+        fullPrice السعر النهائي float
+        monthlyPat -> القسط الشهري float
+        numberOfMonts int
+
+         binding.fullPrice.text
+          binding.installmentText.text
+         */
+        fullPrice = (price - income) + ((price - income) * benefits / 100)
+        binding.fullPrice.text = fullPrice.roundToInt().toString()
+        monthlyPay = (fullPrice) / numberOfMonths
+        binding.installmentText.text = monthlyPay.roundToInt().toString()
     }
 
     private suspend fun insertToRoom(model: BaseModel) {

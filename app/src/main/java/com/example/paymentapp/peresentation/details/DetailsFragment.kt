@@ -93,7 +93,8 @@ class DetailsFragment : Fragment() {
     private fun setInitials() {
         viewModel.name = model.name
         viewModel.phone = model.phoneNumber
-        viewModel.income = model.income
+        viewModel.income=model.income
+
         viewModel.priceBefore = model.priceWithoutAddition
         viewModel.benefits = model.addintionPercentage.toString()
         viewModel.benefitsValue = model.additionMoney
