@@ -628,7 +628,7 @@
             <EditText
                 android:id="@+id/the_note"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="15dp"
@@ -638,6 +638,7 @@
                 android:hint="ادخل ملاحظاتك هنا"
                 android:padding="8dp"
                 android:textColor="@color/black"
+                android:inputType="textMultiLine"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -649,5 +650,4 @@
 
 
     </ScrollView>
-
 </LinearLayout>

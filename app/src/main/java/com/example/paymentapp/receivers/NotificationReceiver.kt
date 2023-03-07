@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.paymentapp.MainActivity
 import com.example.paymentapp.R
@@ -107,7 +106,7 @@ class NotificationReceiver : BroadcastReceiver() {
         GlobalScope.launch {
             val dao = HomeDataBase.getInstance(context).myDao()
             repository = BaseRepository(dao)
-            Log.d("mohamed", "showNotification: 1")
+//            Log.d("mohamed", "showNotification: 1")
             laterCustomInit()
             val useNotifications = dataStore.getUseNotifications()
             if (useNotifications) {
@@ -177,6 +176,6 @@ class NotificationReceiver : BroadcastReceiver() {
             reqCode,
             notificationBuilder.build()
         )
-        Log.d("mohamed", "showNotification: $reqCode")
+//        Log.d("mohamed", "showNotification: $reqCode")
     }
 }
