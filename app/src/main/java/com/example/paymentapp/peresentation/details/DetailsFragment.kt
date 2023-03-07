@@ -1,6 +1,8 @@
 package com.example.paymentapp.peresentation.details
 
 import android.os.Bundle
+import android.util.Half.toFloat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +30,7 @@ class DetailsFragment : Fragment() {
     private lateinit var adapter: HistoryAdapter
     private lateinit var myList: ArrayList<String>
     private val viewModel: DetailsViewModel by viewModels()
+
 // add income logic
 
     override fun onCreateView(
@@ -53,26 +56,37 @@ class DetailsFragment : Fragment() {
     private fun splitRatio(): Float {
         binding.apply {
             return if (ratioEditText.text.contains(" ")) {
-                val o = ratioEditText.text.toString().split(" ")
-                (o[0].toFloat() / 100)
+                val s = ratioEditText.text.toString().split(" ")
+                (s[0].toFloat() / 100)
 
             } else if (ratioEditText.text.contains("%")) {
-                val o = ratioEditText.text.toString().split("%")
-                (o[0].toFloat() / 100)
+                val s = ratioEditText.text.toString().split("%")
+                (s[0].toFloat() / 100)
             } else {
-                ratioEditText.text.toString().toFloat()
+                ratioEditText.text.toString().toFloat() / 100
             }
         }
     }
 
     private fun ratioChanged(percentage: Float) {
         binding.apply {
-            priceAfterTaxEditText.setText((priceBeforeTaxEditText.text.toString()
-                .toFloat() * (percentage + 1)).toString())
-            priceTaxEditText.setText((priceBeforeTaxEditText.text.toString()
-                .toFloat() * percentage).toString())
-            montthlyPayEditText.setText((priceAfterTaxEditText.text.toString()
-                .toFloat() / allCostEditText.text.toString().toFloat()).toString())
+            priceAfterTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
+                .toFloat()) * (1 + percentage)).toString())
+            priceTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
+                .toFloat()) * percentage).toString())
+//            montthlyPayEditText.text =
+//                ((priceAfterTaxEditText.text.toString()
+//                    .toFloat() / allCostEditText.text.toString()
+//                    .toFloat()).toString())
+            monthlyPay()
+        }
+    }
+
+    private fun monthlyPay() {
+        binding.apply {
+            montthlyPayEditText.text =
+                ((priceAfterTaxEditText.text.toString().toFloat()
+                        / allCostEditText.text.toString().toFloat()).toString())
         }
     }
 
@@ -80,6 +94,7 @@ class DetailsFragment : Fragment() {
         viewModel.name = model.name
         viewModel.phone = model.phoneNumber
         viewModel.income=model.income
+
         viewModel.priceBefore = model.priceWithoutAddition
         viewModel.benefits = model.addintionPercentage.toString()
         viewModel.benefitsValue = model.additionMoney
@@ -97,83 +112,61 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setOnChangeLogic() {
-
         binding.apply {
 
             clientName.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
+                    saveBtn.isEnabled = true
                     viewModel.name = it.toString()
                 } else {
-                    binding.saveBtn.isEnabled = false
+                    saveBtn.isEnabled = false
                     viewModel.name = model.name
                 }
             }
 
             numberEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
+                    saveBtn.isEnabled = true
                     viewModel.phone = it.toString()
                 } else {
-                    binding.saveBtn.isEnabled = false
+                    saveBtn.isEnabled = false
                     viewModel.phone = model.phoneNumber
                 }
             }
 
             incomeEditText.addTextChangedListener {
-                priceAfterTaxEditText.setText((priceAfterTaxEditText.toString()
-                    .toFloat() - incomeEditText.toString().toFloat()).toString())
-
-                montthlyPayEditText.setText((priceAfterTaxEditText.toString()
-                    .toFloat() / allCostEditText.toString().toFloat()).toString())
-
-            }
-
-            priceBeforeTaxEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
-                    viewModel.priceBefore = it.toString()
+                    saveBtn.isEnabled = true
+                    ratioChanged(splitRatio())
                 } else {
-                    binding.saveBtn.isEnabled = false
-                    viewModel.priceBefore = model.priceWithoutAddition
+                    saveBtn.isEnabled = false
+                    apply {
+                        priceAfterTaxEditText.setText(((viewModel.priceBefore.toFloat()) * (1 + splitRatio())).toString())
+                        priceTaxEditText.setText(((viewModel.priceBefore.toFloat()) * splitRatio()).toString())
+                        monthlyPay()
+                        incomeEditText.setText("0")
+                    }
                 }
             }
 
             ratioEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
+                    saveBtn.isEnabled = true
                     viewModel.benefits = it.toString()
                     ratioChanged(splitRatio())
                 } else {
-                    binding.saveBtn.isEnabled = false
+                    saveBtn.isEnabled = false
                     viewModel.benefits = model.priceWithoutAddition
-                }
-            }
-
-            priceTaxEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
-                    viewModel.benefitsValue = it.toString()
-                } else {
-                    binding.saveBtn.isEnabled = false
-                    viewModel.benefitsValue = model.additionMoney
-                }
-            }
-
-            priceAfterTaxEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
-                    viewModel.priceAfter = it.toString()
-                } else {
-                    binding.saveBtn.isEnabled = false
-                    viewModel.priceAfter = model.priceAfterAddition
+                    priceAfterTaxEditText.text =
+                        (viewModel.priceBefore.toFloat() - model.income).toString()
+                    priceTaxEditText.text = "0.0"
+                    ratioEditText.setText("0")
                 }
             }
 
             allCostEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
-                    binding.saveBtn.isEnabled = true
+                    saveBtn.isEnabled = true
                     viewModel.totalInstallmentsNumber = it.toString()
                     remainingInstallmentEditText.setText((allCostEditText.text.toString()
                         .toFloat() - paidInstallmentEditText.text.toString().toFloat()).toString())
@@ -181,94 +174,46 @@ class DetailsFragment : Fragment() {
                     montthlyPayEditText.setText((priceAfterTaxEditText.text.toString()
                         .toFloat() / allCostEditText.text.toString().toFloat()).toString())
                 } else {
-                    binding.saveBtn.isEnabled = false
-                }
-            }
-
-            allCostPaidEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
-                    viewModel.payiedInstallmentsValue = it.toString()
-                } else {
-                    binding.saveBtn.isEnabled = false
-                }
-            }
-
-            paidInstallmentEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
-                    viewModel.payiedInstallmentsNumber = it.toString()
-                } else {
-                    binding.saveBtn.isEnabled = false
-                }
-            }
-
-            costRemainingInstallmentEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
-                    viewModel.comingInstallmentsVlaue = it.toString()
-                } else {
-                    binding.saveBtn.isEnabled = false
-                    viewModel.comingInstallmentsVlaue = model.valueOfComingInstallments
-                }
-            }
-
-            remainingInstallmentEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
-                    viewModel.comingInstallmentsVlaue = it.toString()
-                } else {
-                    binding.saveBtn.isEnabled = false
-                    viewModel.comingInstallmentsVlaue = model.valueOfComingInstallments
+                    saveBtn.isEnabled = false
                 }
             }
 
             payDayEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
+                    saveBtn.isEnabled = true
                     viewModel.dayOfPaying = it.toString()
                 } else {
-                    binding.saveBtn.isEnabled = false
+                    saveBtn.isEnabled = false
                     viewModel.dayOfPaying = model.monthlyDayOfPaying
                 }
             }
 
             startDateEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
+                    saveBtn.isEnabled = true
                     viewModel.startDate = it.toString()
                 } else {
-                    binding.saveBtn.isEnabled = false
+                    saveBtn.isEnabled = false
                     viewModel.startDate = model.startDate
                 }
             }
 
             modelOfCarEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
+                    saveBtn.isEnabled = true
                     viewModel.carModel = it.toString()
                 } else {
-                    binding.saveBtn.isEnabled = false
+                    saveBtn.isEnabled = false
                     viewModel.carModel = model.nameOfBoughtItems
-                }
-            }
-
-            montthlyPayEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
-                    viewModel.monthlyPayValue = it.toString()
-                } else {
-                    binding.saveBtn.isEnabled = false
-                    viewModel.monthlyPayValue = model.monthlyPay
                 }
             }
 
             theNote.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
-                    binding.saveBtn.isEnabled = true
+                    saveBtn.isEnabled = true
                     viewModel.myNote = it.toString()
                 } else {
-                    binding.saveBtn.isEnabled = false
+                    saveBtn.isEnabled = false
                     viewModel.myNote = model.note
                 }
             }
