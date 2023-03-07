@@ -14,9 +14,9 @@ import kotlinx.coroutines.withContext
 
 private val Context.dataStore by preferencesDataStore("app_data")
 
-class DataStoreImpl (
+class DataStoreImpl(
     appContext: Context,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DataStore {
 
     private val mDataStore by lazy {
@@ -44,7 +44,8 @@ class DataStoreImpl (
     override suspend fun setUseNotifications(boolean: Boolean) {
         mDataStore.edit { settings ->
             settings[booleanPreferencesKey(USE_NOTIFICATIONS)] = boolean
-        }    }
+        }
+    }
 
     override suspend fun getUseNotifications(): Boolean = withContext(dispatcher) {
         mDataStore.data.map { settings ->
@@ -55,7 +56,8 @@ class DataStoreImpl (
     override suspend fun setPassword(string: String) {
         mDataStore.edit { settings ->
             settings[stringPreferencesKey(PASSWORD)] = string
-        }    }
+        }
+    }
 
     override suspend fun getPassword(): String = withContext(dispatcher) {
         mDataStore.data.map { settings ->

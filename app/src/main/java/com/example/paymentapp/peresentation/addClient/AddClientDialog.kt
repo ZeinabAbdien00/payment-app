@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -154,8 +153,12 @@ class AddClientDialog : DialogFragment() {
                         startDate = currentDate,
                         nameOfBoughtItems = itemName,
                         monthlyPay = monthlyPay.toString(),
-                        additionMoney = ((price-income)*(benefits/100)).toString(),
-                        income = income
+                        additionMoney = ((price - income) * (benefits / 100)).toString(),
+                        income = income ,
+                        payNumber = 0 ,
+                        payValue = 0.0 ,
+                        notPayNumber = numberOfMonths ,
+                        notPayValue = fullPrice
                     )
                     model.historyList = ArrayList()
                     insertToRoom(model)

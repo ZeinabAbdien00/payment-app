@@ -63,25 +63,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setObservers() {
-        viewModel.isSearch.observe(viewLifecycleOwner){
-            if (it){
-                binding.sort.visibility=View.INVISIBLE
-            }else{
-                binding.sort.visibility=View.VISIBLE
+        viewModel.isSearch.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.sort.visibility = View.INVISIBLE
+            } else {
+                binding.sort.visibility = View.VISIBLE
             }
         }
 
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.getAllFromRoom().collect {
                 lifecycleScope.launch {
+                    viewModel.resetArrayList(it)
+                    //    try {
+                    if (viewModel.firstData.value == true) {
                         viewModel.resetArrayList(it)
-                //    try {
-                        if (viewModel.firstData.value == true) {
-                            viewModel.resetArrayList(it)
-                            setupRecyclerView()
-                            viewModel.setFirstData(false)
-                        }
-                        binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
+                        setupRecyclerView()
+                        viewModel.setFirstData(false)
+                    }
+                    binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
                 }
             }
         }

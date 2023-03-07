@@ -24,7 +24,7 @@ class Module {
     @Provides
     @Singleton
     fun provideDataStore(
-        @ApplicationContext appContext: Context
+        @ApplicationContext appContext: Context,
     ): DataStoreImpl {
         return DataStoreImpl(appContext)
     }
