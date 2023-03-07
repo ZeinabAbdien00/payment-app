@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class BaseRepository(
-    private val myDao: HomeDao
+    private val myDao: HomeDao,
 ) {
 
     suspend fun getAllToObserve(): Flow<List<BaseModel>> = withContext(Dispatchers.IO) {

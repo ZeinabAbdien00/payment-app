@@ -20,7 +20,7 @@ data class BaseModel(
     var priceAfterAddition: String,
     var monthlyPay: String,
     var additionMoney: String,
-    var income : Double
+    var income: Double,
 ) : Parcelable {
 
     @PrimaryKey(autoGenerate = true)
@@ -76,7 +76,7 @@ data class BaseModel(
         if (monthlyDayOfPaying == day.toString()) {
             userPaidToday = true
         }
-        numberOfLateMoneyMonths--
+        if(numberOfLateMoneyMonths > 0 )numberOfLateMoneyMonths--
     }
 
     fun undoPay() {

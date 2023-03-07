@@ -1,8 +1,6 @@
 package com.example.paymentapp.peresentation.details
 
 import android.os.Bundle
-import android.util.Half.toFloat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -218,7 +216,7 @@ class DetailsFragment : Fragment() {
                 saveNewData()
                 binding.saveBtn.isEnabled = false
             }
-            //findNavController().navigateUp()
+            findNavController().navigateUp()
         }
 
 
@@ -243,6 +241,7 @@ class DetailsFragment : Fragment() {
                     } catch (_: Exception) {
                     }
                     it.isClickable = true
+                    binding.saveBtn.isEnabled = true
                 }
             }
         }
@@ -258,12 +257,13 @@ class DetailsFragment : Fragment() {
                         try {
                             viewModel.removeLastDateFromItem(model)
                             adapter.notifyDataSetChanged()
-                            setViews()
+                            setPayment()
                             //saveNewData()
                         } catch (_: Exception) {
                         }
-                        it.isClickable = true
                     }
+                    it.isClickable = true
+                    binding.saveBtn.isEnabled = true
                 }
             }
         }
@@ -320,12 +320,14 @@ class DetailsFragment : Fragment() {
             // الاقساط الكلية عدد
             allCostEditText.setText(model.numberOfTotalInstallments.toString())
             //قيمة الاقساط المسددة
-            allCostPaidEditText.setText(model.valueOfPayInstallments.toDouble().roundToInt().toString())
+            allCostPaidEditText.setText(model.valueOfPayInstallments.toDouble().roundToInt()
+                .toString())
             //عدد الاقساط المدفوعه
             paidInstallmentEditText.setText(model.numberOfPaidInstallments.toString())
             //قيمة الاقساط المتبقيه
             costRemainingInstallmentEditText.setText(
-                (model.priceAfterAddition.toDouble() - model.valueOfPayInstallments.toDouble()).roundToInt().toString())
+                (model.priceAfterAddition.toDouble() - model.valueOfPayInstallments.toDouble()).roundToInt()
+                    .toString())
             //عدد اللاقساط المتبقيه
             remainingInstallmentEditText.setText("${model.numberOfTotalInstallments - model.numberOfPaidInstallments}")
             //يوم السداد
@@ -341,6 +343,10 @@ class DetailsFragment : Fragment() {
             //القسط
             montthlyPayEditText.setText(model.monthlyPay.toDouble().roundToInt().toString())
         }
+    }
+
+    private fun saveFinalData(){
+
     }
 
     private fun saveNewData() {

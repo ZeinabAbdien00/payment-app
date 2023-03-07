@@ -41,10 +41,10 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     }
 
 
-     fun addDateToItem(model: BaseModel, currentDate: String) {
+    fun addDateToItem(model: BaseModel, currentDate: String) {
         model.historyList.add(currentDate)
-        model.numberOfPaidInstallments ++
-       // Log.d("suzan" , model.numberOfPaidInstallments.toString())
+        model.numberOfPaidInstallments++
+        // Log.d("suzan" , model.numberOfPaidInstallments.toString())
         model.numberOfComingInstallments--
         model.valueOfPayInstallments =
             (model.valueOfPayInstallments.toFloat() + model.monthlyPay.toFloat()).toString()
@@ -53,7 +53,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.userHavePaidToday()
     }
 
-     fun removeLastDateFromItem(model: BaseModel) {
+    fun removeLastDateFromItem(model: BaseModel) {
         model.historyList.removeLast()
         model.numberOfPaidInstallments--
         model.numberOfComingInstallments++
@@ -64,27 +64,27 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.undoPay()
     }
 
-     fun isNewData(model: BaseModel): Boolean =
-         model.phoneNumber == phone &&
-                 model.priceWithoutAddition == priceBefore &&
-                 model.income == income &&
-                 model.addintionPercentage == splitPercentage(benefits) &&
-                 model.additionMoney == benefitsValue &&
-                 model.priceAfterAddition == priceAfter &&
-                 model.numberOfTotalInstallments == totalInstallmentsNumber.toInt() &&
-                 model.numberOfPaidInstallments == payiedInstallmentsNumber.toInt() &&
-                 model.valueOfPayInstallments == payiedInstallmentsValue &&
-                 model.numberOfComingInstallments == comingInstallmentsNumber.toInt() &&
-                 model.valueOfComingInstallments == comingInstallmentsVlaue &&
-                 model.monthlyDayOfPaying == dayOfPaying &&
-                 model.startDate == startDate &&
-                 model.nameOfBoughtItems == carModel &&
-                 model.monthlyPay == monthlyPayValue &&
-                 model.note == myNote &&
-                 model.name == name && !newHistory
+    fun isNewData(model: BaseModel): Boolean =
+        model.phoneNumber == phone &&
+                model.priceWithoutAddition == priceBefore &&
+                model.income == income &&
+                model.addintionPercentage == splitPercentage(benefits) &&
+                model.additionMoney == benefitsValue &&
+                model.priceAfterAddition == priceAfter &&
+                model.numberOfTotalInstallments == totalInstallmentsNumber.toInt() &&
+                model.numberOfPaidInstallments == payiedInstallmentsNumber.toInt() &&
+                model.valueOfPayInstallments == payiedInstallmentsValue &&
+                model.numberOfComingInstallments == comingInstallmentsNumber.toInt() &&
+                model.valueOfComingInstallments == comingInstallmentsVlaue &&
+                model.monthlyDayOfPaying == dayOfPaying &&
+                model.startDate == startDate &&
+                model.nameOfBoughtItems == carModel &&
+                model.monthlyPay == monthlyPayValue &&
+                model.note == myNote &&
+                model.name == name && !newHistory
 
 
-    private fun splitPercentage(benefits:String): Double {
+    private fun splitPercentage(benefits: String): Double {
 
         if (benefits.contains(" ")) {
             val o = benefits.split(" ")
@@ -92,7 +92,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         } else if (benefits.contains("%")) {
             val o = benefits.split("%")
             return (o[0].toDouble())
-        }else{
+        } else {
             return benefits.toDouble()
         }
     }
