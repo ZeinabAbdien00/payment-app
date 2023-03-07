@@ -144,7 +144,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/income_text" />
 
-            <EditText
+            <TextView
                 android:id="@+id/price_before_tax_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -244,7 +244,6 @@
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:clickable="false"

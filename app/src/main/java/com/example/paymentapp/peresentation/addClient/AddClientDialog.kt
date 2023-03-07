@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -146,7 +147,6 @@ class AddClientDialog : DialogFragment() {
 
                 fullPrice = (price-income)
                 binding.fullPrice.text = String.format("%.2f", fullPrice)
-
             } else {
                 0.0f
             }
@@ -169,7 +169,7 @@ class AddClientDialog : DialogFragment() {
                         startDate = currentDate,
                         nameOfBoughtItems = itemName,
                         monthlyPay = monthlyPay.toString(),
-                        additionMoney = (fullPrice - price).toString(),
+                        additionMoney = ((price-income)*(benefits/100)).toString(),
                         income = income
                     )
                     model.historyList = ArrayList()
