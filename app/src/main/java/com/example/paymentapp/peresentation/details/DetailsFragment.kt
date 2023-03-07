@@ -97,8 +97,7 @@ class DetailsFragment : Fragment() {
     private fun monthlyPay() {
         binding.apply {
             viewModel.monthlyPayValue =
-                (priceAfterTaxEditText.text.toString().toDouble() / allCostEditText.text.toString()
-                    .toDouble())
+                (viewModel.priceAfter / viewModel.totalInstallmentsNumber)
             montthlyPayEditText.text =
                 (viewModel.monthlyPayValue.roundToInt().toString())
         }
@@ -202,9 +201,11 @@ class DetailsFragment : Fragment() {
 
                     viewModel.comingInstallmentsNumber = (it.toString()
                         .toInt() - viewModel.payiedInstallmentsNumber)
+
                     remainingInstallmentEditText.setText(
                         viewModel.comingInstallmentsNumber.toString()
                     )
+
                     monthlyPay()
                 } else {
                     saveBtn.isEnabled = false
