@@ -68,7 +68,17 @@ class DetailsFragment : Fragment() {
         }
     }
 
-
+    private fun ratioChanged(percentage: Float) {
+        binding.apply {
+            priceAfterTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
+                .toFloat()) * (1 + percentage)).toString())
+            priceTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
+                .toFloat()) * percentage).toString())
+            montthlyPayEditText.text =
+                ((priceAfterTaxEditText.text.toString()
+                    .toFloat() / allCostEditText.text.toString()
+                    .toFloat()).toString())                }
+    }
 
     private fun setInitials() {
         viewModel.name = model.name
@@ -91,7 +101,6 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setOnChangeLogic() {
-
         binding.apply {
 
             clientName.addTextChangedListener {
@@ -112,18 +121,6 @@ class DetailsFragment : Fragment() {
                     binding.saveBtn.isEnabled = false
                     viewModel.phone = model.phoneNumber
                 }
-            }
-
-             fun ratioChanged(percentage: Float) {
-                binding.apply {
-                    priceAfterTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
-                        .toFloat()) * (1 + percentage)).toString())
-                    priceTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
-                        .toFloat()) * percentage).toString())
-                    montthlyPayEditText.text =
-                        ((priceAfterTaxEditText.text.toString()
-                            .toFloat() / allCostEditText.text.toString()
-                            .toFloat()).toString())                }
             }
 
             incomeEditText.addTextChangedListener {
