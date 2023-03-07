@@ -12,7 +12,7 @@ data class BaseModel(
     var name: String,
     var phoneNumber: String,
     var priceWithoutAddition: String,
-    var addintionPercentage: Float,
+    var addintionPercentage: Double,
     var numberOfTotalInstallments: Int,   // how many months until done
     var monthlyDayOfPaying: String,
     var startDate: String,
@@ -20,7 +20,7 @@ data class BaseModel(
     var priceAfterAddition: String,
     var monthlyPay: String,
     var additionMoney: String,
-    var income : Float
+    var income : Double
 ) : Parcelable {
 
     @PrimaryKey(autoGenerate = true)

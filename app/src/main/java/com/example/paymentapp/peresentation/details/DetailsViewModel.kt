@@ -18,7 +18,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
     var name = ""
     var phone = ""
-    var income = 0.0f
+    var income = 0.0
     var priceBefore = ""
     var benefits = ""
     var benefitsValue = ""
@@ -84,16 +84,16 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
                  model.name == name && !newHistory
 
 
-    private fun splitPercentage(benefits:String): Float {
+    private fun splitPercentage(benefits:String): Double {
 
         if (benefits.contains(" ")) {
             val o = benefits.split(" ")
-            return (o[0].toFloat())
+            return (o[0].toDouble())
         } else if (benefits.contains("%")) {
             val o = benefits.split("%")
-            return (o[0].toFloat())
+            return (o[0].toDouble())
         }else{
-            return benefits.toFloat()
+            return benefits.toDouble()
         }
     }
 
