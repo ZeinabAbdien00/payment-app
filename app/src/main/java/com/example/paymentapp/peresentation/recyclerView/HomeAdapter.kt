@@ -9,6 +9,7 @@ import com.example.paymentapp.R
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.CardViewBinding
 import java.util.*
+import kotlin.math.roundToInt
 
 class HomeAdapter(private val list: ArrayList<BaseModel>) :
     RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
@@ -46,6 +47,7 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
         val currentItem = list[position]
         holder.binding.nameOfCustomer.text = currentItem.name
         holder.binding.valueOfTheDebt.text = currentItem.monthlyPay
+        holder.binding.valueOfTheDebt.text = currentItem.monthlyPay.toDouble().roundToInt().toString()
 
         if (currentItem.monthlyDayOfPaying == day.toString()) {
             holder.binding.dateOfTheDebt.text = "اليوم"

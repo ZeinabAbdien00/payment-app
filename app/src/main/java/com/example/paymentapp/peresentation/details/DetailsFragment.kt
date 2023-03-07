@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.math.roundToInt
 
 class DetailsFragment : Fragment() {
 
@@ -42,7 +43,6 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setViews()
         setupHistoryRV()
         setInitials()
@@ -79,16 +79,15 @@ class DetailsFragment : Fragment() {
     private fun monthlyPay() {
         binding.apply {
             montthlyPayEditText.text =
-                ((priceAfterTaxEditText.text.toString().toDouble()
-                        / allCostEditText.text.toString().toDouble()).toString())
+                ((priceAfterTaxEditText.text.toString().toDouble() / allCostEditText.text.toString()
+                    .toDouble()).roundToInt().toString())
         }
     }
 
     private fun setInitials() {
         viewModel.name = model.name
         viewModel.phone = model.phoneNumber
-        viewModel.income=model.income
-
+        viewModel.income = model.income
         viewModel.priceBefore = model.priceWithoutAddition
         viewModel.benefits = model.addintionPercentage.toString()
         viewModel.benefitsValue = model.additionMoney
@@ -107,7 +106,6 @@ class DetailsFragment : Fragment() {
 
     private fun setOnChangeLogic() {
         binding.apply {
-
             clientName.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
@@ -163,10 +161,9 @@ class DetailsFragment : Fragment() {
                     saveBtn.isEnabled = true
                     viewModel.totalInstallmentsNumber = it.toString()
                     remainingInstallmentEditText.setText((allCostEditText.text.toString()
-                        .toDouble() - paidInstallmentEditText.text.toString().toDouble()).toString())
-
-                    montthlyPayEditText.setText((priceAfterTaxEditText.text.toString()
-                        .toDouble() / allCostEditText.text.toString().toDouble()).toString())
+                        .toDouble() - paidInstallmentEditText.text.toString()
+                        .toDouble()).toString())
+                    monthlyPay()
                 } else {
                     saveBtn.isEnabled = false
                 }
@@ -221,7 +218,7 @@ class DetailsFragment : Fragment() {
                 saveNewData()
                 binding.saveBtn.isEnabled = false
             }
-//            findNavController().navigateUp()
+            //findNavController().navigateUp()
         }
 
 
@@ -287,12 +284,14 @@ class DetailsFragment : Fragment() {
 
         binding.apply {
             //قيمة الاقساط المسددة
-            allCostPaidEditText.setText(model.valueOfPayInstallments)
+            allCostPaidEditText.setText(model.valueOfPayInstallments.toDouble().roundToInt()
+                .toString())
             //عدد الاقساط المدفوعه
             paidInstallmentEditText.setText(model.numberOfPaidInstallments.toString())
             //قيمة الاقساط المتبقيه
             costRemainingInstallmentEditText.setText(
-                (model.priceAfterAddition.toDouble() - model.valueOfPayInstallments.toDouble()).toString())
+                (model.priceAfterAddition.toDouble() - model.valueOfPayInstallments.toDouble()).roundToInt()
+                    .toString())
             //عدد اللاقساط المتبقيه
             remainingInstallmentEditText.setText("${model.numberOfTotalInstallments - model.numberOfPaidInstallments}")
 
@@ -308,9 +307,10 @@ class DetailsFragment : Fragment() {
             //رقم العميل
             numberEditText.setText(model.phoneNumber)
             //المقدم
-            incomeEditText.setText(model.income.toString())
+            incomeEditText.setText(model.income.toString().toDouble().roundToInt().toString())
             //السعر قبل الزياده
-            priceBeforeTaxEditText.setText(model.priceWithoutAddition)
+            priceBeforeTaxEditText.setText(model.priceWithoutAddition.toDouble().roundToInt()
+                .toString())
             //نسبة الفائدة
             ratioEditText.setText("${model.addintionPercentage} %")
             //قيمة الفائدة
@@ -320,12 +320,12 @@ class DetailsFragment : Fragment() {
             // الاقساط الكلية عدد
             allCostEditText.setText(model.numberOfTotalInstallments.toString())
             //قيمة الاقساط المسددة
-            allCostPaidEditText.setText(model.valueOfPayInstallments)
+            allCostPaidEditText.setText(model.valueOfPayInstallments.toDouble().roundToInt().toString())
             //عدد الاقساط المدفوعه
             paidInstallmentEditText.setText(model.numberOfPaidInstallments.toString())
             //قيمة الاقساط المتبقيه
             costRemainingInstallmentEditText.setText(
-                (model.priceAfterAddition.toDouble() - model.valueOfPayInstallments.toDouble()).toString())
+                (model.priceAfterAddition.toDouble() - model.valueOfPayInstallments.toDouble()).roundToInt().toString())
             //عدد اللاقساط المتبقيه
             remainingInstallmentEditText.setText("${model.numberOfTotalInstallments - model.numberOfPaidInstallments}")
             //يوم السداد
@@ -333,13 +333,13 @@ class DetailsFragment : Fragment() {
             //تاريخ البداية
             startDateEditText.setText(model.startDate)
             //تاريخ النهايه
-//            endDateEditText.setText("not Yet")
+            //endDateEditText.setText("not Yet")
             // موديل السيارة
             modelOfCarEditText.setText(model.nameOfBoughtItems)
             //note
             theNote.setText(model.note)
             //القسط
-            montthlyPayEditText.setText(model.monthlyPay)
+            montthlyPayEditText.setText(model.monthlyPay.toDouble().roundToInt().toString())
         }
     }
 

@@ -116,6 +116,7 @@
                 android:id="@+id/income_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:maxLength="10"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
@@ -178,6 +179,7 @@
             <EditText
                 android:id="@+id/ratio_edit_text"
                 android:layout_width="0dp"
+                android:maxLength="10"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
@@ -274,6 +276,7 @@
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
+                android:maxLength="10"
                 android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"

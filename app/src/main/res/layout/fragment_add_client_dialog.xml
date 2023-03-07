@@ -279,7 +279,7 @@
                         android:id="@+id/Benefit_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="قيمة الفايدة"
+                        android:hint="نسبة الفايدة"
                         android:maxLength="10"
                         android:inputType="numberDecimal" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -348,7 +348,7 @@
 
 
                 <TextView
-                    android:layout_width="49dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
