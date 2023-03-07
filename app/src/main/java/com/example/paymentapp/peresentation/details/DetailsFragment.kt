@@ -87,10 +87,21 @@ class DetailsFragment : Fragment() {
         viewModel.carModel = viewModel.model.nameOfBoughtItems
         viewModel.monthlyPayValue = viewModel.model.monthlyPay.toDouble()
         viewModel.myNote = viewModel.model.note
+        viewModel.laterMonth = viewModel.model.numberOfLateMoneyMonths
     }
 
     private fun setOnChangeLogic() {
         binding.apply {
+
+            laterMonthEditText.addTextChangedListener{
+                if (it.toString().isNotEmpty()) {
+                    saveBtn.isEnabled = true
+                    viewModel.laterMonth = it.toString().toInt()
+                } else {
+                    saveBtn.isEnabled = false
+                    //viewModel.laterMonth = viewModel.model.numberOfLateMoneyMonths
+                }
+            }
 
             clientName.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
@@ -240,6 +251,7 @@ class DetailsFragment : Fragment() {
             theNote.setText(viewModel.model.note)
             //القسط
             montthlyPayEditText.setText(viewModel.model.monthlyPay)
+            laterMonthEditText.setText(viewModel.model.numberOfLateMoneyMonths.toString())
         }
     }
 

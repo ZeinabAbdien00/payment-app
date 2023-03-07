@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.example.paymentapp.databinding.FragmentAddClientDialogBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -55,6 +57,8 @@ class AddClientDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        currentDate = LocalDate.now().toString()
         setViews()
         setOnClickListeners()
     }
@@ -70,7 +74,7 @@ class AddClientDialog : DialogFragment() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val month = calendar.get(Calendar.MONTH)
         val year = calendar.get(Calendar.YEAR)
-        currentDate = "${year}/${month}/${day}"
+        currentDate = "${year}/${month + 1}/${day}"
         today = day
         binding.startDatePicker.updateDate(year, month, day)
     }

@@ -1,6 +1,7 @@
 package com.example.paymentapp.peresentation.details
 
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.Glide.init
 import com.example.paymentapp.MyApp
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
@@ -35,6 +36,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     var monthlyPayValue = 0.0
     var myNote = ""
     var newHistory = false
+    var laterMonth = 0
 
     init {
         val dao = HomeDataBase.getInstance(MyApp.context).myDao()
@@ -57,6 +59,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
         payiedInstallmentsValue += monthlyPayValue
         comingInstallmentsVlaue -= monthlyPayValue
+        laterMonth--
 
         model.userHavePaidToday()
     }
@@ -66,6 +69,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
         if (payiedInstallmentsNumber>0)
         payiedInstallmentsNumber--
+        laterMonth++
 
         comingInstallmentsNumber++
         payiedInstallmentsValue -= monthlyPayValue.toDouble()
@@ -93,7 +97,8 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
                 model.nameOfBoughtItems == carModel &&
                 model.monthlyPay == monthlyPayValue.toString() &&
                 model.note == myNote &&
-                model.name == name && !newHistory
+                model.name == name && !newHistory &&
+                model.numberOfLateMoneyMonths == laterMonth
 
 
     private fun splitPercentage(benefits: String): Double {
@@ -129,6 +134,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.nameOfBoughtItems = carModel
         model.monthlyPay = monthlyPayValue.toString()
         model.note = myNote
+        model.numberOfLateMoneyMonths = laterMonth
         updateModel(model)
     }
 

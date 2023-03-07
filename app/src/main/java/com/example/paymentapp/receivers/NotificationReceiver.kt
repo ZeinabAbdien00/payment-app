@@ -54,7 +54,7 @@ class NotificationReceiver : BroadcastReceiver() {
             val pendingIntent = getIntent(context, REQUEST_TIMER1)
             val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-            val alarmTime = LocalTime.of(14, 43)
+            val alarmTime = LocalTime.of(5, 30)
 
             var now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
             if (now.toLocalTime().isAfter(alarmTime)) {
