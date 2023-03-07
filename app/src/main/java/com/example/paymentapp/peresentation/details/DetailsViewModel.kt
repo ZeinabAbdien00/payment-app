@@ -20,7 +20,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     var name = ""
     var phone = ""
     var income = 0.0
-    var priceBefore = ""
+    var priceBefore = 0.0
     var benefits = 0.0
     var benefitsValue = 0.0
     var priceAfter = 0.0
@@ -55,9 +55,8 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         comingInstallmentsNumber--
         }
 
-        payiedInstallmentsValue += monthlyPayValue.toDouble()
-
-        comingInstallmentsVlaue -= monthlyPayValue.toDouble()
+        payiedInstallmentsValue += monthlyPayValue
+        comingInstallmentsVlaue -= monthlyPayValue
 
         model.userHavePaidToday()
     }
@@ -77,7 +76,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
     fun isNewData(): Boolean =
         model.phoneNumber == phone &&
-                model.priceWithoutAddition == priceBefore &&
+                model.priceWithoutAddition == priceBefore.toString() &&
                 model.income == income &&
                 model.addintionPercentage == splitPercentage(benefits.toString()) &&
                 model.additionMoney == benefitsValue.toString() &&
@@ -114,7 +113,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.name = name
         model.phoneNumber = phone
         model.income = income
-        model.priceWithoutAddition = priceBefore
+        model.priceWithoutAddition = priceBefore.toString()
         model.addintionPercentage = splitPercentage(benefits.toString())
         model.additionMoney = benefitsValue.toString()
         model.priceAfterAddition = priceAfter.toString()

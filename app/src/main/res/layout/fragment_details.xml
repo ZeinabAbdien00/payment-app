@@ -112,7 +112,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/phone_number" />
 
-            <EditText
+            <TextView
                 android:id="@+id/income_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -120,10 +120,9 @@
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
@@ -171,12 +170,12 @@
                 android:layout_marginEnd="15dp"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:text="نسبة الفايدة :"
+                android:text="نسبة الفايدة % :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/price_before_tax" />
 
-            <EditText
+            <TextView
                 android:id="@+id/ratio_edit_text"
                 android:layout_width="0dp"
                 android:maxLength="10"
@@ -184,10 +183,9 @@
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:inputType="numberDecimal"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
@@ -269,7 +267,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/price_after_tax" />
 
-            <EditText
+            <TextView
                 android:id="@+id/all_cost_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -280,7 +278,7 @@
                 android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
@@ -396,13 +394,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:clickable="false"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/remaining_installment"
                 tools:text="3" />
@@ -513,7 +512,7 @@
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:inputType="number"
+                android:inputType="text"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/main_green"
