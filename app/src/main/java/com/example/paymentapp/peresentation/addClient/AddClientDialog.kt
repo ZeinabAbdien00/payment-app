@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.math.roundToInt
 
 
 class AddClientDialog : DialogFragment() {
@@ -30,7 +31,7 @@ class AddClientDialog : DialogFragment() {
     private lateinit var phoneNumber: String
     private lateinit var itemName: String
     private lateinit var repository: BaseRepository
-    private var price = 0.0f
+    private var price = 0
     private var benefits = 0.0f
     private var numberOfMonths = 1
     private var monthlyPay = 0.0f
@@ -93,13 +94,14 @@ class AddClientDialog : DialogFragment() {
 
         binding.priceEditText.doAfterTextChanged {
             price = if (it.toString().isNotEmpty()) {
-                it.toString().toFloat()
+                it.toString().toInt()
             } else {
-                0.0f
+                0
             }
-
-            fullPrice = price + (price * benefits / 100)
-            binding.fullPrice.text = String.format("%.2f", fullPrice)
+            fullPrice = (price - income) + ((price - income) * benefits / 100)
+            binding.fullPrice.text =  fullPrice.roundToInt().toString()
+            monthlyPay = (fullPrice) / numberOfMonths
+            binding.installmentText.text = monthlyPay.roundToInt().toString()
         }
 
         binding.BenefitEditText.doAfterTextChanged {
@@ -108,11 +110,10 @@ class AddClientDialog : DialogFragment() {
             } else {
                 0.0f
             }
-            fullPrice = (price-income) + ((price-income) * benefits / 100)
-            binding.fullPrice.text = String.format("%.2f", fullPrice)
-
-            monthlyPay = (fullPrice )/ numberOfMonths
-            binding.installmentText.text = String.format("%.2f", monthlyPay)
+            fullPrice = (price - income) + ((price - income) * benefits / 100)
+            binding.fullPrice.text =  fullPrice.roundToInt().toString()
+            monthlyPay = (fullPrice) / numberOfMonths
+            binding.installmentText.text = monthlyPay.roundToInt().toString()
 
         }
 
@@ -122,14 +123,10 @@ class AddClientDialog : DialogFragment() {
             } else {
                 1
             }
+            fullPrice = (price - income) + ((price - income) * benefits / 100)
+            binding.fullPrice.text =  fullPrice.roundToInt().toString()
             monthlyPay = (fullPrice) / numberOfMonths
-            binding.installmentText.text = String.format("%.2f", monthlyPay)
-        }
-
-
-        binding.fullPrice.doAfterTextChanged {
-            monthlyPay = (fullPrice / numberOfMonths)
-            binding.installmentText.text = String.format("%.2f", monthlyPay)
+            binding.installmentText.text = monthlyPay.roundToInt().toString()
         }
 
         binding.startDatePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
@@ -138,18 +135,14 @@ class AddClientDialog : DialogFragment() {
         }
 
         binding.incomeDialogEditText.doAfterTextChanged {
+            income = if (it.toString().isNotEmpty()) {
+                it.toString().toFloat()
+            } else 0.0f
 
-            if (it!!.isNotEmpty()) {
-                income =it.toString().toFloat()
-                monthlyPay = (fullPrice- income) / numberOfMonths
-                binding.installmentText.text = String.format("%.2f", monthlyPay)
-
-                fullPrice = (price-income)
-                binding.fullPrice.text = String.format("%.2f", fullPrice)
-
-            } else {
-                0.0f
-            }
+            fullPrice = (price - income) + ((price - income) * benefits / 100)
+            binding.fullPrice.text =  fullPrice.roundToInt().toString()
+            monthlyPay = (fullPrice) / numberOfMonths
+            binding.installmentText.text = monthlyPay.roundToInt().toString()
         }
 
         binding.addBtn.setOnClickListener {
