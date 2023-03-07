@@ -455,14 +455,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/pay_day" />
 
-            <EditText
+            <TextView
                 android:id="@+id/start_date_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/main_green"

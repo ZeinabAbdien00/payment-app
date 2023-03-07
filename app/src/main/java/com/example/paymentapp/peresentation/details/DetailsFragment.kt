@@ -47,8 +47,6 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setData() {
-
-
         binding.apply {
             //قيمة الاقساط المدفوعه
             allCostPaidEditText.setText((viewModel.payiedInstallmentsValue).roundToInt().toString())
@@ -60,17 +58,8 @@ class DetailsFragment : Fragment() {
             )
             //عدد اللاقساط المتبقيه
             remainingInstallmentEditText.setText((viewModel.comingInstallmentsNumber).toString())  //قيمة الاقساط المدفوعه
-//            allCostPaidEditText.setText((model.monthlyPay.toDouble()*arraySize).roundToInt().toString())
-//            //عدد الاقساط المدفوعه
-//            paidInstallmentEditText.setText(arraySize.toString())
-//            //قيمة الاقساط المتبقيه
-//            costRemainingInstallmentEditText.setText((model.priceAfterAddition.toDouble() - (model.monthlyPay.toDouble()*arraySize)).roundToInt().toString())
-//            //عدد اللاقساط المتبقيه
-//            remainingInstallmentEditText.setText((model.numberOfTotalInstallments - arraySize).toString())
         }
-
     }
-
 
     private fun splitRatio(): Double {
         binding.apply {
@@ -87,25 +76,31 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    //done
     private fun ratioChanged(percentage: Double) {
         binding.apply {
-            priceAfterTaxEditText.setText(
-                ((viewModel.priceBefore.toDouble() - incomeEditText.text.toString()
-                    .toDouble()) * (1 + percentage)).toString()
-            )
+            viewModel.priceAfter =
+                (viewModel.priceBefore.toDouble() - incomeEditText.text.toString()
+                    .toDouble()) * (1 + percentage)
+            priceAfterTaxEditText.setText(viewModel.priceAfter.toString())
+
+            viewModel.benefits = ((viewModel.priceBefore.toDouble() - incomeEditText.text.toString()
+                .toDouble()) * percentage)
             priceTaxEditText.setText(
-                ((viewModel.priceBefore.toDouble() - incomeEditText.text.toString()
-                    .toDouble()) * percentage).toString()
+                viewModel.benefits.toString()
             )
             monthlyPay()
         }
     }
 
+    //done
     private fun monthlyPay() {
         binding.apply {
+            viewModel.monthlyPayValue =
+                (priceAfterTaxEditText.text.toString().toDouble() / allCostEditText.text.toString()
+                    .toDouble())
             montthlyPayEditText.text =
-                ((priceAfterTaxEditText.text.toString().toDouble() / allCostEditText.text.toString()
-                    .toDouble()).roundToInt().toString())
+                (viewModel.monthlyPayValue.roundToInt().toString())
         }
     }
 
@@ -116,9 +111,9 @@ class DetailsFragment : Fragment() {
         viewModel.phone = viewModel.model.phoneNumber
         viewModel.income = viewModel.model.income
         viewModel.priceBefore = viewModel.model.priceWithoutAddition
-        viewModel.benefits = viewModel.model.addintionPercentage.toString()
-        viewModel.benefitsValue = viewModel.model.additionMoney
-        viewModel.priceAfter = viewModel.model.priceAfterAddition
+        viewModel.benefits = viewModel.model.addintionPercentage
+        viewModel.benefitsValue = viewModel.model.additionMoney.toDouble()
+        viewModel.priceAfter = viewModel.model.priceAfterAddition.toDouble()
 
         viewModel.totalInstallmentsNumber = viewModel.model.numberOfTotalInstallments
         //عدد الاقساط المدفوعه
@@ -126,18 +121,22 @@ class DetailsFragment : Fragment() {
         //قيمه القساط المدفوعه
         viewModel.payiedInstallmentsValue = viewModel.model.payValue
         //عدد الاقساط المتبقيه
-        viewModel.comingInstallmentsNumber = viewModel.model.notPayNumber
+        viewModel.comingInstallmentsNumber =
+            viewModel.model.numberOfTotalInstallments - viewModel.model.payNumber
         //قيمة الاقساط المتبقيه
-        viewModel.comingInstallmentsVlaue = viewModel.model.notPayValue
+        viewModel.comingInstallmentsVlaue =
+            viewModel.model.priceAfterAddition.toDouble() - viewModel.model.payValue
         viewModel.dayOfPaying = viewModel.model.monthlyDayOfPaying
         viewModel.startDate = viewModel.model.startDate
         viewModel.carModel = viewModel.model.nameOfBoughtItems
-        viewModel.monthlyPayValue = viewModel.model.monthlyPay
+        viewModel.monthlyPayValue = viewModel.model.monthlyPay.toDouble()
         viewModel.myNote = viewModel.model.note
     }
 
+    //done
     private fun setOnChangeLogic() {
         binding.apply {
+            //done
             clientName.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
@@ -147,7 +146,7 @@ class DetailsFragment : Fragment() {
                     viewModel.name = viewModel.model.name
                 }
             }
-
+//done
             numberEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
@@ -157,7 +156,7 @@ class DetailsFragment : Fragment() {
                     viewModel.phone = viewModel.model.phoneNumber
                 }
             }
-
+//done
             incomeEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
@@ -165,44 +164,53 @@ class DetailsFragment : Fragment() {
                 } else {
                     saveBtn.isEnabled = false
                     apply {
-                        priceAfterTaxEditText.setText(((viewModel.priceBefore.toDouble()) * (1 + splitRatio())).toString())
-                        priceTaxEditText.setText(((viewModel.priceBefore.toDouble()) * splitRatio()).toString())
+                        viewModel.priceAfter =
+                            ((viewModel.priceBefore.toDouble()) * (1 + splitRatio()))
+                        priceAfterTaxEditText.setText(viewModel.priceAfter.toString())
+
+                        viewModel.benefitsValue =
+                            ((viewModel.priceBefore.toDouble()) * splitRatio())
+                        priceTaxEditText.setText(viewModel.benefitsValue.toString())
                         monthlyPay()
                         incomeEditText.setText("0")
                     }
                 }
             }
-
+//done
             ratioEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
-                    viewModel.benefits = it.toString()
+                    viewModel.benefits = it.toString().toDouble()
                     ratioChanged(splitRatio())
                 } else {
                     saveBtn.isEnabled = false
-                    viewModel.benefits = viewModel.model.priceWithoutAddition
+                    viewModel.benefits = viewModel.model.priceWithoutAddition.toDouble()
+
+                    viewModel.priceAfter =
+                        (viewModel.priceBefore.toDouble() - viewModel.model.income)
                     priceAfterTaxEditText.text =
-                        (viewModel.priceBefore.toDouble() - viewModel.model.income).toString()
+                        viewModel.priceAfter.toString()
                     priceTaxEditText.text = "0.0"
                     ratioEditText.setText("0")
                 }
             }
-
+//done
             allCostEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
                     viewModel.totalInstallmentsNumber = it.toString().toInt()
+
+                    viewModel.comingInstallmentsNumber = (it.toString()
+                        .toInt() - viewModel.payiedInstallmentsNumber)
                     remainingInstallmentEditText.setText(
-                        (allCostEditText.text.toString()
-                            .toDouble() - paidInstallmentEditText.text.toString()
-                            .toDouble()).toString()
+                        viewModel.comingInstallmentsNumber.toString()
                     )
                     monthlyPay()
                 } else {
                     saveBtn.isEnabled = false
                 }
             }
-
+//done
             payDayEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
@@ -213,16 +221,17 @@ class DetailsFragment : Fragment() {
                 }
             }
 
-            startDateEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    saveBtn.isEnabled = true
-                    viewModel.startDate = it.toString()
-                } else {
-                    saveBtn.isEnabled = false
-                    viewModel.startDate = viewModel.model.startDate
-                }
-            }
+//            startDateEditText.addTextChangedListener {
+//                if (it.toString().isNotEmpty()) {
+//                    saveBtn.isEnabled = true
+//                    viewModel.startDate = it.toString()
+//                } else {
+//                    saveBtn.isEnabled = false
+//                    viewModel.startDate = viewModel.model.startDate
+//                }
+//            }
 
+//done
             modelOfCarEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
@@ -232,7 +241,7 @@ class DetailsFragment : Fragment() {
                     viewModel.carModel = viewModel.model.nameOfBoughtItems
                 }
             }
-
+//done
             theNote.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
@@ -245,6 +254,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    //done
     private fun setOnClicks() {
 
         binding.saveBtn.setOnClickListener {
@@ -306,6 +316,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    //done
     private fun setupHistoryRV() {
         myList = viewModel.historyArray
         adapter = HistoryAdapter(myList)
@@ -313,6 +324,7 @@ class DetailsFragment : Fragment() {
         binding.rvHistoryView.layoutManager = LinearLayoutManager(requireActivity())
     }
 
+    //done
     private fun setViews() {
         setData()
         binding.apply {
@@ -354,12 +366,14 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    //done
     private fun saveNewData() {
         GlobalScope.launch {
             viewModel.saveData()
         }
     }
 
+    //done
     private fun checkIfDataChanged(): Boolean =
         viewModel.isNewData()
 }

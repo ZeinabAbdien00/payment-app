@@ -21,9 +21,9 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     var phone = ""
     var income = 0.0
     var priceBefore = ""
-    var benefits = ""
-    var benefitsValue = ""
-    var priceAfter = ""
+    var benefits = 0.0
+    var benefitsValue = 0.0
+    var priceAfter = 0.0
     var totalInstallmentsNumber = 0
     var payiedInstallmentsNumber = 0
     var payiedInstallmentsValue = 0.0
@@ -32,7 +32,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     var dayOfPaying = ""
     var startDate = " "
     var carModel = ""
-    var monthlyPayValue = ""
+    var monthlyPayValue = 0.0
     var myNote = ""
     var newHistory = false
 
@@ -51,8 +51,9 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
         payiedInstallmentsNumber++
 
-        if (comingInstallmentsVlaue>0)
+        if (comingInstallmentsVlaue>0){
         comingInstallmentsNumber--
+        }
 
         payiedInstallmentsValue += monthlyPayValue.toDouble()
 
@@ -78,9 +79,9 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.phoneNumber == phone &&
                 model.priceWithoutAddition == priceBefore &&
                 model.income == income &&
-                model.addintionPercentage == splitPercentage(benefits) &&
-                model.additionMoney == benefitsValue &&
-                model.priceAfterAddition == priceAfter &&
+                model.addintionPercentage == splitPercentage(benefits.toString()) &&
+                model.additionMoney == benefitsValue.toString() &&
+                model.priceAfterAddition == priceAfter.toString() &&
                 model.numberOfTotalInstallments == totalInstallmentsNumber.toInt() &&
 
                 model.payNumber == payiedInstallmentsNumber &&
@@ -91,7 +92,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
                 model.monthlyDayOfPaying == dayOfPaying &&
                 model.startDate == startDate &&
                 model.nameOfBoughtItems == carModel &&
-                model.monthlyPay == monthlyPayValue &&
+                model.monthlyPay == monthlyPayValue.toString() &&
                 model.note == myNote &&
                 model.name == name && !newHistory
 
@@ -114,9 +115,9 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.phoneNumber = phone
         model.income = income
         model.priceWithoutAddition = priceBefore
-        model.addintionPercentage = splitPercentage(benefits)
-        model.additionMoney = benefitsValue
-        model.priceAfterAddition = priceAfter
+        model.addintionPercentage = splitPercentage(benefits.toString())
+        model.additionMoney = benefitsValue.toString()
+        model.priceAfterAddition = priceAfter.toString()
         model.numberOfTotalInstallments = totalInstallmentsNumber.toInt()
 
         model.payNumber = payiedInstallmentsNumber.toInt()
@@ -127,7 +128,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.monthlyDayOfPaying = dayOfPaying
         model.startDate = startDate
         model.nameOfBoughtItems = carModel
-        model.monthlyPay = monthlyPayValue
+        model.monthlyPay = monthlyPayValue.toString()
         model.note = myNote
         updateModel(model)
     }
