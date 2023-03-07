@@ -90,6 +90,7 @@ data class BaseModel(
             userPaidToday = false
         }
         numberOfLateMoneyMonths++
+
     }
 
 }

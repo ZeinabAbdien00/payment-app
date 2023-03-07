@@ -1,7 +1,6 @@
 package com.example.paymentapp.peresentation.details
 
 import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide.init
 import com.example.paymentapp.MyApp
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
@@ -17,6 +16,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     lateinit var historyArray : ArrayList<String>
     private val repository: BaseRepository
 
+    lateinit var model: BaseModel
     var name = ""
     var phone = ""
     var income = 0.0
@@ -24,11 +24,11 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     var benefits = ""
     var benefitsValue = ""
     var priceAfter = ""
-    var totalInstallmentsNumber = ""
-    var payiedInstallmentsNumber = ""
-    var payiedInstallmentsValue = ""
-    var comingInstallmentsVlaue = ""
-    var comingInstallmentsNumber = ""
+    var totalInstallmentsNumber = 0
+    var payiedInstallmentsNumber = 0
+    var payiedInstallmentsValue = 0.0
+    var comingInstallmentsVlaue = 0.0
+    var comingInstallmentsNumber = 0
     var dayOfPaying = ""
     var startDate = " "
     var carModel = ""
@@ -41,31 +41,40 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         repository = BaseRepository(dao)
     }
 
+    fun setMyModel(myModel: BaseModel){
+        model = myModel
+        historyArray=model.historyList
+    }
 
-    fun addDateToItem(model: BaseModel, currentDate: String) {
-        model.historyList.add(currentDate)
-        model.payNumber++
-        // Log.d("suzan" , model.numberOfPaidInstallments.toString())
-        model.notPayNumber--
-        model.payValue =
-            (model.payValue.toFloat() + model.monthlyPay.toFloat()).toDouble()
-        model.notPayValue =
-            (model.notPayValue.toFloat() - model.monthlyPay.toFloat()).toDouble()
+    fun addDateToItem(currentDate: String) {
+        historyArray.add(currentDate)
+
+        payiedInstallmentsNumber++
+
+        if (comingInstallmentsVlaue>0)
+        comingInstallmentsNumber--
+
+        payiedInstallmentsValue += monthlyPayValue.toDouble()
+
+        comingInstallmentsVlaue -= monthlyPayValue.toDouble()
+
         model.userHavePaidToday()
     }
 
-    fun removeLastDateFromItem(model: BaseModel) {
-        model.historyList.removeLast()
-        model.payNumber--
-        model.notPayNumber++
-        model.payValue =
-            (model.payValue.toFloat() - model.monthlyPay.toFloat()).toDouble()
-        model.notPayValue =
-            (model.notPayValue.toFloat() + model.monthlyPay.toFloat()).toDouble()
+    fun removeLastDateFromItem() {
+        historyArray.removeAt(historyArray.size-1)
+
+        if (payiedInstallmentsNumber>0)
+        payiedInstallmentsNumber--
+
+        comingInstallmentsNumber++
+        payiedInstallmentsValue -= monthlyPayValue.toDouble()
+        comingInstallmentsVlaue += monthlyPayValue.toDouble()
+
         model.undoPay()
     }
 
-    fun isNewData(model: BaseModel): Boolean =
+    fun isNewData(): Boolean =
         model.phoneNumber == phone &&
                 model.priceWithoutAddition == priceBefore &&
                 model.income == income &&
@@ -73,10 +82,12 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
                 model.additionMoney == benefitsValue &&
                 model.priceAfterAddition == priceAfter &&
                 model.numberOfTotalInstallments == totalInstallmentsNumber.toInt() &&
-                model.payNumber == payiedInstallmentsNumber.toInt() &&
-                model.payValue == payiedInstallmentsValue.toDouble() &&
-                model.notPayNumber == comingInstallmentsNumber.toInt() &&
-                model.notPayValue == comingInstallmentsVlaue.toDouble() &&
+
+                model.payNumber == payiedInstallmentsNumber &&
+                model.payValue == payiedInstallmentsValue&&
+                model.notPayNumber == comingInstallmentsNumber &&
+                model.notPayValue == comingInstallmentsVlaue &&
+
                 model.monthlyDayOfPaying == dayOfPaying &&
                 model.startDate == startDate &&
                 model.nameOfBoughtItems == carModel &&
@@ -98,7 +109,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    suspend fun saveData(model: BaseModel) {
+    suspend fun saveData() {
         model.name = name
         model.phoneNumber = phone
         model.income = income
@@ -107,10 +118,12 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.additionMoney = benefitsValue
         model.priceAfterAddition = priceAfter
         model.numberOfTotalInstallments = totalInstallmentsNumber.toInt()
+
         model.payNumber = payiedInstallmentsNumber.toInt()
         model.payValue = payiedInstallmentsValue.toDouble()
         model.notPayNumber = comingInstallmentsNumber.toInt()
         model.notPayValue = comingInstallmentsVlaue.toDouble()
+
         model.monthlyDayOfPaying = dayOfPaying
         model.startDate = startDate
         model.nameOfBoughtItems = carModel
