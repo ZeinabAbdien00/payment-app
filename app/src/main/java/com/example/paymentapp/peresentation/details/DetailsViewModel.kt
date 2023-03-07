@@ -1,6 +1,7 @@
 package com.example.paymentapp.peresentation.details
 
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.Glide.init
 import com.example.paymentapp.MyApp
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
@@ -13,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsViewModel @Inject constructor() : ViewModel() {
 
-
+    lateinit var historyArray : ArrayList<String>
     private val repository: BaseRepository
 
     var name = ""
@@ -43,24 +44,24 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
     fun addDateToItem(model: BaseModel, currentDate: String) {
         model.historyList.add(currentDate)
-        model.numberOfPaidInstallments++
+        model.payNumber++
         // Log.d("suzan" , model.numberOfPaidInstallments.toString())
-        model.numberOfComingInstallments--
-        model.valueOfPayInstallments =
-            (model.valueOfPayInstallments.toFloat() + model.monthlyPay.toFloat()).toString()
-        model.valueOfComingInstallments =
-            (model.valueOfComingInstallments.toFloat() - model.monthlyPay.toFloat()).toString()
+        model.notPayNumber--
+        model.payValue =
+            (model.payValue.toFloat() + model.monthlyPay.toFloat()).toDouble()
+        model.notPayValue =
+            (model.notPayValue.toFloat() - model.monthlyPay.toFloat()).toDouble()
         model.userHavePaidToday()
     }
 
     fun removeLastDateFromItem(model: BaseModel) {
         model.historyList.removeLast()
-        model.numberOfPaidInstallments--
-        model.numberOfComingInstallments++
-        model.valueOfPayInstallments =
-            (model.valueOfPayInstallments.toFloat() - model.monthlyPay.toFloat()).toString()
-        model.valueOfComingInstallments =
-            (model.valueOfComingInstallments.toFloat() + model.monthlyPay.toFloat()).toString()
+        model.payNumber--
+        model.notPayNumber++
+        model.payValue =
+            (model.payValue.toFloat() - model.monthlyPay.toFloat()).toDouble()
+        model.notPayValue =
+            (model.notPayValue.toFloat() + model.monthlyPay.toFloat()).toDouble()
         model.undoPay()
     }
 
@@ -72,10 +73,10 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
                 model.additionMoney == benefitsValue &&
                 model.priceAfterAddition == priceAfter &&
                 model.numberOfTotalInstallments == totalInstallmentsNumber.toInt() &&
-                model.numberOfPaidInstallments == payiedInstallmentsNumber.toInt() &&
-                model.valueOfPayInstallments == payiedInstallmentsValue &&
-                model.numberOfComingInstallments == comingInstallmentsNumber.toInt() &&
-                model.valueOfComingInstallments == comingInstallmentsVlaue &&
+                model.payNumber == payiedInstallmentsNumber.toInt() &&
+                model.payValue == payiedInstallmentsValue.toDouble() &&
+                model.notPayNumber == comingInstallmentsNumber.toInt() &&
+                model.notPayValue == comingInstallmentsVlaue.toDouble() &&
                 model.monthlyDayOfPaying == dayOfPaying &&
                 model.startDate == startDate &&
                 model.nameOfBoughtItems == carModel &&
@@ -106,10 +107,10 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         model.additionMoney = benefitsValue
         model.priceAfterAddition = priceAfter
         model.numberOfTotalInstallments = totalInstallmentsNumber.toInt()
-        model.numberOfPaidInstallments = payiedInstallmentsNumber.toInt()
-        model.valueOfPayInstallments = payiedInstallmentsValue
-        model.numberOfComingInstallments = comingInstallmentsNumber.toInt()
-        model.valueOfComingInstallments = comingInstallmentsVlaue
+        model.payNumber = payiedInstallmentsNumber.toInt()
+        model.payValue = payiedInstallmentsValue.toDouble()
+        model.notPayNumber = comingInstallmentsNumber.toInt()
+        model.notPayValue = comingInstallmentsVlaue.toDouble()
         model.monthlyDayOfPaying = dayOfPaying
         model.startDate = startDate
         model.nameOfBoughtItems = carModel

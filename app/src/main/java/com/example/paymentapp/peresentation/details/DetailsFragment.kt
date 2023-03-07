@@ -29,6 +29,7 @@ class DetailsFragment : Fragment() {
     private lateinit var adapter: HistoryAdapter
     private lateinit var myList: ArrayList<String>
     private val viewModel: DetailsViewModel by viewModels()
+    var arraySize : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +43,27 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViews()
-        setupHistoryRV()
         setInitials()
         setOnClicks()
         setOnChangeLogic()
+        setupHistoryRV()
+    }
+
+    private fun setData(){
+
+        arraySize = model.historyList.size
+
+        binding.apply {
+            //قيمة الاقساط المدفوعه
+            allCostPaidEditText.setText((model.monthlyPay.toDouble()*arraySize).roundToInt().toString())
+            //عدد الاقساط المدفوعه
+            paidInstallmentEditText.setText(arraySize.toString())
+            //قيمة الاقساط المتبقيه
+            costRemainingInstallmentEditText.setText((model.priceAfterAddition.toDouble() - (model.monthlyPay.toDouble()*arraySize)).roundToInt().toString())
+            //عدد اللاقساط المتبقيه
+            remainingInstallmentEditText.setText((model.numberOfTotalInstallments - arraySize).toString())
+        }
+
     }
 
 
@@ -83,6 +101,8 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setInitials() {
+        arraySize =model.historyList.size
+        viewModel.historyArray = model.historyList
         viewModel.name = model.name
         viewModel.phone = model.phoneNumber
         viewModel.income = model.income
@@ -91,10 +111,14 @@ class DetailsFragment : Fragment() {
         viewModel.benefitsValue = model.additionMoney
         viewModel.priceAfter = model.priceAfterAddition
         viewModel.totalInstallmentsNumber = model.numberOfTotalInstallments.toString()
-        viewModel.payiedInstallmentsNumber = model.numberOfPaidInstallments.toString()
-        viewModel.payiedInstallmentsValue = model.valueOfPayInstallments
-        viewModel.comingInstallmentsNumber = model.numberOfComingInstallments.toString()
-        viewModel.comingInstallmentsVlaue = model.valueOfComingInstallments
+        //عدد الاقساط المدفوعه
+        viewModel.payiedInstallmentsNumber = model.payNumber.toString()
+        //قيمه القساط المدفوعه
+        viewModel.payiedInstallmentsValue = model.payValue.toString()
+        //عدد الاقساط المتبقيه
+        viewModel.comingInstallmentsNumber = model.notPayNumber.toString()
+        //قيمة الاقساط المتبقيه
+        viewModel.comingInstallmentsVlaue = model.notPayValue.toString()
         viewModel.dayOfPaying = model.monthlyDayOfPaying
         viewModel.startDate = model.startDate
         viewModel.carModel = model.nameOfBoughtItems
@@ -228,7 +252,7 @@ class DetailsFragment : Fragment() {
                 lifecycleScope.launch(Dispatchers.Main) {
                     it.isClickable = false
                     try {
-                        if (model.numberOfPaidInstallments < model.numberOfTotalInstallments) {
+                        if (model.payNumber < model.numberOfTotalInstallments) {
                             val calendar = Calendar.getInstance()
                             val day = calendar.get(Calendar.DAY_OF_MONTH)
                             val month = calendar.get(Calendar.MONTH)
@@ -236,7 +260,7 @@ class DetailsFragment : Fragment() {
                             val currentDate = "${year}/${month + 1}/${day}"
                             viewModel.addDateToItem(model, currentDate)
                             adapter.notifyDataSetChanged()
-                            setPayment()
+                            setData()
                         }
                     } catch (_: Exception) {
                     }
@@ -253,12 +277,11 @@ class DetailsFragment : Fragment() {
             } else {
                 lifecycleScope.launch(Dispatchers.Main) {
                     it.isClickable = false
-                    if (model.numberOfComingInstallments < model.numberOfTotalInstallments) {
+                    if (model.notPayNumber < model.numberOfTotalInstallments) {
                         try {
                             viewModel.removeLastDateFromItem(model)
                             adapter.notifyDataSetChanged()
-                            setPayment()
-                            //saveNewData()
+                            setData()
                         } catch (_: Exception) {
                         }
                     }
@@ -274,33 +297,15 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setupHistoryRV() {
-        myList = model.historyList
+        myList = viewModel.historyArray
         adapter = HistoryAdapter(myList)
         binding.rvHistoryView.adapter = adapter
         binding.rvHistoryView.layoutManager = LinearLayoutManager(requireActivity())
     }
 
-    private fun setPayment() {
-
-        binding.apply {
-            //قيمة الاقساط المسددة
-            allCostPaidEditText.setText(model.valueOfPayInstallments.toDouble().roundToInt()
-                .toString())
-            //عدد الاقساط المدفوعه
-            paidInstallmentEditText.setText(model.numberOfPaidInstallments.toString())
-            //قيمة الاقساط المتبقيه
-            costRemainingInstallmentEditText.setText(
-                (model.priceAfterAddition.toDouble() - model.valueOfPayInstallments.toDouble()).roundToInt()
-                    .toString())
-            //عدد اللاقساط المتبقيه
-            remainingInstallmentEditText.setText("${model.numberOfTotalInstallments - model.numberOfPaidInstallments}")
-
-        }
-
-    }
-
     private fun setViews() {
         model = args.model
+        setData()
         binding.apply {
             //اسم العميل
             clientName.setText(model.name)
@@ -319,17 +324,6 @@ class DetailsFragment : Fragment() {
             priceAfterTaxEditText.setText(model.priceAfterAddition)
             // الاقساط الكلية عدد
             allCostEditText.setText(model.numberOfTotalInstallments.toString())
-            //قيمة الاقساط المسددة
-            allCostPaidEditText.setText(model.valueOfPayInstallments.toDouble().roundToInt()
-                .toString())
-            //عدد الاقساط المدفوعه
-            paidInstallmentEditText.setText(model.numberOfPaidInstallments.toString())
-            //قيمة الاقساط المتبقيه
-            costRemainingInstallmentEditText.setText(
-                (model.priceAfterAddition.toDouble() - model.valueOfPayInstallments.toDouble()).roundToInt()
-                    .toString())
-            //عدد اللاقساط المتبقيه
-            remainingInstallmentEditText.setText("${model.numberOfTotalInstallments - model.numberOfPaidInstallments}")
             //يوم السداد
             payDayEditText.setText(model.monthlyDayOfPaying)
             //تاريخ البداية
@@ -343,10 +337,6 @@ class DetailsFragment : Fragment() {
             //القسط
             montthlyPayEditText.setText(model.monthlyPay.toDouble().roundToInt().toString())
         }
-    }
-
-    private fun saveFinalData(){
-
     }
 
     private fun saveNewData() {

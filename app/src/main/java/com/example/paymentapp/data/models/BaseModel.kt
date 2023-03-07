@@ -21,6 +21,10 @@ data class BaseModel(
     var monthlyPay: String,
     var additionMoney: String,
     var income: Double,
+    var payValue :Double ,
+    var payNumber :Int ,
+    var notPayValue :Double ,
+    var notPayNumber :Int
 ) : Parcelable {
 
     @PrimaryKey(autoGenerate = true)
@@ -29,17 +33,17 @@ data class BaseModel(
     // add to this list when person starts to pay the first month
     lateinit var historyList: ArrayList<String>
 
-    // how much did he paid until now
-    var valueOfPayInstallments: String = "0"
-
-    // how many Installments did he pay untill now
-    var numberOfPaidInstallments: Int = 0
-
-    // how much money is left to pay
-    var valueOfComingInstallments: String = "0"
-
-    // how many Installments are left
-    var numberOfComingInstallments: Int = 0
+//    // how much did he paid until now
+//    var valueOfPayInstallments: String = "0"
+//
+//    // how many Installments did he pay untill now
+//    var numberOfPaidInstallments: Int = 0
+//
+//    // how much money is left to pay
+//    var valueOfComingInstallments: String = "0"
+//
+//    // how many Installments are left
+//    var numberOfComingInstallments: Int = 0
 
     //number of months that didnot pay yet
     var numberOfLateMoneyMonths = 0

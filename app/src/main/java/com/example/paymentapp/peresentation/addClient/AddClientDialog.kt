@@ -154,7 +154,11 @@ class AddClientDialog : DialogFragment() {
                         nameOfBoughtItems = itemName,
                         monthlyPay = monthlyPay.toString(),
                         additionMoney = ((price - income) * (benefits / 100)).toString(),
-                        income = income
+                        income = income ,
+                        payNumber = 0 ,
+                        payValue = 0.0 ,
+                        notPayNumber = numberOfMonths ,
+                        notPayValue = fullPrice
                     )
                     model.historyList = ArrayList()
                     insertToRoom(model)
