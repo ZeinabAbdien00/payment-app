@@ -31,8 +31,6 @@ class DetailsFragment : Fragment() {
     private lateinit var myList: ArrayList<String>
     private val viewModel: DetailsViewModel by viewModels()
 
-// add income logic
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -53,31 +51,27 @@ class DetailsFragment : Fragment() {
     }
 
 
-    private fun splitRatio(): Float {
+    private fun splitRatio(): Double {
         binding.apply {
             return if (ratioEditText.text.contains(" ")) {
                 val s = ratioEditText.text.toString().split(" ")
-                (s[0].toFloat() / 100)
+                (s[0].toDouble() / 100)
 
             } else if (ratioEditText.text.contains("%")) {
                 val s = ratioEditText.text.toString().split("%")
-                (s[0].toFloat() / 100)
+                (s[0].toDouble() / 100)
             } else {
-                ratioEditText.text.toString().toFloat() / 100
+                ratioEditText.text.toString().toDouble() / 100
             }
         }
     }
 
-    private fun ratioChanged(percentage: Float) {
+    private fun ratioChanged(percentage: Double) {
         binding.apply {
-            priceAfterTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
-                .toFloat()) * (1 + percentage)).toString())
-            priceTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
-                .toFloat()) * percentage).toString())
-//            montthlyPayEditText.text =
-//                ((priceAfterTaxEditText.text.toString()
-//                    .toFloat() / allCostEditText.text.toString()
-//                    .toFloat()).toString())
+            priceAfterTaxEditText.setText(((viewModel.priceBefore.toDouble() - incomeEditText.text.toString()
+                .toDouble()) * (1 + percentage)).toString())
+            priceTaxEditText.setText(((viewModel.priceBefore.toDouble() - incomeEditText.text.toString()
+                .toDouble()) * percentage).toString())
             monthlyPay()
         }
     }
@@ -85,8 +79,8 @@ class DetailsFragment : Fragment() {
     private fun monthlyPay() {
         binding.apply {
             montthlyPayEditText.text =
-                ((priceAfterTaxEditText.text.toString().toFloat()
-                        / allCostEditText.text.toString().toFloat()).toString())
+                ((priceAfterTaxEditText.text.toString().toDouble()
+                        / allCostEditText.text.toString().toDouble()).toString())
         }
     }
 
@@ -141,8 +135,8 @@ class DetailsFragment : Fragment() {
                 } else {
                     saveBtn.isEnabled = false
                     apply {
-                        priceAfterTaxEditText.setText(((viewModel.priceBefore.toFloat()) * (1 + splitRatio())).toString())
-                        priceTaxEditText.setText(((viewModel.priceBefore.toFloat()) * splitRatio()).toString())
+                        priceAfterTaxEditText.setText(((viewModel.priceBefore.toDouble()) * (1 + splitRatio())).toString())
+                        priceTaxEditText.setText(((viewModel.priceBefore.toDouble()) * splitRatio()).toString())
                         monthlyPay()
                         incomeEditText.setText("0")
                     }
@@ -158,7 +152,7 @@ class DetailsFragment : Fragment() {
                     saveBtn.isEnabled = false
                     viewModel.benefits = model.priceWithoutAddition
                     priceAfterTaxEditText.text =
-                        (viewModel.priceBefore.toFloat() - model.income).toString()
+                        (viewModel.priceBefore.toDouble() - model.income).toString()
                     priceTaxEditText.text = "0.0"
                     ratioEditText.setText("0")
                 }
@@ -169,10 +163,10 @@ class DetailsFragment : Fragment() {
                     saveBtn.isEnabled = true
                     viewModel.totalInstallmentsNumber = it.toString()
                     remainingInstallmentEditText.setText((allCostEditText.text.toString()
-                        .toFloat() - paidInstallmentEditText.text.toString().toFloat()).toString())
+                        .toDouble() - paidInstallmentEditText.text.toString().toDouble()).toString())
 
                     montthlyPayEditText.setText((priceAfterTaxEditText.text.toString()
-                        .toFloat() / allCostEditText.text.toString().toFloat()).toString())
+                        .toDouble() / allCostEditText.text.toString().toDouble()).toString())
                 } else {
                     saveBtn.isEnabled = false
                 }
@@ -298,7 +292,7 @@ class DetailsFragment : Fragment() {
             paidInstallmentEditText.setText(model.numberOfPaidInstallments.toString())
             //قيمة الاقساط المتبقيه
             costRemainingInstallmentEditText.setText(
-                (model.priceAfterAddition.toFloat() - model.valueOfPayInstallments.toFloat()).toString())
+                (model.priceAfterAddition.toDouble() - model.valueOfPayInstallments.toDouble()).toString())
             //عدد اللاقساط المتبقيه
             remainingInstallmentEditText.setText("${model.numberOfTotalInstallments - model.numberOfPaidInstallments}")
 
@@ -331,7 +325,7 @@ class DetailsFragment : Fragment() {
             paidInstallmentEditText.setText(model.numberOfPaidInstallments.toString())
             //قيمة الاقساط المتبقيه
             costRemainingInstallmentEditText.setText(
-                (model.priceAfterAddition.toFloat() - model.valueOfPayInstallments.toFloat()).toString())
+                (model.priceAfterAddition.toDouble() - model.valueOfPayInstallments.toDouble()).toString())
             //عدد اللاقساط المتبقيه
             remainingInstallmentEditText.setText("${model.numberOfTotalInstallments - model.numberOfPaidInstallments}")
             //يوم السداد

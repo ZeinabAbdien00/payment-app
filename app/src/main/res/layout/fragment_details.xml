@@ -182,7 +182,7 @@
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/main_green"
