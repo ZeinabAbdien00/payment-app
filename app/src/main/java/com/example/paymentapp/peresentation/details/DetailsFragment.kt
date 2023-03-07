@@ -30,6 +30,7 @@ class DetailsFragment : Fragment() {
     private lateinit var adapter: HistoryAdapter
     private lateinit var myList: ArrayList<String>
     private val viewModel: DetailsViewModel by viewModels()
+
 // add income logic
 
     override fun onCreateView(
@@ -67,16 +68,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun ratioChanged(percentage: Float) {
 
-        binding.apply {
-            priceAfterTaxEditText.setText(((viewModel.priceBefore.toInt() - incomeEditText.text.toString()
-                .toInt()) * (1 + percentage)).toString())
-            priceTaxEditText.setText(((viewModel.priceBefore.toInt() - incomeEditText.text.toString()
-                .toInt()) * percentage).toString())
-            montthlyPayEditText.setText((viewModel.priceAfter.toFloat() / viewModel.priceAfter.toFloat()).toString())
-        }
-    }
 
     private fun setInitials() {
         viewModel.name = model.name
@@ -122,20 +114,34 @@ class DetailsFragment : Fragment() {
                 }
             }
 
+             fun ratioChanged(percentage: Float) {
+                binding.apply {
+                    priceAfterTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
+                        .toFloat()) * (1 + percentage)).toString())
+                    priceTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
+                        .toFloat()) * percentage).toString())
+                    montthlyPayEditText.text =
+                        ((priceAfterTaxEditText.text.toString()
+                            .toFloat() / allCostEditText.text.toString()
+                            .toFloat()).toString())                }
+            }
+
             incomeEditText.addTextChangedListener {
 
                 if (it.toString().isNotEmpty()) {
                     binding.saveBtn.isEnabled = true
 
-                    priceAfterTaxEditText.text =
-                        (((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
-                            .toFloat()) * (1 + splitRatio())).toString())
-                    priceTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
-                        .toFloat()) * splitRatio()).toString())
-                    montthlyPayEditText.text =
-                        ((priceAfterTaxEditText.text.toString()
-                            .toFloat() / allCostEditText.text.toString()
-                            .toFloat()).toString())
+                    ratioChanged(splitRatio())
+
+//                    priceAfterTaxEditText.text =
+//                        (((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
+//                            .toFloat()) * (1 + splitRatio())).toString())
+//                    priceTaxEditText.setText(((viewModel.priceBefore.toFloat() - incomeEditText.text.toString()
+//                        .toFloat()) * splitRatio()).toString())
+//                    montthlyPayEditText.text =
+//                        ((priceAfterTaxEditText.text.toString()
+//                            .toFloat() / allCostEditText.text.toString()
+//                            .toFloat()).toString())
 
                 } else {
                     binding.saveBtn.isEnabled = false
@@ -157,10 +163,9 @@ class DetailsFragment : Fragment() {
                     ratioChanged(splitRatio())
                 } else {
                     binding.saveBtn.isEnabled = false
-                    Log.d("suzan", model.priceAfterAddition)
                     viewModel.benefits = model.priceWithoutAddition
                     priceAfterTaxEditText.text =
-                        (model.priceWithoutAddition.toFloat() - model.income).toString()
+                        (viewModel.priceBefore.toFloat() - model.income).toString()
                     binding.priceTaxEditText.text = "0.0"
                 }
             }
