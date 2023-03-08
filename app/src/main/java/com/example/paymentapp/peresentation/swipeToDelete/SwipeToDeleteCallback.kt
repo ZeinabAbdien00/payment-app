@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.paymentapp.R
 
-abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+abstract class SwipeToDeleteCallback(context: Context) :
+    ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
 
     private var mContext: Context? = null
@@ -33,14 +34,17 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
     }
 
 
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+    ): Int {
         return makeMovementFlags(0, ItemTouchHelper.LEFT)
     }
 
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
-        viewHolder1: RecyclerView.ViewHolder
+        viewHolder1: RecyclerView.ViewHolder,
     ): Boolean {
         return false
     }
@@ -52,7 +56,7 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
         dX: Float,
         dY: Float,
         actionState: Int,
-        isCurrentlyActive: Boolean
+        isCurrentlyActive: Boolean,
     ) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         val itemView = viewHolder.itemView
@@ -71,7 +75,7 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
         }
         mBackground!!.color = backgroundColor
         mBackground!!.setBounds(
-            itemView.right + dX.toInt()-30,
+            itemView.right + dX.toInt() - 30,
             itemView.top,
             itemView.right,
             itemView.bottom

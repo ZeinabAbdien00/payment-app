@@ -10,8 +10,6 @@ import javax.inject.Inject
 @HiltAndroidApp
 class MyApp : Application() {
 
-
-
     @Inject
     lateinit var dataStore: DataStoreImpl
 
@@ -28,7 +26,7 @@ class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        context =applicationContext
+        context = applicationContext
         instance = this
     }
 

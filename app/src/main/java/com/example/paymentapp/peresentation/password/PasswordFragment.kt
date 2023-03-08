@@ -27,7 +27,7 @@ class PasswordFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentPasswordBinding.inflate(layoutInflater)
         return binding.root

@@ -19,6 +19,7 @@ import com.example.paymentapp.databinding.FragmentAddClientDialogBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -55,6 +56,8 @@ class AddClientDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        currentDate = LocalDate.now().toString()
         setViews()
         setOnClickListeners()
     }
@@ -70,7 +73,7 @@ class AddClientDialog : DialogFragment() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val month = calendar.get(Calendar.MONTH)
         val year = calendar.get(Calendar.YEAR)
-        currentDate = "${year}/${month}/${day}"
+        currentDate = "${year}/${month + 1}/${day}"
         today = day
         binding.startDatePicker.updateDate(year, month, day)
     }
@@ -154,10 +157,10 @@ class AddClientDialog : DialogFragment() {
                         nameOfBoughtItems = itemName,
                         monthlyPay = monthlyPay.toString(),
                         additionMoney = ((price - income) * (benefits / 100)).toString(),
-                        income = income ,
-                        payNumber = 0 ,
-                        payValue = 0.0 ,
-                        notPayNumber = numberOfMonths ,
+                        income = income,
+                        payNumber = 0,
+                        payValue = 0.0,
+                        notPayNumber = numberOfMonths,
                         notPayValue = fullPrice
                     )
                     model.historyList = ArrayList()

@@ -29,7 +29,7 @@ class ResetPasswordDialog : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentResetPasswordDialogBinding.inflate(layoutInflater)
         oldPassword = args.oldPassword
@@ -44,17 +44,23 @@ class ResetPasswordDialog : DialogFragment() {
 
     private fun setOnClicks() {
         binding.addBtn.setOnClickListener {
-            if (binding.oldPassword.getText().toString() == oldPassword && binding.newPassword.getText().toString()!="") {
+            if (binding.oldPassword.getText()
+                    .toString() == oldPassword && binding.newPassword.getText().toString() != ""
+            ) {
                 lifecycleScope.launch(Dispatchers.Main) {
                     dataStoreImpl.setPassword(binding.newPassword.getText().toString())
-                    Toast.makeText(requireActivity(), "تم تغيير كلمة المرور بنجاح", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireActivity(),
+                        "تم تغيير كلمة المرور بنجاح",
+                        Toast.LENGTH_SHORT)
                         .show()
                     findNavController().navigateUp()
                 }
             } else {
-                if (binding.oldPassword.getText().toString() != oldPassword )
-                Toast.makeText(requireContext(), "كلمة المرور القديمة خاطئة", Toast.LENGTH_SHORT)
-                    .show()
+                if (binding.oldPassword.getText().toString() != oldPassword)
+                    Toast.makeText(requireContext(),
+                        "كلمة المرور القديمة خاطئة",
+                        Toast.LENGTH_SHORT)
+                        .show()
                 else
                     Toast.makeText(requireContext(), "ادخل كلمة مرور جديدة", Toast.LENGTH_SHORT)
                         .show()

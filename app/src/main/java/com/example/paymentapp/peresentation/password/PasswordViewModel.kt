@@ -6,12 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class PasswordViewModel @Inject constructor(): ViewModel() {
+class PasswordViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var dataStore: DataStoreImpl
 
 
-    suspend fun getPassword():String = dataStore.getPassword()
+    suspend fun getPassword(): String = dataStore.getPassword()
 
 
 }

@@ -1,7 +1,6 @@
 package com.example.paymentapp.peresentation.details
 
 import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide.init
 import com.example.paymentapp.MyApp
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
@@ -14,75 +13,91 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsViewModel @Inject constructor() : ViewModel() {
 
-    lateinit var historyArray : ArrayList<String>
+    lateinit var historyArray: ArrayList<String>
     private val repository: BaseRepository
 
+    lateinit var model: BaseModel
     var name = ""
     var phone = ""
     var income = 0.0
-    var priceBefore = ""
-    var benefits = ""
-    var benefitsValue = ""
-    var priceAfter = ""
-    var totalInstallmentsNumber = ""
-    var payiedInstallmentsNumber = ""
-    var payiedInstallmentsValue = ""
-    var comingInstallmentsVlaue = ""
-    var comingInstallmentsNumber = ""
+    var priceBefore = 0.0
+    var benefits = 0.0
+    var benefitsValue = 0.0
+    var priceAfter = 0.0
+    var totalInstallmentsNumber = 0
+    var payiedInstallmentsNumber = 0
+    var payiedInstallmentsValue = 0.0
+    var comingInstallmentsVlaue = 0.0
+    var comingInstallmentsNumber = 0
     var dayOfPaying = ""
     var startDate = " "
     var carModel = ""
-    var monthlyPayValue = ""
+    var monthlyPayValue = 0.0
     var myNote = ""
     var newHistory = false
+    var laterMonth = 0
 
     init {
         val dao = HomeDataBase.getInstance(MyApp.context).myDao()
         repository = BaseRepository(dao)
     }
 
+    fun setMyModel(myModel: BaseModel) {
+        model = myModel
+        historyArray = model.historyList
+    }
 
-    fun addDateToItem(model: BaseModel, currentDate: String) {
-        model.historyList.add(currentDate)
-        model.payNumber++
-        // Log.d("suzan" , model.numberOfPaidInstallments.toString())
-        model.notPayNumber--
-        model.payValue =
-            (model.payValue.toFloat() + model.monthlyPay.toFloat()).toDouble()
-        model.notPayValue =
-            (model.notPayValue.toFloat() - model.monthlyPay.toFloat()).toDouble()
+    fun addDateToItem(currentDate: String) {
+        historyArray.add(currentDate)
+
+        payiedInstallmentsNumber++
+
+        if (comingInstallmentsVlaue > 0) {
+            comingInstallmentsNumber--
+        }
+
+        payiedInstallmentsValue += monthlyPayValue
+        comingInstallmentsVlaue -= monthlyPayValue
+        laterMonth--
+
         model.userHavePaidToday()
     }
 
-    fun removeLastDateFromItem(model: BaseModel) {
-        model.historyList.removeLast()
-        model.payNumber--
-        model.notPayNumber++
-        model.payValue =
-            (model.payValue.toFloat() - model.monthlyPay.toFloat()).toDouble()
-        model.notPayValue =
-            (model.notPayValue.toFloat() + model.monthlyPay.toFloat()).toDouble()
+    fun removeLastDateFromItem() {
+        historyArray.removeAt(historyArray.size - 1)
+
+        if (payiedInstallmentsNumber > 0)
+            payiedInstallmentsNumber--
+        laterMonth++
+
+        comingInstallmentsNumber++
+        payiedInstallmentsValue -= monthlyPayValue.toDouble()
+        comingInstallmentsVlaue += monthlyPayValue.toDouble()
+
         model.undoPay()
     }
 
-    fun isNewData(model: BaseModel): Boolean =
+    fun isNewData(): Boolean =
         model.phoneNumber == phone &&
-                model.priceWithoutAddition == priceBefore &&
+                model.priceWithoutAddition == priceBefore.toString() &&
                 model.income == income &&
-                model.addintionPercentage == splitPercentage(benefits) &&
-                model.additionMoney == benefitsValue &&
-                model.priceAfterAddition == priceAfter &&
+                model.addintionPercentage == splitPercentage(benefits.toString()) &&
+                model.additionMoney == benefitsValue.toString() &&
+                model.priceAfterAddition == priceAfter.toString() &&
                 model.numberOfTotalInstallments == totalInstallmentsNumber.toInt() &&
-                model.payNumber == payiedInstallmentsNumber.toInt() &&
-                model.payValue == payiedInstallmentsValue.toDouble() &&
-                model.notPayNumber == comingInstallmentsNumber.toInt() &&
-                model.notPayValue == comingInstallmentsVlaue.toDouble() &&
+
+                model.payNumber == payiedInstallmentsNumber &&
+                model.payValue == payiedInstallmentsValue &&
+                model.notPayNumber == comingInstallmentsNumber &&
+                model.notPayValue == comingInstallmentsVlaue &&
+
                 model.monthlyDayOfPaying == dayOfPaying &&
                 model.startDate == startDate &&
                 model.nameOfBoughtItems == carModel &&
-                model.monthlyPay == monthlyPayValue &&
+                model.monthlyPay == monthlyPayValue.toString() &&
                 model.note == myNote &&
-                model.name == name && !newHistory
+                model.name == name && !newHistory &&
+                model.numberOfLateMoneyMonths == laterMonth
 
 
     private fun splitPercentage(benefits: String): Double {
@@ -98,24 +113,27 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    suspend fun saveData(model: BaseModel) {
+    suspend fun saveData() {
         model.name = name
         model.phoneNumber = phone
         model.income = income
-        model.priceWithoutAddition = priceBefore
-        model.addintionPercentage = splitPercentage(benefits)
-        model.additionMoney = benefitsValue
-        model.priceAfterAddition = priceAfter
+        model.priceWithoutAddition = priceBefore.toString()
+        model.addintionPercentage = splitPercentage(benefits.toString())
+        model.additionMoney = benefitsValue.toString()
+        model.priceAfterAddition = priceAfter.toString()
         model.numberOfTotalInstallments = totalInstallmentsNumber.toInt()
+
         model.payNumber = payiedInstallmentsNumber.toInt()
         model.payValue = payiedInstallmentsValue.toDouble()
         model.notPayNumber = comingInstallmentsNumber.toInt()
         model.notPayValue = comingInstallmentsVlaue.toDouble()
+
         model.monthlyDayOfPaying = dayOfPaying
         model.startDate = startDate
         model.nameOfBoughtItems = carModel
-        model.monthlyPay = monthlyPayValue
+        model.monthlyPay = monthlyPayValue.toString()
         model.note = myNote
+        model.numberOfLateMoneyMonths = laterMonth
         updateModel(model)
     }
 

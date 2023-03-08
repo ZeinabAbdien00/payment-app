@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.databinding.FragmentDetailsBinding
 import com.example.paymentapp.peresentation.recyclerView.HistoryAdapter
 import kotlinx.coroutines.Dispatchers
@@ -25,11 +24,9 @@ class DetailsFragment : Fragment() {
 
     private val args: DetailsFragmentArgs by navArgs()
     private lateinit var binding: FragmentDetailsBinding
-    private lateinit var model: BaseModel
     private lateinit var adapter: HistoryAdapter
     private lateinit var myList: ArrayList<String>
     private val viewModel: DetailsViewModel by viewModels()
-    var arraySize : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,99 +39,77 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setViews()
         setInitials()
+        setViews()
         setOnClicks()
         setOnChangeLogic()
         setupHistoryRV()
     }
 
-    private fun setData(){
-
-        arraySize = model.historyList.size
-
+    private fun setData() {
         binding.apply {
             //قيمة الاقساط المدفوعه
-            allCostPaidEditText.setText((model.monthlyPay.toDouble()*arraySize).roundToInt().toString())
+            allCostPaidEditText.setText((viewModel.payiedInstallmentsValue).roundToInt().toString())
             //عدد الاقساط المدفوعه
-            paidInstallmentEditText.setText(arraySize.toString())
+            paidInstallmentEditText.setText(viewModel.payiedInstallmentsNumber.toString())
             //قيمة الاقساط المتبقيه
-            costRemainingInstallmentEditText.setText((model.priceAfterAddition.toDouble() - (model.monthlyPay.toDouble()*arraySize)).roundToInt().toString())
+            costRemainingInstallmentEditText.setText(
+                viewModel.comingInstallmentsVlaue.roundToInt().toString()
+            )
             //عدد اللاقساط المتبقيه
-            remainingInstallmentEditText.setText((model.numberOfTotalInstallments - arraySize).toString())
-        }
-
-    }
-
-
-    private fun splitRatio(): Double {
-        binding.apply {
-            return if (ratioEditText.text.contains(" ")) {
-                val s = ratioEditText.text.toString().split(" ")
-                (s[0].toDouble() / 100)
-
-            } else if (ratioEditText.text.contains("%")) {
-                val s = ratioEditText.text.toString().split("%")
-                (s[0].toDouble() / 100)
-            } else {
-                ratioEditText.text.toString().toDouble() / 100
-            }
-        }
-    }
-
-    private fun ratioChanged(percentage: Double) {
-        binding.apply {
-            priceAfterTaxEditText.setText(((viewModel.priceBefore.toDouble() - incomeEditText.text.toString()
-                .toDouble()) * (1 + percentage)).toString())
-            priceTaxEditText.setText(((viewModel.priceBefore.toDouble() - incomeEditText.text.toString()
-                .toDouble()) * percentage).toString())
-            monthlyPay()
-        }
-    }
-
-    private fun monthlyPay() {
-        binding.apply {
-            montthlyPayEditText.text =
-                ((priceAfterTaxEditText.text.toString().toDouble() / allCostEditText.text.toString()
-                    .toDouble()).roundToInt().toString())
+            remainingInstallmentEditText.setText((viewModel.comingInstallmentsNumber).toString())  //قيمة الاقساط المدفوعه
         }
     }
 
     private fun setInitials() {
-        arraySize =model.historyList.size
-        viewModel.historyArray = model.historyList
-        viewModel.name = model.name
-        viewModel.phone = model.phoneNumber
-        viewModel.income = model.income
-        viewModel.priceBefore = model.priceWithoutAddition
-        viewModel.benefits = model.addintionPercentage.toString()
-        viewModel.benefitsValue = model.additionMoney
-        viewModel.priceAfter = model.priceAfterAddition
-        viewModel.totalInstallmentsNumber = model.numberOfTotalInstallments.toString()
+        viewModel.setMyModel(args.model)
+        viewModel.historyArray = viewModel.model.historyList
+        viewModel.name = viewModel.model.name
+        viewModel.phone = viewModel.model.phoneNumber
+        viewModel.income = viewModel.model.income
+        viewModel.priceBefore = viewModel.model.priceWithoutAddition.toDouble()
+        viewModel.benefits = viewModel.model.addintionPercentage
+        viewModel.benefitsValue = viewModel.model.additionMoney.toDouble()
+        viewModel.priceAfter = viewModel.model.priceAfterAddition.toDouble()
+        viewModel.totalInstallmentsNumber = viewModel.model.numberOfTotalInstallments
         //عدد الاقساط المدفوعه
-        viewModel.payiedInstallmentsNumber = model.payNumber.toString()
+        viewModel.payiedInstallmentsNumber = viewModel.model.payNumber
         //قيمه القساط المدفوعه
-        viewModel.payiedInstallmentsValue = model.payValue.toString()
+        viewModel.payiedInstallmentsValue = viewModel.model.payValue
         //عدد الاقساط المتبقيه
-        viewModel.comingInstallmentsNumber = model.notPayNumber.toString()
+        viewModel.comingInstallmentsNumber =
+            viewModel.model.numberOfTotalInstallments - viewModel.model.payNumber
         //قيمة الاقساط المتبقيه
-        viewModel.comingInstallmentsVlaue = model.notPayValue.toString()
-        viewModel.dayOfPaying = model.monthlyDayOfPaying
-        viewModel.startDate = model.startDate
-        viewModel.carModel = model.nameOfBoughtItems
-        viewModel.monthlyPayValue = model.monthlyPay
-        viewModel.myNote = model.note
+        viewModel.comingInstallmentsVlaue =
+            viewModel.model.priceAfterAddition.toDouble() - viewModel.model.payValue
+        viewModel.dayOfPaying = viewModel.model.monthlyDayOfPaying
+        viewModel.startDate = viewModel.model.startDate
+        viewModel.carModel = viewModel.model.nameOfBoughtItems
+        viewModel.monthlyPayValue = viewModel.model.monthlyPay.toDouble()
+        viewModel.myNote = viewModel.model.note
+        viewModel.laterMonth = viewModel.model.numberOfLateMoneyMonths
     }
 
     private fun setOnChangeLogic() {
         binding.apply {
+
+            laterMonthEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    saveBtn.isEnabled = true
+                    viewModel.laterMonth = it.toString().toInt()
+                } else {
+                    saveBtn.isEnabled = false
+                    //viewModel.laterMonth = viewModel.model.numberOfLateMoneyMonths
+                }
+            }
+
             clientName.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
                     viewModel.name = it.toString()
                 } else {
                     saveBtn.isEnabled = false
-                    viewModel.name = model.name
+                    viewModel.name = viewModel.model.name
                 }
             }
 
@@ -144,70 +119,7 @@ class DetailsFragment : Fragment() {
                     viewModel.phone = it.toString()
                 } else {
                     saveBtn.isEnabled = false
-                    viewModel.phone = model.phoneNumber
-                }
-            }
-
-            incomeEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    saveBtn.isEnabled = true
-                    ratioChanged(splitRatio())
-                } else {
-                    saveBtn.isEnabled = false
-                    apply {
-                        priceAfterTaxEditText.setText(((viewModel.priceBefore.toDouble()) * (1 + splitRatio())).toString())
-                        priceTaxEditText.setText(((viewModel.priceBefore.toDouble()) * splitRatio()).toString())
-                        monthlyPay()
-                        incomeEditText.setText("0")
-                    }
-                }
-            }
-
-            ratioEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    saveBtn.isEnabled = true
-                    viewModel.benefits = it.toString()
-                    ratioChanged(splitRatio())
-                } else {
-                    saveBtn.isEnabled = false
-                    viewModel.benefits = model.priceWithoutAddition
-                    priceAfterTaxEditText.text =
-                        (viewModel.priceBefore.toDouble() - model.income).toString()
-                    priceTaxEditText.text = "0.0"
-                    ratioEditText.setText("0")
-                }
-            }
-
-            allCostEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    saveBtn.isEnabled = true
-                    viewModel.totalInstallmentsNumber = it.toString()
-                    remainingInstallmentEditText.setText((allCostEditText.text.toString()
-                        .toDouble() - paidInstallmentEditText.text.toString()
-                        .toDouble()).toString())
-                    monthlyPay()
-                } else {
-                    saveBtn.isEnabled = false
-                }
-            }
-
-            payDayEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    saveBtn.isEnabled = true
-                    viewModel.dayOfPaying = it.toString()
-                } else {
-                    saveBtn.isEnabled = false
-                    viewModel.dayOfPaying = model.monthlyDayOfPaying
-                }
-            }
-
-            startDateEditText.addTextChangedListener {
-                if (it.toString().isNotEmpty()) {
-                    saveBtn.isEnabled = true
-                    viewModel.startDate = it.toString()
-                } else {
-                    saveBtn.isEnabled = false
-                    viewModel.startDate = model.startDate
+                    viewModel.phone = viewModel.model.phoneNumber
                 }
             }
 
@@ -217,7 +129,7 @@ class DetailsFragment : Fragment() {
                     viewModel.carModel = it.toString()
                 } else {
                     saveBtn.isEnabled = false
-                    viewModel.carModel = model.nameOfBoughtItems
+                    viewModel.carModel = viewModel.model.nameOfBoughtItems
                 }
             }
 
@@ -227,7 +139,17 @@ class DetailsFragment : Fragment() {
                     viewModel.myNote = it.toString()
                 } else {
                     saveBtn.isEnabled = false
-                    viewModel.myNote = model.note
+                    viewModel.myNote = viewModel.model.note
+                }
+            }
+
+            payDayEditText.addTextChangedListener {
+                if (it.toString().isNotEmpty()) {
+                    saveBtn.isEnabled = true
+                    viewModel.dayOfPaying = it.toString()
+                } else {
+                    saveBtn.isEnabled = false
+                    viewModel.dayOfPaying = viewModel.model.monthlyDayOfPaying
                 }
             }
         }
@@ -243,25 +165,22 @@ class DetailsFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-
         binding.btnPay.setOnClickListener {
 
-            if (model.historyList.size == model.numberOfTotalInstallments) {
+            if (viewModel.model.historyList.size == viewModel.model.numberOfTotalInstallments) {
                 Toast.makeText(requireContext(), "تم سداد جميع الاقساط", Toast.LENGTH_SHORT).show()
             } else {
+                it.isClickable = false
                 lifecycleScope.launch(Dispatchers.Main) {
-                    it.isClickable = false
                     try {
-                        if (model.payNumber < model.numberOfTotalInstallments) {
-                            val calendar = Calendar.getInstance()
-                            val day = calendar.get(Calendar.DAY_OF_MONTH)
-                            val month = calendar.get(Calendar.MONTH)
-                            val year = calendar.get(Calendar.YEAR)
-                            val currentDate = "${year}/${month + 1}/${day}"
-                            viewModel.addDateToItem(model, currentDate)
-                            adapter.notifyDataSetChanged()
-                            setData()
-                        }
+                        val calendar = Calendar.getInstance()
+                        val day = calendar.get(Calendar.DAY_OF_MONTH)
+                        val month = calendar.get(Calendar.MONTH)
+                        val year = calendar.get(Calendar.YEAR)
+                        val currentDate = "${year}/${month + 1}/${day}"
+                        viewModel.addDateToItem(currentDate)
+                        adapter.notifyDataSetChanged()
+                        setData()
                     } catch (_: Exception) {
                     }
                     it.isClickable = true
@@ -272,19 +191,19 @@ class DetailsFragment : Fragment() {
 
         binding.btnDidnotPay.setOnClickListener {
 
-            if (model.historyList.size == 0) {
+            if (viewModel.model.historyList.size == 0) {
                 Toast.makeText(requireContext(), "لا يوجد اقساط مدفوعه", Toast.LENGTH_SHORT).show()
             } else {
                 lifecycleScope.launch(Dispatchers.Main) {
                     it.isClickable = false
-                    if (model.notPayNumber < model.numberOfTotalInstallments) {
-                        try {
-                            viewModel.removeLastDateFromItem(model)
-                            adapter.notifyDataSetChanged()
-                            setData()
-                        } catch (_: Exception) {
-                        }
+
+                    try {
+                        viewModel.removeLastDateFromItem()
+                        adapter.notifyDataSetChanged()
+                        setData()
+                    } catch (_: Exception) {
                     }
+
                     it.isClickable = true
                     binding.saveBtn.isEnabled = true
                 }
@@ -304,47 +223,48 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setViews() {
-        model = args.model
         setData()
         binding.apply {
             //اسم العميل
-            clientName.setText(model.name)
+            clientName.setText(viewModel.model.name)
             //رقم العميل
-            numberEditText.setText(model.phoneNumber)
+            numberEditText.setText(viewModel.model.phoneNumber)
             //المقدم
-            incomeEditText.setText(model.income.toString().toDouble().roundToInt().toString())
-            //السعر قبل الزياده
-            priceBeforeTaxEditText.setText(model.priceWithoutAddition.toDouble().roundToInt()
+            incomeEditText.setText(viewModel.model.income.toString().toDouble().roundToInt()
                 .toString())
+            //السعر قبل الزياده
+            priceBeforeTaxEditText.setText(viewModel.model.priceWithoutAddition.toDouble()
+                .roundToInt().toString())
             //نسبة الفائدة
-            ratioEditText.setText("${model.addintionPercentage} %")
+            ratioEditText.setText("${viewModel.model.addintionPercentage} %")
             //قيمة الفائدة
-            priceTaxEditText.setText(model.additionMoney)
+            priceTaxEditText.setText(viewModel.model.additionMoney.toDouble().roundToInt()
+                .toString())
             //السعر بعد الفائدة
-            priceAfterTaxEditText.setText(model.priceAfterAddition)
+            priceAfterTaxEditText.setText(viewModel.model.priceAfterAddition.toDouble().roundToInt()
+                .toString())
             // الاقساط الكلية عدد
-            allCostEditText.setText(model.numberOfTotalInstallments.toString())
+            allCostEditText.setText(viewModel.model.numberOfTotalInstallments.toString())
             //يوم السداد
-            payDayEditText.setText(model.monthlyDayOfPaying)
+            payDayEditText.setText(viewModel.model.monthlyDayOfPaying)
             //تاريخ البداية
-            startDateEditText.setText(model.startDate)
-            //تاريخ النهايه
-            //endDateEditText.setText("not Yet")
+            startDateEditText.setText(viewModel.model.startDate)
             // موديل السيارة
-            modelOfCarEditText.setText(model.nameOfBoughtItems)
+            modelOfCarEditText.setText(viewModel.model.nameOfBoughtItems)
             //note
-            theNote.setText(model.note)
+            theNote.setText(viewModel.model.note)
             //القسط
-            montthlyPayEditText.setText(model.monthlyPay.toDouble().roundToInt().toString())
+            montthlyPayEditText.setText(viewModel.model.monthlyPay)
+            laterMonthEditText.setText(viewModel.model.numberOfLateMoneyMonths.toString())
         }
     }
 
     private fun saveNewData() {
         GlobalScope.launch {
-            viewModel.saveData(model)
+            viewModel.saveData()
         }
     }
 
     private fun checkIfDataChanged(): Boolean =
-        viewModel.isNewData(model)
+        viewModel.isNewData()
 }

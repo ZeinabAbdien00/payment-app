@@ -30,15 +30,15 @@
 
         <TextView
             android:id="@+id/number_of_late_months"
-            android:gravity="center"
             android:layout_width="25dp"
-            android:background="@drawable/notification_red_background"
             android:layout_height="25dp"
-            android:textColor="@color/light_green_300"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="4dp"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/notification_red_background"
+            android:gravity="center"
+            android:textColor="@color/light_green_300"
             android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/name_of_customer"
             tools:text="1" />
 

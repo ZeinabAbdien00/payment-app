@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".peresentation.details.DetailsFragment">
 
     <LinearLayout
@@ -27,24 +27,23 @@
             android:layout_width="72dp"
             android:layout_height="36dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/save_btn"
             android:background="@drawable/light_ripple"
-            />
+            android:text="@string/save_btn" />
 
 
         <EditText
             android:id="@+id/client_name"
             android:layout_width="0dp"
-            android:background="@drawable/edit_text_shape"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:background="@drawable/edit_text_shape"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:textAlignment="viewStart"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:layout_marginEnd="15dp"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="بيانات العميل " />
 
@@ -59,10 +58,10 @@
     </LinearLayout>
 
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -98,7 +97,6 @@
                 tools:text="01026913769" />
 
 
-
             <TextView
                 android:id="@+id/income_text"
                 android:layout_width="wrap_content"
@@ -110,26 +108,24 @@
                 android:text="المقدم :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/phone_number" />
+                app:layout_constraintTop_toTopOf="@id/model_of_car" />
 
-            <EditText
+            <TextView
                 android:id="@+id/income_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxLength="10"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:inputType="number"
+                android:maxLength="10"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/income_text"
                 tools:text="1000" />
-
 
 
             <TextView
@@ -151,12 +147,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center"
                 android:inputType="number"
-                android:clickable="false"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
@@ -171,23 +167,22 @@
                 android:layout_marginEnd="15dp"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:text="نسبة الفايدة :"
+                android:text="نسبة الفايدة % :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/price_before_tax" />
 
-            <EditText
+            <TextView
                 android:id="@+id/ratio_edit_text"
                 android:layout_width="0dp"
-                android:maxLength="10"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:inputType="numberDecimal"
+                android:maxLength="10"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
@@ -213,12 +208,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center"
                 android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:clickable="false"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
@@ -239,22 +234,48 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/price_tax" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="15dp"
+                android:alpha=".3"
+                android:background="@color/dark_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/price_after_tax"
+                app:layout_goneMarginBottom="5dp" />
+
             <TextView
                 android:id="@+id/price_after_tax_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:clickable="false"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/price_after_tax"
                 tools:text="5000" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="15dp"
+                android:alpha=".3"
+                android:background="@color/dark_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/model_of_car"
+                app:layout_goneMarginBottom="5dp" />
 
             <TextView
                 android:id="@+id/all_cost"
@@ -269,18 +290,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/price_after_tax" />
 
-            <EditText
+            <TextView
                 android:id="@+id/all_cost_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:maxLength="10"
                 android:inputType="number"
+                android:maxLength="10"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
@@ -298,7 +319,7 @@
                 android:text="تكلفة الاقساط المدفوعة :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/all_cost" />
+                app:layout_constraintTop_toTopOf="@id/remaining_installment" />
 
             <TextView
                 android:id="@+id/all_cost_paid_edit_text"
@@ -306,13 +327,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center"
-                android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
-                android:clickable="false"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/all_cost_paid"
@@ -329,7 +349,7 @@
                 android:text="الاقساط المدفوعة :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/all_cost_paid" />
+                app:layout_constraintTop_toTopOf="@id/all_cost" />
 
             <TextView
                 android:id="@+id/paid_installment_edit_text"
@@ -337,13 +357,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center"
-                android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
-                android:clickable="false"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/paid_installment"
@@ -360,7 +379,7 @@
                 android:text="تكلفة الاقساط المتبقيه :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/paid_installment" />
+                app:layout_constraintTop_toTopOf="@id/all_cost_paid" />
 
             <TextView
                 android:id="@+id/cost_remaining_installment_edit_text"
@@ -368,17 +387,61 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center"
-                android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
-                android:clickable="false"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/cost_remaining_installment"
                 tools:text="1500" />
+
+            <TextView
+                android:id="@+id/later_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:layout_marginEnd="15dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="الشهور المتراكمة :"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/cost_remaining_installment" />
+
+            <EditText
+                android:id="@+id/later_month_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="5dp"
+                android:background="@color/white"
+                android:clickable="false"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@id/cost_remaining_installment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/later_month"
+                tools:text="1" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="15dp"
+                android:alpha=".3"
+                android:background="@color/dark_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/later_month"
+                app:layout_goneMarginBottom="5dp" />
 
             <TextView
                 android:id="@+id/remaining_installment"
@@ -391,7 +454,7 @@
                 android:text="الاقساط المتبقية :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/cost_remaining_installment" />
+                app:layout_constraintTop_toTopOf="@id/paid_installment" />
 
             <TextView
                 android:id="@+id/remaining_installment_edit_text"
@@ -399,14 +462,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center"
-                android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
-                android:clickable="false"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/remaining_installment"
                 tools:text="3" />
@@ -422,7 +485,7 @@
                 android:text="يوم السداد :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/remaining_installment" />
+                app:layout_constraintTop_toTopOf="@id/monthly_pay" />
 
             <EditText
                 android:id="@+id/pay_day_edit_text"
@@ -453,19 +516,18 @@
                 android:text="تاريخ البداية :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/pay_day" />
+                app:layout_constraintTop_toTopOf="@id/later_month" />
 
-            <EditText
+            <TextView
                 android:id="@+id/start_date_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
@@ -509,7 +571,7 @@
                 android:text="موديل السيارة :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/start_date" />
+                app:layout_constraintTop_toTopOf="@id/pay_day" />
 
             <EditText
                 android:id="@+id/model_of_car_edit_text"
@@ -517,13 +579,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center"
-                android:inputType="number"
+                android:inputType="text"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/main_green"
                 android:textSize="16sp"
-                android:clickable="false"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/model_of_car"
@@ -537,10 +599,10 @@
                 android:layout_marginEnd="15dp"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:text=" القسط الشهري :"
+                android:text="القسط الشهري :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/model_of_car" />
+                app:layout_constraintTop_toBottomOf="@id/phone_number" />
 
             <TextView
                 android:id="@+id/montthly_pay_edit_text"
@@ -548,13 +610,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center"
                 android:inputType="number"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/main_green"
+                android:textColor="@color/black"
                 android:textSize="16sp"
-                android:clickable="false"
                 app:layout_constraintEnd_toStartOf="@id/all_cost_paid"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/monthly_pay"
@@ -570,7 +632,7 @@
                 android:text="سجل العميل :"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/monthly_pay" />
+                app:layout_constraintTop_toTopOf="@id/start_date" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_history_view"
@@ -638,9 +700,9 @@
                 android:background="@drawable/green_frame"
                 android:gravity="start"
                 android:hint="ادخل ملاحظاتك هنا"
+                android:inputType="textMultiLine"
                 android:padding="8dp"
                 android:textColor="@color/black"
-                android:inputType="textMultiLine"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -648,7 +710,6 @@
                 app:layout_constraintTop_toBottomOf="@id/notes" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </ScrollView>

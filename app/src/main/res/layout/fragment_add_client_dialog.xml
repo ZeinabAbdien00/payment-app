@@ -16,8 +16,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/dialog_data"
-        android:orientation="horizontal"
         android:elevation="16dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -103,10 +103,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/installment_id"
-        app:layout_constraintBottom_toTopOf="@id/bottom_linear"
+        android:layout_height="0dp"
         android:layout_marginTop="4dp"
-        android:layout_height="0dp">
+        app:layout_constraintBottom_toTopOf="@id/bottom_linear"
+        app:layout_constraintTop_toBottomOf="@id/installment_id">
 
 
         <LinearLayout
@@ -222,8 +222,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="السعر"
-                        android:maxLength="10"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:maxLength="10" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -251,8 +251,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="المقدم"
-                        android:maxLength="10"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:maxLength="10" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -280,8 +280,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="نسبة الفايدة"
-                        android:maxLength="10"
-                        android:inputType="numberDecimal" />
+                        android:inputType="numberDecimal"
+                        android:maxLength="10" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -310,9 +310,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="عدد الشهور"
-                        android:text="1"
+                        android:inputType="number"
                         android:maxLength="10"
-                        android:inputType="number" />
+                        android:text="1" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -366,19 +366,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_linear"
-        android:background="@color/dark_green"
         android:alpha="0.3"
-        />
+        android:background="@color/dark_green"
+        app:layout_constraintBottom_toTopOf="@id/bottom_linear" />
 
     <LinearLayout
         android:id="@+id/bottom_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal"
         android:elevation="16dp"
-        android:padding="10dp">
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancel_btn"

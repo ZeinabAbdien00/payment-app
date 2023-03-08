@@ -25,7 +25,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         binding = FragmentSplashBinding.bind(view)
         lifecycleScope.launch {
             viewModel.updateList()
-            viewModel.isReady =true
+            viewModel.isReady = true
         }
         binding.animationView.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator) {}
@@ -33,7 +33,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
             override fun onAnimationRepeat(p0: Animator) {}
             override fun onAnimationEnd(p0: Animator) {
                 lifecycleScope.launch {
-                    while(!viewModel.isReady){
+                    while (!viewModel.isReady) {
                         delay(20)
                     }
                     if (!viewModel.isUsePassword()) {
