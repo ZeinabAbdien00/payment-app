@@ -23,6 +23,7 @@
         android:layout_height="0dp"
         android:paddingStart="22dp"
         android:paddingEnd="22dp"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/upper" />
 

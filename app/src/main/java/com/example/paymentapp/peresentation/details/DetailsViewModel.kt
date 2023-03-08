@@ -58,7 +58,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
         payiedInstallmentsValue += monthlyPayValue
         comingInstallmentsVlaue -= monthlyPayValue
-        laterMonth--
+        if(laterMonth>0)laterMonth--
 
         model.userHavePaidToday()
     }

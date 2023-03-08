@@ -58,6 +58,7 @@ class DetailsFragment : Fragment() {
             )
             //عدد اللاقساط المتبقيه
             remainingInstallmentEditText.setText((viewModel.comingInstallmentsNumber).toString())  //قيمة الاقساط المدفوعه
+            laterMonthEditText.setText(viewModel.laterMonth.toString())
         }
     }
 
