@@ -93,7 +93,7 @@ class DetailsFragment : Fragment() {
     private fun setOnChangeLogic() {
         binding.apply {
 
-            laterMonthEditText.addTextChangedListener{
+            laterMonthEditText.addTextChangedListener {
                 if (it.toString().isNotEmpty()) {
                     saveBtn.isEnabled = true
                     viewModel.laterMonth = it.toString().toInt()
@@ -230,15 +230,19 @@ class DetailsFragment : Fragment() {
             //رقم العميل
             numberEditText.setText(viewModel.model.phoneNumber)
             //المقدم
-            incomeEditText.setText(viewModel.model.income.toString().toDouble().roundToInt().toString())
+            incomeEditText.setText(viewModel.model.income.toString().toDouble().roundToInt()
+                .toString())
             //السعر قبل الزياده
-            priceBeforeTaxEditText.setText(viewModel.model.priceWithoutAddition.toDouble().roundToInt().toString())
+            priceBeforeTaxEditText.setText(viewModel.model.priceWithoutAddition.toDouble()
+                .roundToInt().toString())
             //نسبة الفائدة
             ratioEditText.setText("${viewModel.model.addintionPercentage} %")
             //قيمة الفائدة
-            priceTaxEditText.setText(viewModel.model.additionMoney.toDouble().roundToInt().toString())
+            priceTaxEditText.setText(viewModel.model.additionMoney.toDouble().roundToInt()
+                .toString())
             //السعر بعد الفائدة
-            priceAfterTaxEditText.setText(viewModel.model.priceAfterAddition.toDouble().roundToInt().toString())
+            priceAfterTaxEditText.setText(viewModel.model.priceAfterAddition.toDouble().roundToInt()
+                .toString())
             // الاقساط الكلية عدد
             allCostEditText.setText(viewModel.model.numberOfTotalInstallments.toString())
             //يوم السداد

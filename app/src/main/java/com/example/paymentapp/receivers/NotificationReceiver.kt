@@ -114,7 +114,7 @@ class NotificationReceiver : BroadcastReceiver() {
             }
         }
         GlobalScope.launch {
-            delay(1000*70)
+            delay(1000 * 70)
             startAlarm(context)
         }
     }
@@ -166,12 +166,12 @@ class NotificationReceiver : BroadcastReceiver() {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-      //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name: CharSequence = "Main Notification Channel"
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
-            notificationManager.createNotificationChannel(mChannel)
-      //  }
+        //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val name: CharSequence = "Main Notification Channel"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
+        notificationManager.createNotificationChannel(mChannel)
+        //  }
         notificationManager.notify(
             reqCode,
             notificationBuilder.build()

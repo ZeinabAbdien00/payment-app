@@ -31,9 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:clickable="false"
             android:thumb="@drawable/swich_thumb"
             android:track="@drawable/swich_track"
-            android:clickable="false"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <View

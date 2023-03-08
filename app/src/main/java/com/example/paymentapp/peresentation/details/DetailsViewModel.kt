@@ -1,7 +1,6 @@
 package com.example.paymentapp.peresentation.details
 
 import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide.init
 import com.example.paymentapp.MyApp
 import com.example.paymentapp.data.models.BaseModel
 import com.example.paymentapp.data.repositories.BaseRepository
@@ -14,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsViewModel @Inject constructor() : ViewModel() {
 
-    lateinit var historyArray : ArrayList<String>
+    lateinit var historyArray: ArrayList<String>
     private val repository: BaseRepository
 
     lateinit var model: BaseModel
@@ -43,9 +42,9 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
         repository = BaseRepository(dao)
     }
 
-    fun setMyModel(myModel: BaseModel){
+    fun setMyModel(myModel: BaseModel) {
         model = myModel
-        historyArray=model.historyList
+        historyArray = model.historyList
     }
 
     fun addDateToItem(currentDate: String) {
@@ -53,8 +52,8 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
 
         payiedInstallmentsNumber++
 
-        if (comingInstallmentsVlaue>0){
-        comingInstallmentsNumber--
+        if (comingInstallmentsVlaue > 0) {
+            comingInstallmentsNumber--
         }
 
         payiedInstallmentsValue += monthlyPayValue
@@ -65,10 +64,10 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
     }
 
     fun removeLastDateFromItem() {
-        historyArray.removeAt(historyArray.size-1)
+        historyArray.removeAt(historyArray.size - 1)
 
-        if (payiedInstallmentsNumber>0)
-        payiedInstallmentsNumber--
+        if (payiedInstallmentsNumber > 0)
+            payiedInstallmentsNumber--
         laterMonth++
 
         comingInstallmentsNumber++
@@ -88,7 +87,7 @@ class DetailsViewModel @Inject constructor() : ViewModel() {
                 model.numberOfTotalInstallments == totalInstallmentsNumber.toInt() &&
 
                 model.payNumber == payiedInstallmentsNumber &&
-                model.payValue == payiedInstallmentsValue&&
+                model.payValue == payiedInstallmentsValue &&
                 model.notPayNumber == comingInstallmentsNumber &&
                 model.notPayValue == comingInstallmentsVlaue &&
 

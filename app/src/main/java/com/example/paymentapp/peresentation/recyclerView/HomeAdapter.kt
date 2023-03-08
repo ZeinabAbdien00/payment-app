@@ -47,30 +47,36 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
         val currentItem = list[position]
         holder.binding.nameOfCustomer.text = currentItem.name
         holder.binding.valueOfTheDebt.text = currentItem.monthlyPay
-        holder.binding.valueOfTheDebt.text = currentItem.monthlyPay.toDouble().roundToInt().toString()
+        holder.binding.valueOfTheDebt.text =
+            currentItem.monthlyPay.toDouble().roundToInt().toString()
 
         if (currentItem.monthlyDayOfPaying == day.toString()) {
             holder.binding.dateOfTheDebt.text = "اليوم"
-            holder.binding.nameOfCustomer.background= ContextCompat.getDrawable(holder.binding.nameOfCustomer.context
-                , R.color.day_is_today
-            )
-            holder.binding.btnNavigate.background= ContextCompat.getDrawable(holder.binding.btnNavigate.context
-                , R.drawable.day_is_today_tint
-            )
-            holder.binding.rvItems.background= ContextCompat.getDrawable(holder.binding.btnNavigate.context
-                , R.color.day_is_today_background
-            )
+            holder.binding.nameOfCustomer.background =
+                ContextCompat.getDrawable(holder.binding.nameOfCustomer.context,
+                    R.color.day_is_today
+                )
+            holder.binding.btnNavigate.background =
+                ContextCompat.getDrawable(holder.binding.btnNavigate.context,
+                    R.drawable.day_is_today_tint
+                )
+            holder.binding.rvItems.background =
+                ContextCompat.getDrawable(holder.binding.btnNavigate.context,
+                    R.color.day_is_today_background
+                )
         } else {
             holder.binding.dateOfTheDebt.text = currentItem.monthlyDayOfPaying
-            holder.binding.nameOfCustomer.background= ContextCompat.getDrawable(holder.binding.nameOfCustomer.context
-                , R.color.some_green
-            )
-            holder.binding.btnNavigate.background= ContextCompat.getDrawable(holder.binding.btnNavigate.context
-                , R.drawable.round_button
-            )
-            holder.binding.rvItems.background= ContextCompat.getDrawable(holder.binding.btnNavigate.context
-                , R.color.day_is_today_background
-            )
+            holder.binding.nameOfCustomer.background =
+                ContextCompat.getDrawable(holder.binding.nameOfCustomer.context, R.color.some_green
+                )
+            holder.binding.btnNavigate.background =
+                ContextCompat.getDrawable(holder.binding.btnNavigate.context,
+                    R.drawable.round_button
+                )
+            holder.binding.rvItems.background =
+                ContextCompat.getDrawable(holder.binding.btnNavigate.context,
+                    R.color.day_is_today_background
+                )
         }
 
         if (currentItem.numberOfLateMoneyMonths > 0) {
