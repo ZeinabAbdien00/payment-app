@@ -26,14 +26,6 @@ class NotificationViewModel : ViewModel() {
         val dao = HomeDataBase.getInstance(MyApp.context).myDao()
         repository = BaseRepository(dao)
         _notificationsList.value = ArrayList()
-        //       viewModelScope.launch {
-        //           val calendar = Calendar.getInstance()
-//            val day = calendar.get(Calendar.DAY_OF_MONTH)
-//            _notificationsList.value!!.addAll(getAllFromRoom().first().filter {
-//                it.monthlyDayOfPaying == day.toString() ||
-//                        it.numberOfLateMoneyMonths > 0
-//            } )
-//        }
     }
 
     fun setFirstData(boolean: Boolean) {
@@ -47,6 +39,9 @@ class NotificationViewModel : ViewModel() {
     fun getList(): ArrayList<BaseModel> {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH)
+        val year = calendar.get(Calendar.YEAR)
+
         val listOnTop = ArrayList<BaseModel>()
         listOnTop.addAll(_notificationsList.value!!.filter { it.monthlyDayOfPaying.toInt() == day })
         var tempList = ArrayList<BaseModel>()
@@ -55,6 +50,16 @@ class NotificationViewModel : ViewModel() {
         var listToReturn = ArrayList<BaseModel>()
         listToReturn.addAll(listOnTop)
         listToReturn.addAll(tempList)
+
+        for (i in listToReturn) {
+
+            val x = i.startDate.split("/")
+            if ((month + 1).toString() >= x[1]) else if ((month + 1).toString() <= x[1] && year.toString() > x[0])
+            else {
+                listToReturn.remove(i)
+            }
+
+        }
         return listToReturn
     }
 

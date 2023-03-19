@@ -66,8 +66,16 @@ data class BaseModel(
     fun customInit() {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH)
+        val year = calendar.get(Calendar.YEAR)
+        val splitStartDataBaseModel = startDate.split("/")
+        var isStartBaseModel = false
 
-        if (day.toString() == monthlyDayOfPaying && !oneWasAdded) {
+        if ((month + 1).toString() >= splitStartDataBaseModel[1]) {
+            isStartBaseModel = true
+        } else if (year.toString() > splitStartDataBaseModel[0]) isStartBaseModel = true;
+
+        if (day.toString() == monthlyDayOfPaying && !oneWasAdded && isStartBaseModel){
             oneWasAdded = true
             numberOfLateMoneyMonths++
         } else if (day.toString() != monthlyDayOfPaying) {
@@ -93,6 +101,11 @@ data class BaseModel(
         }
         numberOfLateMoneyMonths++
 
+    }
+
+    private fun splitMonth(): String {
+        val splitStartDate = startDate.split("/")
+        return splitStartDate[1]
     }
 
 }

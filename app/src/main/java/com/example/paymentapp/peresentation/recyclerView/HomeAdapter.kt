@@ -24,7 +24,6 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
         this.listener = listener
     }
 
-
     inner class HomeViewHolder(val binding: CardViewBinding, listener: OnItemClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -33,7 +32,6 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
                 listener.onItemClick(adapterPosition)
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
@@ -44,13 +42,24 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH)
+        val year = calendar.get(Calendar.YEAR)
         val currentItem = list[position]
+        var isStart = false
+        val splitStartDate = currentItem.startDate.split("/")
+
         holder.binding.nameOfCustomer.text = currentItem.name
         holder.binding.valueOfTheDebt.text = currentItem.monthlyPay
         holder.binding.valueOfTheDebt.text =
             currentItem.monthlyPay.toDouble().roundToInt().toString()
 
-        if (currentItem.monthlyDayOfPaying == day.toString()) {
+        if ((month + 1).toString() >= splitStartDate[1]) {
+            isStart = true
+        } else if ((month + 1).toString() <= splitStartDate[1] && year.toString() > splitStartDate[0]) isStart = true
+
+        if (currentItem.monthlyDayOfPaying == day.toString() && isStart
+        ) {
+
             holder.binding.dateOfTheDebt.text = "اليوم"
             holder.binding.nameOfCustomer.background =
                 ContextCompat.getDrawable(holder.binding.nameOfCustomer.context,
