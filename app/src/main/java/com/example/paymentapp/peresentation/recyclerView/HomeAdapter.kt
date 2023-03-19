@@ -74,7 +74,26 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
                     R.color.day_is_today_background
                 )
         } else {
-            holder.binding.dateOfTheDebt.text = currentItem.monthlyDayOfPaying
+            if (isStart){
+
+                val theMonth = if (day.toString()>currentItem.monthlyDayOfPaying){
+
+                    if(month+2 >= 13) {
+                        "1"
+                    }else(month+2).toString()
+
+                }else{
+                    (month+1).toString()
+                }
+
+                holder.binding.dateOfTheDebt.text = currentItem.monthlyDayOfPaying + " شهر " + theMonth
+
+            }else{
+                holder.binding.dateOfTheDebt.text = currentItem.startDate
+
+
+            }
+
             holder.binding.nameOfCustomer.background =
                 ContextCompat.getDrawable(holder.binding.nameOfCustomer.context, R.color.some_green
                 )

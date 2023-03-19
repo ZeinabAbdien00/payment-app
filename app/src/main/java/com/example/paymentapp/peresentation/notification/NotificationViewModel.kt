@@ -1,5 +1,6 @@
 package com.example.paymentapp.peresentation.notification
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.ArrayList
 
 class NotificationViewModel : ViewModel() {
 
@@ -51,16 +53,18 @@ class NotificationViewModel : ViewModel() {
         listToReturn.addAll(listOnTop)
         listToReturn.addAll(tempList)
 
+        val lastList = ArrayList<BaseModel>()
         for (i in listToReturn) {
-
             val x = i.startDate.split("/")
-            if ((month + 1).toString() >= x[1]) else if ((month + 1).toString() <= x[1] && year.toString() > x[0])
-            else {
-                listToReturn.remove(i)
+            if ((month + 1).toString() >= x[1]) {
+                lastList.add(i)
+            }else if ((month + 1).toString() < x[1] && year.toString() > x[0]){
+                lastList.add(i)
             }
 
         }
-        return listToReturn
+        Log.d("suz" , lastList.map { it.name }.toString())
+        return lastList
     }
 
     suspend fun resetArrayList(baseModels: List<BaseModel>) {
