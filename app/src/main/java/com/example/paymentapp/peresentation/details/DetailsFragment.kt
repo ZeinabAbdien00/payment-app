@@ -247,7 +247,8 @@ class DetailsFragment : Fragment() {
             // الاقساط الكلية عدد
             allCostEditText.setText(viewModel.model.numberOfTotalInstallments.toString())
             //يوم السداد
-            payDayEditText.setText(viewModel.model.monthlyDayOfPaying)
+//            payDayEditText.setText(viewModel.model.monthlyDayOfPaying)
+            dateAndMonth()
             //تاريخ البداية
             startDateEditText.setText(viewModel.model.startDate)
             // موديل السيارة
@@ -268,4 +269,17 @@ class DetailsFragment : Fragment() {
 
     private fun checkIfDataChanged(): Boolean =
         viewModel.isNewData()
+
+
+    private fun dateAndMonth(){
+        val calendar = Calendar.getInstance()
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        if(day<=viewModel.model.monthlyDayOfPaying.toInt()){
+            binding.payDayEditText.setText(viewModel.model.monthlyDayOfPaying +" شهر "+ (month+1).toString())
+        }else{
+            binding.payDayEditText.setText(viewModel.model.monthlyDayOfPaying +" شهر "+ (month+2).toString())
+        }
+
+    }
 }
