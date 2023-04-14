@@ -49,60 +49,68 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
         val splitStartDate = currentItem.startDate.split("/")
 
         holder.binding.nameOfCustomer.text = currentItem.name
-        holder.binding.valueOfTheDebt.text = currentItem.monthlyPay
+        //  holder.binding.valueOfTheDebt.text = currentItem.monthlyPay
         holder.binding.valueOfTheDebt.text =
             currentItem.monthlyPay.toDouble().roundToInt().toString()
 
-        if ((month + 1).toString() >= splitStartDate[1]) {
+
+        if ((month + 1).toString() >= splitStartDate[1] && year.toString() >= splitStartDate[0]) {
             isStart = true
-        } else if ((month + 1).toString() <= splitStartDate[1] && year.toString() > splitStartDate[0]) isStart = true
+        } else if ((month + 1).toString() <= splitStartDate[1] && year.toString() > splitStartDate[0]) isStart =
+            true
 
         if (currentItem.monthlyDayOfPaying == day.toString() && isStart
         ) {
 
             holder.binding.dateOfTheDebt.text = "اليوم"
             holder.binding.nameOfCustomer.background =
-                ContextCompat.getDrawable(holder.binding.nameOfCustomer.context,
+                ContextCompat.getDrawable(
+                    holder.binding.nameOfCustomer.context,
                     R.color.day_is_today
                 )
             holder.binding.btnNavigate.background =
-                ContextCompat.getDrawable(holder.binding.btnNavigate.context,
+                ContextCompat.getDrawable(
+                    holder.binding.btnNavigate.context,
                     R.drawable.day_is_today_tint
                 )
             holder.binding.rvItems.background =
-                ContextCompat.getDrawable(holder.binding.btnNavigate.context,
+                ContextCompat.getDrawable(
+                    holder.binding.btnNavigate.context,
                     R.color.day_is_today_background
                 )
         } else {
-            if (isStart){
+            if (isStart) {
 
-                val theMonth = if (day.toString()>currentItem.monthlyDayOfPaying){
+                val theMonth = if (day.toString() > currentItem.monthlyDayOfPaying) {
 
-                    if(month+2 >= 13) {
+                    if (month + 2 >= 13) {
                         "1"
-                    }else(month+2).toString()
+                    } else (month + 2).toString()
 
-                }else{
-                    (month+1).toString()
+                } else {
+                    (month + 1).toString()
                 }
+                holder.binding.date.text = "موعد السداد : "
+                holder.binding.dateOfTheDebt.text =
+                    currentItem.monthlyDayOfPaying + " شهر " + theMonth
 
-                holder.binding.dateOfTheDebt.text = currentItem.monthlyDayOfPaying + " شهر " + theMonth
-
-            }else{
+            } else {
+                holder.binding.date.text = "موعد بدأ السداد : "
                 holder.binding.dateOfTheDebt.text = currentItem.startDate
-
-
             }
 
             holder.binding.nameOfCustomer.background =
-                ContextCompat.getDrawable(holder.binding.nameOfCustomer.context, R.color.some_green
+                ContextCompat.getDrawable(
+                    holder.binding.nameOfCustomer.context, R.color.some_green
                 )
             holder.binding.btnNavigate.background =
-                ContextCompat.getDrawable(holder.binding.btnNavigate.context,
+                ContextCompat.getDrawable(
+                    holder.binding.btnNavigate.context,
                     R.drawable.round_button
                 )
             holder.binding.rvItems.background =
-                ContextCompat.getDrawable(holder.binding.btnNavigate.context,
+                ContextCompat.getDrawable(
+                    holder.binding.btnNavigate.context,
                     R.color.day_is_today_background
                 )
         }

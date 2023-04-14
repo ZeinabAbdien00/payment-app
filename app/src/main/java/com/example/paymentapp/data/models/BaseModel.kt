@@ -71,9 +71,15 @@ data class BaseModel(
         val splitStartDataBaseModel = startDate.split("/")
         var isStartBaseModel = false
 
-        if ((month + 1).toString() >= splitStartDataBaseModel[1]) {
+//        if ((month + 1).toString() >= splitStartDataBaseModel[1]) {
+//            isStartBaseModel = true
+//        } else if (year.toString() > splitStartDataBaseModel[0]) isStartBaseModel = true
+
+        if ((month + 1).toString() >= splitStartDataBaseModel[1] && year.toString() >= splitStartDataBaseModel[0]) {
             isStartBaseModel = true
-        } else if (year.toString() > splitStartDataBaseModel[0]) isStartBaseModel = true;
+        } else if ((month + 1).toString() <= splitStartDataBaseModel[1] && year.toString() > splitStartDataBaseModel[0]) isStartBaseModel =
+            true
+
 
         if (day.toString() == monthlyDayOfPaying && !oneWasAdded && isStartBaseModel){
             oneWasAdded = true

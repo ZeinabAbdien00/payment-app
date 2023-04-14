@@ -22,6 +22,7 @@ import com.example.paymentapp.peresentation.addClient.AddClientDialog
 import com.example.paymentapp.peresentation.recyclerView.HomeAdapter
 import com.example.paymentapp.peresentation.swipeToDelete.SwipeToDeleteCallback
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -63,13 +64,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setObservers() {
-        viewModel.isSearch.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.sort.visibility = View.INVISIBLE
-            } else {
-                binding.sort.visibility = View.VISIBLE
-            }
-        }
+//        viewModel.isSearch.observe(viewLifecycleOwner) {
+//            if (it) {
+//                binding.sort.visibility = View.INVISIBLE
+//            } else {
+//                binding.sort.visibility = View.VISIBLE
+//            }
+//        }
 
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.getAllFromRoom().collect {
@@ -121,23 +122,33 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         //sorting feature
         binding.sort.setOnClickListener {
-            sortItems()
-            binding.homeRecyclerView.adapter!!.notifyItemRangeChanged(
-                0,
-                viewModel.dataList.value!!.size
-            )
+            CoroutineScope(Dispatchers.Main).launch {
+                sortItems()
+                binding.homeRecyclerView.adapter!!.notifyItemRangeChanged(
+                    0,
+                    viewModel.dataList.value!!.size
+                )
+
+            }
         }
     }
 
-    private fun sortItems() {
-        val calendar = Calendar.getInstance()
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+    private suspend fun sortItems() {
+        val myLayoutManager = LinearLayoutManager(requireActivity())
 
-        if (viewModel.isSearch.value == false) {
-
-            if (viewModel.normalMode.value == true) viewModel.getListForNonNormalMode(day)
-            else viewModel.getListForNormalMode(day)
+        if (viewModel.normalMode.value == false) {
+            myLayoutManager.apply {
+                reverseLayout = false
+                stackFromEnd = false
+            }
         }
+        else {
+            myLayoutManager.apply {
+                reverseLayout = true
+                stackFromEnd = true
+            }
+        }
+        binding.homeRecyclerView.layoutManager = myLayoutManager
         viewModel.setIsNormalMode(viewModel.normalMode.value != true)
     }
 

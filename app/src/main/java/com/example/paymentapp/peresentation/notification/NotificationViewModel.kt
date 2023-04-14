@@ -56,7 +56,7 @@ class NotificationViewModel : ViewModel() {
         val lastList = ArrayList<BaseModel>()
         for (i in listToReturn) {
             val x = i.startDate.split("/")
-            if ((month + 1).toString() >= x[1]) {
+            if ((month + 1).toString() >= x[1] && year.toString() >= x[0] ) {
                 lastList.add(i)
             }else if ((month + 1).toString() < x[1] && year.toString() > x[0]){
                 lastList.add(i)
