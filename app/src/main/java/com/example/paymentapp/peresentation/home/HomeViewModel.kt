@@ -62,8 +62,10 @@ class HomeViewModel : ViewModel() {
         _isSearch.value = boolean
     }
 
-    fun setIsNormalMode(b: Boolean) {
-        _normalMode.value = b
+    suspend fun setIsNormalMode(b: Boolean) {
+        withContext(Dispatchers.Main) {
+            _normalMode.value = b
+        }
     }
 
     suspend fun removeItemOf(position: Int) {
@@ -71,7 +73,7 @@ class HomeViewModel : ViewModel() {
         deleteFromRoom(item)
     }
 
-    fun getListForNonNormalMode(day: Int) {
+     fun getListForNonNormalMode(day: Int) {
         val list = ArrayList<BaseModel>()
         list.addAll(dataList.value!!)
         list.sortByDescending { day - it.monthlyDayOfPaying.toInt() }
@@ -79,7 +81,7 @@ class HomeViewModel : ViewModel() {
         _dataList.value!!.addAll(list)
     }
 
-    fun getListForNormalMode(day: Int) {
+     fun getListForNormalMode(day: Int) {
         val list = ArrayList<BaseModel>()
         list.addAll(dataList.value!!)
         list.sortBy { day - it.monthlyDayOfPaying.toInt() }
