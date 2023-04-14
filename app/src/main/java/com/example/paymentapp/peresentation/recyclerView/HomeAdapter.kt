@@ -90,14 +90,13 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
                 } else {
                     (month + 1).toString()
                 }
-
+                holder.binding.date.text = "موعد السداد : "
                 holder.binding.dateOfTheDebt.text =
                     currentItem.monthlyDayOfPaying + " شهر " + theMonth
 
             } else {
+                holder.binding.date.text = "موعد بدأ السداد : "
                 holder.binding.dateOfTheDebt.text = currentItem.startDate
-
-
             }
 
             holder.binding.nameOfCustomer.background =
