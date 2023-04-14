@@ -97,7 +97,13 @@ class AddClientDialog : DialogFragment() {
 
         binding.priceEditText.doAfterTextChanged {
             price = if (it.toString().isNotEmpty()) {
-                it.toString().toInt()
+                try {
+                    it.toString().toInt()
+                } catch (_: Exception) {
+                    val maxInt = Integer.MAX_VALUE
+                    binding.priceEditText.setText(maxInt.toString())
+                    maxInt
+                }
             } else {
                 0
             }
