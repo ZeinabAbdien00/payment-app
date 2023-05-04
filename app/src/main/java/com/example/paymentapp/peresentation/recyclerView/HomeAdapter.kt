@@ -45,86 +45,93 @@ class HomeAdapter(private val list: ArrayList<BaseModel>) :
         val month = calendar.get(Calendar.MONTH)
         val year = calendar.get(Calendar.YEAR)
         val currentItem = list[position]
-        var isStart = false
         val splitStartDate = currentItem.startDate.split("/")
 
         holder.binding.nameOfCustomer.text = currentItem.name
-        //  holder.binding.valueOfTheDebt.text = currentItem.monthlyPay
         holder.binding.valueOfTheDebt.text =
             currentItem.monthlyPay.toDouble().roundToInt().toString()
 
 
-        if ((month + 1).toString() >= splitStartDate[1] && year.toString() >= splitStartDate[0]) {
-            isStart = true
-        } else if ((month + 1).toString() <= splitStartDate[1] && year.toString() > splitStartDate[0]) isStart =
-            true
+//        if ((month + 1).toString() >= splitStartDate[1] && year.toString() >= splitStartDate[0]) {
+//            isStart = true
+//        } else if ((month + 1).toString() <= splitStartDate[1] && year.toString() > splitStartDate[0]) isStart = true
 
-        if (currentItem.monthlyDayOfPaying == day.toString() && isStart
-        ) {
+        val yearCondition = year < splitStartDate[0].toInt()
+        val monthCondition =
+            (year == splitStartDate[0].toInt()) && ((month + 1) < splitStartDate[1].toInt())
+        val dayCondition =
+            (year == splitStartDate[0].toInt()) && ((month + 1) == splitStartDate[1].toInt()) && (day < splitStartDate[2].toInt())
+        val isStart = !(yearCondition || monthCondition || dayCondition)
 
-            holder.binding.dateOfTheDebt.text = "اليوم"
-            holder.binding.nameOfCustomer.background =
-                ContextCompat.getDrawable(
-                    holder.binding.nameOfCustomer.context,
-                    R.color.day_is_today
-                )
-            holder.binding.btnNavigate.background =
-                ContextCompat.getDrawable(
-                    holder.binding.btnNavigate.context,
-                    R.drawable.day_is_today_tint
-                )
-            holder.binding.rvItems.background =
-                ContextCompat.getDrawable(
-                    holder.binding.btnNavigate.context,
-                    R.color.day_is_today_background
-                )
-        } else {
-            if (isStart) {
+    if (currentItem.monthlyDayOfPaying == day.toString() && isStart
+    )
+    {
 
-                val theMonth = if (day.toString() > currentItem.monthlyDayOfPaying) {
+        holder.binding.dateOfTheDebt.text = "اليوم"
+        holder.binding.nameOfCustomer.background =
+            ContextCompat.getDrawable(
+                holder.binding.nameOfCustomer.context,
+                R.color.day_is_today
+            )
+        holder.binding.btnNavigate.background =
+            ContextCompat.getDrawable(
+                holder.binding.btnNavigate.context,
+                R.drawable.day_is_today_tint
+            )
+        holder.binding.rvItems.background =
+            ContextCompat.getDrawable(
+                holder.binding.btnNavigate.context,
+                R.color.day_is_today_background
+            )
+    } else
+    {
+        if (isStart) {
+            val theMonth = if (day > currentItem.monthlyDayOfPaying.toInt()) {
 
-                    if (month + 2 >= 13) {
-                        "1"
-                    } else (month + 2).toString()
-
-                } else {
-                    (month + 1).toString()
-                }
-                holder.binding.date.text = "موعد السداد : "
-                holder.binding.dateOfTheDebt.text =
-                    currentItem.monthlyDayOfPaying + " شهر " + theMonth
+                if (month + 2 >= 13) {
+                    "1"
+                } else (month + 2).toString()
 
             } else {
-                holder.binding.date.text = "موعد بدأ السداد : "
-                holder.binding.dateOfTheDebt.text = currentItem.startDate
+                (month + 1).toString()
             }
+            holder.binding.date.text = "موعد السداد : "
+            holder.binding.dateOfTheDebt.text =
+                currentItem.monthlyDayOfPaying + " شهر " + theMonth
 
-            holder.binding.nameOfCustomer.background =
-                ContextCompat.getDrawable(
-                    holder.binding.nameOfCustomer.context, R.color.some_green
-                )
-            holder.binding.btnNavigate.background =
-                ContextCompat.getDrawable(
-                    holder.binding.btnNavigate.context,
-                    R.drawable.round_button
-                )
-            holder.binding.rvItems.background =
-                ContextCompat.getDrawable(
-                    holder.binding.btnNavigate.context,
-                    R.color.day_is_today_background
-                )
-        }
-
-        if (currentItem.numberOfLateMoneyMonths > 0) {
-            holder.binding.numberOfLateMonths.visibility = View.VISIBLE
-            holder.binding.numberOfLateMonths.text = currentItem.numberOfLateMoneyMonths.toString()
         } else {
-            holder.binding.numberOfLateMonths.visibility = View.GONE
+            holder.binding.date.text = "موعد بدأ السداد : "
+            holder.binding.dateOfTheDebt.text = currentItem.startDate
         }
+
+        holder.binding.nameOfCustomer.background =
+            ContextCompat.getDrawable(
+                holder.binding.nameOfCustomer.context, R.color.some_green
+            )
+        holder.binding.btnNavigate.background =
+            ContextCompat.getDrawable(
+                holder.binding.btnNavigate.context,
+                R.drawable.round_button
+            )
+        holder.binding.rvItems.background =
+            ContextCompat.getDrawable(
+                holder.binding.btnNavigate.context,
+                R.color.day_is_today_background
+            )
     }
 
-    override fun getItemCount(): Int {
-        return list.size
+    if (currentItem.numberOfLateMoneyMonths > 0)
+    {
+        holder.binding.numberOfLateMonths.visibility = View.VISIBLE
+        holder.binding.numberOfLateMonths.text = currentItem.numberOfLateMoneyMonths.toString()
+    } else
+    {
+        holder.binding.numberOfLateMonths.visibility = View.GONE
     }
+}
+
+override fun getItemCount(): Int {
+    return list.size
+}
 
 }
